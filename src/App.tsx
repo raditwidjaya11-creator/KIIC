@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Plane, Lock, Download, Check, X, FileBarChart, HardHat } from 'lucide-react';
 import { useLanguage } from './context/LanguageContext';
 import { auth, db, handleFirestoreError, OperationType } from './firebase';
-import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, signInAnonymously } from 'firebase/auth';
+import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 // Custom Sektoral components imports
@@ -35,6 +35,7 @@ export default function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
   // Prospektus modal submission states
   const [prospName, setProspName] = useState('');
@@ -133,26 +134,51 @@ export default function App() {
       setLoginError(language === 'id' ? 'Kredensial wajib diisi.' : 'Credentials are required.');
       return;
     }
-    // Simple demo password verification for Bupati presentation: accepts 'admin' / 'kertajati'
-    if (username.toLowerCase() === 'admin' || username.toLowerCase() === 'kertajati') {
+
+    if (authMode === 'login') {
       try {
-        await signInAnonymously(auth);
+        await signInWithEmailAndPassword(auth, username, password);
         setIsLoggedIn(true);
         setLoginError('');
         setLoginModalOpen(false);
         setUsername('');
         setPassword('');
       } catch (err: any) {
-        setLoginError(language === 'id' ? `Masuk simulasi gagal: ${err.message}` : `Simulation login failed: ${err.message}`);
+        setLoginError(language === 'id' ? 'Email atau kata sandi tidak valid. Silakan daftarkan akun baru jika belum terdaftar.' : 'Invalid email or password. Please sign up if you do not have an account yet.');
+        handleFirestoreError(err, OperationType.GET, 'auth/login');
       }
     } else {
-      setLoginError(language === 'id' ? 'Username atau sandi salah - Gunakan "kertajati" atau "admin" untuk simulasi.' : 'Invalid credentials - Use "kertajati" or "admin" for simulation.');
+      if (password.length < 6) {
+        setLoginError(language === 'id' ? 'Kata sandi minimal 6 karakter.' : 'Password must be at least 6 characters.');
+        return;
+      }
+      try {
+        const userCred = await createUserWithEmailAndPassword(auth, username, password);
+        const user = userCred.user;
+        
+        // Write to Firestore /users/{userId} path securely
+        await setDoc(doc(db, 'users', user.uid), {
+          email: user.email,
+          role: 'investor',
+          createdAt: serverTimestamp()
+        });
+
+        setIsLoggedIn(true);
+        setLoginError('');
+        setLoginModalOpen(false);
+        setUsername('');
+        setPassword('');
+      } catch (err: any) {
+        setLoginError(language === 'id' ? `Pendaftaran gagal: ${err.message}` : `Registration failed: ${err.message}`);
+        handleFirestoreError(err, OperationType.CREATE, `users/${username}`);
+      }
     }
   };
 
   const handleModalClose = () => {
     setLoginModalOpen(false);
     setLoginError('');
+    setAuthMode('login');
   };
 
   const handleProspectusSubmit = async (e: React.FormEvent) => {
@@ -403,9 +429,7 @@ export default function App() {
                 className="absolute top-4 right-4 p-1.5 bg-brand-navy hover:bg-brand-navy/80 rounded-none text-slate-400 hover:text-white cursor-pointer"
               >
                 <X className="w-4 h-4" />
-              </button>
-
-              <div className="space-y-4 mb-6 text-center">
+              </button>              <div className="space-y-4 mb-3 text-center">
                 <div className="w-12 h-12 rounded-none bg-brand-gold/10 border border-brand-gold/25 flex items-center justify-center mx-auto text-brand-gold">
                   <Lock className="w-5 h-5" />
                 </div>
@@ -417,9 +441,41 @@ export default function App() {
                 </p>
               </div>
 
+              {/* Secure Credentials Mode Tabs Selector */}
+              <div className="flex border-b border-slate-900 mb-6 font-mono text-[10px] font-bold">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthMode('login');
+                    setLoginError('');
+                  }}
+                  className={`flex-1 pb-2.5 text-center transition-colors cursor-pointer ${
+                    authMode === 'login'
+                      ? 'border-b-2 border-brand-gold text-brand-gold'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {language === 'id' ? 'MASUK PORTAL' : 'LOG IN'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthMode('signup');
+                    setLoginError('');
+                  }}
+                  className={`flex-1 pb-2.5 text-center transition-colors cursor-pointer ${
+                    authMode === 'signup'
+                      ? 'border-b-2 border-brand-gold text-brand-gold'
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {language === 'id' ? 'DAFTAR AKUN BARU' : 'SIGN UP'}
+                </button>
+              </div>
+
               <form onSubmit={handleLoginSubmit} className="space-y-4 text-xs font-sans">
                 {loginError && (
-                  <p className="p-3 bg-red-500/10 border border-red-500/20 text-red-450 rounded-none font-mono text-center font-bold">
+                  <p className="p-3 bg-red-500/10 border border-red-500/20 text-red-455 rounded-none font-mono text-center font-bold">
                     {loginError}
                   </p>
                 )}
@@ -427,7 +483,7 @@ export default function App() {
                 <div className="space-y-2">
                   <label className="block text-slate-300 tracking-wider font-bold uppercase text-[9px]">{t('modal.field_user')}</label>
                   <input
-                    type="text"
+                    type="email"
                     required
                     placeholder={t('modal.field_user_placeholder')}
                     value={username}
@@ -459,7 +515,7 @@ export default function App() {
                   type="submit"
                   className="w-full py-3 rounded-none bg-brand-gold hover:bg-brand-gold/90 text-brand-navy font-bold uppercase tracking-wider transition-all cursor-pointer font-sans"
                 >
-                  {t('modal.btn_authorize')}
+                  {authMode === 'login' ? t('modal.btn_authorize') : (language === 'id' ? 'BUAT AKUN BARU' : 'CREATE ACCOUNT')}
                 </button>
 
                 <div className="flex items-center my-4">

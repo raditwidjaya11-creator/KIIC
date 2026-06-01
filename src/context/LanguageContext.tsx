@@ -189,7 +189,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Restrict Gate Banner
     'gate.badge': 'RESTRICTED AREA • DATA ROOM SECURE ACCESS',
     'gate.title': 'Membuka Dokumen Penilaian Kelayakan Finansial (Data Room)?',
-    'gate.description': 'Berkas rahasia dan studi Amdal kami proteksi demi kerahasiaan pra-tahap proyek. Klik login investor di bawah dan gunakan username demo "kertajati" atau "admin" untuk membuka kunci sewa lahan dan download instan.',
+    'gate.description': 'Berkas rahasia dan studi Amdal kami proteksi demi kerahasiaan pra-tahap proyek. Silakan daftarkan akun baru atau masuk menggunakan akun terdaftar untuk membuka kunci sewa lahan dan download instan dokumen.',
     'gate.btn_login': 'MASUK PORTAL DATA ROOM',
 
     // Investor Doc / Private Center
@@ -233,12 +233,12 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'modal.login_title': 'Portal Login KEK Kertajati',
     'modal.login_desc': 'Masukkan akun otorisasi yang divalidasi oleh Humas KIIT dan Dinas PMTSP Kabupaten Majalengka untuk mengakses Secure Data Room.',
     'modal.login_err_empty': 'Kredensial wajib diisi.',
-    'modal.login_err_wrong': 'Username atau sandi salah - Gunakan "kertajati" atau "admin" untuk simulasi.',
-    'modal.field_user': 'DIREKTORAL USERNAME *',
-    'modal.field_user_placeholder': 'Ketikan: admin atau kertajati',
-    'modal.field_pw': 'SANDI KATA KUNCI (PASSWORD) *',
-    'modal.field_pw_placeholder': 'Ketikan sembarang kata sandi',
-    'modal.login_tip': 'Petunjuk Bupati Kabupaten Majalengka Presentation: Untuk simulasi login, ketikan "admin" / "kertajati" pada kolom username di atas dan isi sandi bebas.',
+    'modal.login_err_wrong': 'Email atau sandi salah atau tidak terdaftar. Silakan lakukan pendaftaran jika belum memiliki akun.',
+    'modal.field_user': 'ALAMAT EMAIL RESMI *',
+    'modal.field_user_placeholder': 'contoh: investor@kertajati.com',
+    'modal.field_pw': 'KATA SANDI SECURED (PASSWORD) *',
+    'modal.field_pw_placeholder': 'Masukkan minimal 6 karakter',
+    'modal.login_tip': 'Petunjuk Presentasi: Silakan pilih tab "Daftar Akun Baru" di modal login untuk meregistrasikan email Anda. Pengguna baru yang didaftarkan akan otomatis terdata di dalam log/daftar user.',
     'modal.btn_authorize': 'OTORISASI PORTAL SECURE DATA ROOM',
     
     'modal.prop_title': 'Dapatkan Prospektus Utama (EN/ID)',
@@ -451,7 +451,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Restrict Gate Banner
     'gate.badge': 'RESTRICTED AREA • DATA ROOM SECURE ACCESS',
     'gate.title': 'Unlock Private Financial Appraisal Documents (Secure Data Room)?',
-    'gate.description': 'Committed to ultimate investor confidentiality, pre-stage project files and environment impact studies are strictly protected. Click login and input username "kertajati" or "admin" to view financial logs and trigger direct downloads.',
+    'gate.description': 'Committed to ultimate investor confidentiality, pre-stage project files and environment impact studies are strictly protected. Please register a new account or log in with verified credentials to view financial logs and trigger direct downloads.',
     'gate.btn_login': 'LOG IN TO SECURE DATA ROOM',
 
     // Investor Doc / Private Center
@@ -495,12 +495,12 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'modal.login_title': 'Kertajati SEZ Access Portal',
     'modal.login_desc': 'Provide the authorization accounts approved by KIIT Relations and Kabupaten Majalengka DPMPTSP to unlock the Secure Data Room.',
     'modal.login_err_empty': 'Authorized credentials are required.',
-    'modal.login_err_wrong': 'Invalid credentials value. Use "kertajati" or "admin" for simulation login.',
-    'modal.field_user': 'DIRECTORATE USERNAME *',
-    'modal.field_user_placeholder': 'Type: admin or kertajati',
-    'modal.field_pw': 'PORTAL PASSCODE (PASSWORD) *',
-    'modal.field_pw_placeholder': 'Type any arbitrary password string',
-    'modal.login_tip': 'Bupati Presentation Cheat-Sheet: To simulate a live auth, provide "admin" or "kertajati" as username and any password string.',
+    'modal.login_err_wrong': 'Invalid email or password. Please sign up if you do not have an account yet.',
+    'modal.field_user': 'OFFICIAL EMAIL ADDRESS *',
+    'modal.field_user_placeholder': 'e.g., investor@kertajati.com',
+    'modal.field_pw': 'SECURED PASSCODE (PASSWORD) *',
+    'modal.field_pw_placeholder': 'Enter at least 6 characters',
+    'modal.login_tip': 'Presentation Tip: Click on the "Sign Up" tab in the login popup to register a new email. The raw credentials are saved to Firebase and automatically visible on the registered users directory.',
     'modal.btn_authorize': 'OAUTH DIRECT DATA ROOM GATEWAY',
     
     'modal.prop_title': 'Download Core Executive Prospectus (EN/ID)',

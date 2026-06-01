@@ -60,6 +60,15 @@ service cloud.firestore {
         && data.createdAt == request.time;
     }
 
+    // Validation blueprint for Users (Profile catalog)
+    function isValidUser(data) {
+      return data.keys().hasAll(['email', 'role', 'createdAt'])
+        && data.keys().size() == 3
+        && data.email is string && data.email.size() > 0 && data.email.size() <= 100
+        && data.role is string && data.role.size() > 0 && data.role.size() <= 50
+        && data.createdAt == request.time;
+    }
+
     // --- COLLECTION GATEWAYS ---
 
     // Inquiries Gateway rules
@@ -77,6 +86,12 @@ service cloud.firestore {
     // Appointments Gateway rules
     match /appointments/{apptId} {
       allow create: if isValidId(apptId) && isValidAppointment(incoming());
+      allow read, delete: if isSignedIn();
+    }
+
+    // Users Gateway rules (only allow writing own profile, listing allowed if signed in)
+    match /users/{userId} {
+      allow create: if isSignedIn() && request.auth.uid == userId && isValidId(userId) && isValidUser(incoming());
       allow read, delete: if isSignedIn();
     }
   }

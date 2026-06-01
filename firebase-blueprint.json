@@ -102,6 +102,30 @@
         "scheduledTime",
         "createdAt"
       ]
+    },
+    "User": {
+      "title": "User",
+      "description": "Registered portal user directory",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "email",
+        "role",
+        "createdAt"
+      ]
     }
   },
   "firestore": {
@@ -116,6 +140,10 @@
     "/appointments/{apptId}": {
       "schema": "Appointment",
       "description": "Consultation sessions booked in InvestorCenter scheduler"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User registration documents containing role and profile"
     }
   }
 }

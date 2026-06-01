@@ -5,6 +5,7 @@ import { FileDown, Lock, Unlock, Check, Send, Calendar, Clock, MapPin, Building,
 import { InvestorDoc } from '../types';
 import { db, handleFirestoreError, OperationType } from '../firebase';
 import { doc, setDoc, serverTimestamp, collection, onSnapshot, deleteDoc } from 'firebase/firestore';
+import { generateDocumentAndDownload } from '../utils/documentGenerator';
 
 interface InvestorCenterProps {
   isLoggedIn: boolean;
@@ -16,10 +17,11 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
   const isIndo = language === 'id';
 
   // Submission History and Active Tabs
-  const [activeTab, setActiveTab] = useState<'files' | 'history'>('files');
+  const [activeTab, setActiveTab] = useState<'files' | 'history' | 'users'>('files');
   const [eoiRecords, setEoiRecords] = useState<any[]>([]);
   const [apptRecords, setApptRecords] = useState<any[]>([]);
   const [inquiryRecords, setInquiryRecords] = useState<any[]>([]);
+  const [userRecords, setUserRecords] = useState<any[]>([]);
 
   // EOI Form States
   const [formData, setFormData] = useState({
@@ -52,6 +54,7 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
       setEoiRecords([]);
       setApptRecords([]);
       setInquiryRecords([]);
+      setUserRecords([]);
       setActiveTab('files');
       return;
     }
@@ -78,10 +81,18 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
       console.warn("Unable to fetch inquiries: ", error);
     });
 
+    const unsubUsers = onSnapshot(collection(db, 'users'), (snapshot) => {
+      const records = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setUserRecords(records);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.LIST, 'users');
+    });
+
     return () => {
       unsubEoi();
       unsubAppt();
       unsubInq();
+      unsubUsers();
     };
   }, [isLoggedIn]);
 
@@ -103,11 +114,20 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
       return;
     }
     
-    // Simulate active download
-    setToastMsg(isIndo 
-      ? `Mulai mengunduh: ${doc.title} (${doc.size})`
-      : `Downloading: ${doc.title} (${doc.size})`
-    );
+    // Physical file download
+    try {
+      generateDocumentAndDownload(doc, isIndo);
+      setToastMsg(isIndo 
+        ? `Berhasil mengunduh: ${doc.title} (${doc.size})`
+        : `Successfully downloaded: ${doc.title} (${doc.size})`
+      );
+    } catch (error) {
+      console.error(error);
+      setToastMsg(isIndo
+        ? `Gagal mengunduh dokumen. Silakan coba kembali.`
+        : `Failed to download document. Please try again.`
+      );
+    }
     setTimeout(() => setToastMsg(null), 4000);
   };
 
@@ -275,15 +295,28 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
                         : 'text-slate-400 hover:text-white hover:bg-[#001f3f]/50'
                     }`}
                   >
-                    <span>{isIndo ? 'RESPONS LIVE' : 'LIVE ACTIVITY'}</span>
+                    <span>{isIndo ? 'RESPONS LIVE' : 'LIVE'}</span>
                     <span className="font-mono bg-[#001026] text-brand-gold font-extrabold px-1.5 rounded-none text-[8px]">
                       {eoiRecords.length + apptRecords.length + inquiryRecords.length}
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('users')}
+                    className={`flex-1 py-1.5 px-3 font-sans font-bold uppercase tracking-wider text-[9px] transition duration-150 flex items-center justify-center space-x-1.5 rounded-none cursor-pointer ${
+                      activeTab === 'users'
+                        ? 'bg-brand-gold text-brand-navy font-extrabold'
+                        : 'text-slate-400 hover:text-white hover:bg-[#001f3f]/50'
+                    }`}
+                  >
+                    <span>{isIndo ? 'USER BARU' : 'NEW USERS'}</span>
+                    <span className="font-mono bg-[#001026] text-brand-gold font-extrabold px-1.5 rounded-none text-[8px]">
+                      {userRecords.length}
                     </span>
                   </button>
                 </div>
               )}
 
-              {activeTab === 'files' ? (
+              {activeTab === 'files' && (
                 <>
                   <p className="text-xs text-slate-400 font-sans leading-relaxed font-semibold">
                     {isIndo
@@ -337,7 +370,9 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
                     })}
                   </div>
                 </>
-              ) : (
+              )}
+
+              {activeTab === 'history' && (
                 <div className="space-y-4 max-h-[360px] overflow-y-auto pr-1">
                   <div className="flex items-center justify-between pb-1 border-b border-slate-900/50">
                     <span className="font-mono text-[8px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/20 uppercase tracking-wider block">
@@ -448,6 +483,53 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
                         </div>
                       ))}
 
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'users' && (
+                <div className="space-y-4 max-h-[360px] overflow-y-auto pr-1">
+                  <div className="flex items-center justify-between pb-1 border-b border-slate-900/50">
+                    <span className="font-mono text-[8px] text-brand-gold font-bold bg-brand-gold/10 px-2 py-0.5 border border-brand-gold/20 uppercase tracking-wider block">
+                      &bull; {isIndo ? 'DAFTAR USER TERDAFTAR SECARA LIVE' : 'LIVE REGISTERED ACCOUNTS DIRECTORY'}
+                    </span>
+                  </div>
+
+                  {userRecords.length === 0 ? (
+                    <div className="text-center py-10 border border-dashed border-slate-900 bg-[#001F3F]/15">
+                      <p className="text-xs text-slate-500 font-sans font-semibold">
+                        {isIndo ? 'Tidak ada data user terdaftar.' : 'No registered users available.'}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {userRecords.map((rec) => (
+                        <div key={rec.id} className="p-3 bg-[#001F3F]/20 border border-brand-gold/25 relative group">
+                          <button
+                            onClick={() => handleDeleteRecord('users', rec.id)}
+                            className="absolute top-2 right-2 p-1 bg-red-950/45 hover:bg-red-900 text-red-400 hover:text-white transition rounded-none cursor-pointer"
+                            title="Delete user profile"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                          
+                          <div className="flex items-center space-x-1.5 mb-1.5">
+                            <span className="px-1 bg-[#001F3F] border border-slate-800 rounded-none text-[8px] font-mono font-bold text-brand-gold uppercase">
+                              Official Account
+                            </span>
+                            <span className="text-[8px] font-mono text-slate-500 truncate max-w-[120px]">
+                              UID: {rec.id}
+                            </span>
+                          </div>
+                          
+                          <h4 className="font-sans font-extrabold text-xs text-slate-100 truncate pr-6">{rec.email}</h4>
+                          <div className="flex justify-between items-center text-[9px] text-slate-450 font-semibold font-mono mt-2">
+                            <span>ROLE: <strong className="text-emerald-400">{rec.role || 'investor'}</strong></span>
+                            <span>{rec.createdAt ? new Date(rec.createdAt.seconds * 1000).toLocaleDateString() : 'Active Member'}</span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
