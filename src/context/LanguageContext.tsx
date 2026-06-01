@@ -44,11 +44,11 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.login': 'Masuk',
 
     // Hero Section
-    'hero.badge': 'Gerbang Industri Masa Depan Jawa Barat',
-    'hero.sub_brand': 'PEMPROV JAWA BARAT • PT KERTAJATI INTERNATIONAL TOWN',
+    'hero.badge': 'Gerbang Industri Masa Depan Kabupaten Majalengka',
+    'hero.sub_brand': 'PEMKAB KABUPATEN MAJALENGKA • PT KERTAJATI INTERNATIONAL TOWN',
     'hero.brand_title1': 'KERTAJATI INTERNATIONAL',
     'hero.brand_title2': 'INDUSTRIAL TOWN',
-    'hero.concept_sub': 'Kota Industri Terpadu Bertaraf Internasional di Jantung Jawa Barat',
+    'hero.concept_sub': 'Kota Industri Terpadu Bertaraf Internasional di Jantung Kabupaten Majalengka',
     'hero.narrative': 'Kawasan ekonomi terpadu seluas 1.000 hektare yang dirancang strategis menjadi pusat manufaktur canggih, hub logistik pintar, aerospace & aviasi, industri kendaraan listrik (EV) masa depan, agroindustri modern, serta pusat bisnis bertaraf dunia.',
     'hero.btn_explore': 'Jelajahi Investasi',
     'hero.btn_masterplan': 'Lihat Masterplan',
@@ -62,7 +62,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Tentang Section
     'about.caption': 'MEMPERKENALKAN KIIT • INVESTOR SUMMARY',
     'about.title': 'Hub Investasi Sektoral Terpadu di Segitiga Rebana',
-    'about.description': 'Kertajati International Industrial Town (KIIT) diarsiteki khusus oleh konsorsium berkelas dunia bekerjasama dengan Pemerintah Provinsi Jawa Barat untuk menjawab lonjakan permintaan basis produksi sirkular ramah lingkungan di koridor pasifik Indonesia.',
+    'about.description': 'Kertajati International Industrial Town (KIIT) diarsiteki khusus oleh konsorsium berkelas dunia bekerjasama dengan Pemerintah Kabupaten Majalengka untuk menjawab lonjakan permintaan basis produksi sirkular ramah lingkungan di koridor pasifik Indonesia.',
     'about.aero_title': 'Sinergi Aero-City',
     'about.aero_desc': 'Sistem zoning logistik modular yang terhubung fisik ke aviasi Internasional BIJB Kertajati, menjamin pemindahan suku cadang presisi & kargo berat tanpa dwell-time luar kawasan yang berbelit-belit.',
     'about.clean_title': 'Mandat Energi Bersih',
@@ -78,7 +78,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'about.matrix_toll_label': 'Pintu Tol Kertajati Utama',
     'about.matrix_toll_val': '3 Menit (1.5 KM)',
     'about.matrix_toll_tag': 'Akses Cipali',
-    'about.matrix_port_label': 'Pelabuhan Laut Patimban Jabar',
+    'about.matrix_port_label': 'Pelabuhan Laut Patimban Kabupaten Majalengka',
     'about.matrix_port_val': '45 Menit (40 KM)',
     'about.matrix_port_tag': 'Pengiriman Kargo',
     'about.matrix_bandung_label': 'Kota Metropolitan Bandung',
@@ -88,7 +88,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     // KPIDash Section
     'kpi.caption': 'INDOMETER INVESTASI • REALTIME KPI',
     'kpi.title': 'Metrik Kinerja & Proyeksi Pasar KIIT',
-    'kpi.description': 'Gambaran analitik terhadap nilai tambah ekonomi, kapasitas spasial, dan potensi finansial kota industri terpadu bertaraf global. Data diverifikasi oleh Bappeda, Dinas PMTSP Jawa Barat, dan tim appraisal independen.',
+    'kpi.description': 'Gambaran analitik terhadap nilai tambah ekonomi, kapasitas spasial, dan potensi finansial kota industri terpadu bertaraf global. Data diverifikasi oleh Bappeda, Dinas PMTSP Kabupaten Majalengka, dan tim appraisal independen.',
     'kpi.system_title': 'SISTEM TATA KELOLA',
     'kpi.system_value': 'KEK Kertajati Disetujui',
     'kpi.label_area': 'Kapasitas Area Kawasan',
@@ -124,7 +124,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Investment Projections Section
     'ip.caption': 'SIMULATOR ROI & KELAYAKAN FINANSIAL • DIGITAL TWIN',
     'ip.title': 'Kalkulator Proyeksi CapEx & ROI Sewa Lahan',
-    'ip.description': 'Sesuaikan parameter luas kavling industri dan estimasi tahun sewa untuk menghitung nilai investasi lahan secara dinamis, diskon insentif fiskal SEZ Jawa Barat, serta prediksi waktu balik modal (BEP).',
+    'ip.description': 'Sesuaikan parameter luas kavling industri dan estimasi tahun sewa untuk menghitung nilai investasi lahan secara dinamis, diskon insentif fiskal SEZ Kabupaten Majalengka, serta prediksi waktu balik modal (BEP).',
     'ip.param_title': 'Parameter Rencana Investasi',
     'ip.field_cluster': 'Klaster Industri Pilihan',
     'ip.field_area': 'Luas Kavling yang Dibutuhkan (Hektar)',
@@ -149,7 +149,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'la.area_label': 'Luas Lahan',
     'la.pct_label': 'Persentase',
     'la.desc_label': 'Status Yuridis & Penanganan',
-    'la.meta_title': 'Konsolidasi Agraria Pemprov Jabar',
+    'la.meta_title': 'Konsolidasi Agraria Pemkab Kabupaten Majalengka',
     'la.meta_sub': 'Verifikasi BPN & Pengadilan Negeri',
     'la.legend_title': 'Grafik Status Rinci Lahan 1.000 Ha',
 
@@ -175,7 +175,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'gis.controller_title': 'GIS Layer Controller',
     'gis.controller_desc': 'Gunakan tombol layer di bawah untuk menampilkan atau menyembunyikan elemen geospasial fisik kawasan industri.',
     'gis.source_label': 'Sumber Data',
-    'gis.source_val': 'BPN Jabar & BIG RI',
+    'gis.source_val': 'BPN Kabupaten Majalengka & BIG RI',
     'gis.verify_status': 'Satelit Terverifikasi',
 
     // ESG Section
@@ -200,7 +200,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'inv.not_logged_desc': 'Guna mematuhi asas kerahasiaan korporasi penanaman modal dan regulasi OJK, dokumen sensitif seperti FS Finansial, AMDAL, dan Detail Zoning membutuhkan otorisasi kredensial login.',
     'inv.not_logged_btn': 'Buka Kunci Data Room',
     'inv.logged_welcome': 'Selamat Datang di SECURE DATA ROOM KIIT',
-    'inv.logged_sub': 'Portal Otorisasi Utama Pemprov Jabar',
+    'inv.logged_sub': 'Portal Otorisasi Utama Pemkab Kabupaten Majalengka',
     'inv.logged_alert': 'Akses Anda disetujui sebagai Delegasi Swasta. Seluruh unduhan berkas terdaftar otomatis dalam log keamanan Bappeda Majalengka.',
     'inv.field_search': 'Cari berkas...',
     'inv.col_doc': 'Dokumen',
@@ -208,7 +208,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'inv.col_size': 'Ukuran',
     'inv.col_security': 'Keamanan',
     'inv.active_tenant_mgr': 'Manajer Penyewaan Aktif',
-    'inv.active_tenant_desc': 'Silakan ajukan konsultasi tatap muka online dengan tim verifikator investasi Jawa Barat untuk membahas insentif, kavling murni, spesifikasi gudang kustom, atau Joint Venture.',
+    'inv.active_tenant_desc': 'Silakan ajukan konsultasi tatap muka online dengan tim verifikator investasi Kabupaten Majalengka untuk membahas insentif, kavling murni, spesifikasi gudang kustom, atau Joint Venture.',
     'inv.schedule_consult': 'Jadwalkan Konsultasi Sekarang',
     'inv.no_docs_found': 'Tidak ada berkas yang cocok dengan pencarian Anda.',
 
@@ -217,7 +217,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'contact.title': 'Mulai Kerja Sama Investasi Anda Hari Ini',
     'contact.description': 'Siap melakukan ekspansi pabrik atau meninjau lahan secara langsung? Hubungi perwakilan direksi kami di Majalengka atau Bandung untuk pendampingan inspeksi fisik lapangan.',
     'contact.form_title': 'Formulir Hubungan Investor Rasio Menengah',
-    'contact.form_subtitle': 'Seluruh pengaduan dan pemesanan survei fisik akan direspon oleh tim Humas Pemprov Jabar dalam 24 jam.',
+    'contact.form_subtitle': 'Seluruh pengaduan dan pemesanan survei fisik akan direspon oleh tim Humas Pemkab Kabupaten Majalengka dalam 24 jam.',
     'contact.field_name': 'Nama Lengkap Anda',
     'contact.field_email': 'Alamat Email Perusahaan',
     'contact.field_corp': 'Nama Korporasi / Institusi',
@@ -225,24 +225,24 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'contact.field_message': 'Pesan Kebutuhan Spesifik',
     'contact.btn_send': 'KIRIM FORMULIR SURVEI RESMI',
     'contact.info_title': 'PT Kertajati International Town',
-    'contact.office_hq': 'HQ: Gedung Menara Sate Lt. 3, Bandung, Jawa Barat, Indonesia',
-    'contact.office_site': 'Site Off: Jl. Kertajati Raya KM 1.5, Majalengka, Jawa Barat, Indonesia',
+    'contact.office_hq': 'HQ: Gedung Menara Sate Lt. 3, Bandung, Kabupaten Majalengka, Indonesia',
+    'contact.office_site': 'Site Off: Jl. Kertajati Raya KM 1.5, Majalengka, Kabupaten Majalengka, Indonesia',
     'contact.badge_release': 'Rilis Resmi Terakreditasi BKPM RI',
 
     // Modals
     'modal.login_title': 'Portal Login KEK Kertajati',
-    'modal.login_desc': 'Masukkan akun otorisasi yang divalidasi oleh Humas KIIT dan Dinas PMTSP Jabar untuk mengakses Secure Data Room.',
+    'modal.login_desc': 'Masukkan akun otorisasi yang divalidasi oleh Humas KIIT dan Dinas PMTSP Kabupaten Majalengka untuk mengakses Secure Data Room.',
     'modal.login_err_empty': 'Kredensial wajib diisi.',
     'modal.login_err_wrong': 'Username atau sandi salah - Gunakan "kertajati" atau "admin" untuk simulasi.',
     'modal.field_user': 'DIREKTORAL USERNAME *',
     'modal.field_user_placeholder': 'Ketikan: admin atau kertajati',
     'modal.field_pw': 'SANDI KATA KUNCI (PASSWORD) *',
     'modal.field_pw_placeholder': 'Ketikan sembarang kata sandi',
-    'modal.login_tip': 'Petunjuk Bupati Jabar Presentation: Untuk simulasi login, ketikan "admin" / "kertajati" pada kolom username di atas dan isi sandi bebas.',
+    'modal.login_tip': 'Petunjuk Bupati Kabupaten Majalengka Presentation: Untuk simulasi login, ketikan "admin" / "kertajati" pada kolom username di atas dan isi sandi bebas.',
     'modal.btn_authorize': 'OTORISASI PORTAL SECURE DATA ROOM',
     
     'modal.prop_title': 'Dapatkan Prospektus Utama (EN/ID)',
-    'modal.prop_desc': 'Rincian target ROI, insentif fiskal BKPM Jawa Barat, dan pembagian pilar zona masterplan 1.000 Ha dalam satu dokumen presentasi resmi.',
+    'modal.prop_desc': 'Rincian target ROI, insentif fiskal BKPM Kabupaten Majalengka, dan pembagian pilar zona masterplan 1.000 Ha dalam satu dokumen presentasi resmi.',
     'modal.prop_err': 'Nama Lengkap dan Alamat Email Korporasi wajib diisi.',
     'modal.field_prop_name': 'Nama Lengkap Anda *',
     'modal.field_prop_name_placeholder': 'Raditya Widjaya',
@@ -256,9 +256,9 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
 
     // Economic Impact
     'eco.caption': 'DAMPAK SOSIAL & MAKRO EKONOMI • REGIONAL IMPACT',
-    'eco.title': 'Proyeksi Kontribusi Makro Ekonomi Jawa Barat',
+    'eco.title': 'Proyeksi Kontribusi Makro Ekonomi Kabupaten Majalengka',
     'eco.description': 'KIIT dirancang untuk menjadi katalisator pertumbuhan PDRB regional dan akselerator transisi pekerja sektor agraria menuju sektor industri bernilai tambah tinggi.',
-    'eco.gdp_title': 'Kontribusi PDRB Jabar (2028-2035)',
+    'eco.gdp_title': 'Kontribusi PDRB Kabupaten Majalengka (2028-2035)',
     'eco.jobs_title': 'Penyerapan Tenaga Kerja (Pekerja)',
     'eco.timeline_title': 'Infrastruktur Pelayanan Penunjang',
     'eco.timeline_step1': 'Pembersihan Lahan & Land Clearing',
@@ -302,11 +302,11 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'nav.login': 'Log In',
 
     // Hero Section
-    'hero.badge': 'The Future Gate of West Java Industrial Growth',
-    'hero.sub_brand': 'WEST JAVA PROVINCE GOVERNMENT • PT KERTAJATI INTERNATIONAL TOWN',
+    'hero.badge': 'The Future Gate of Kabupaten Majalengka Industrial Growth',
+    'hero.sub_brand': 'KABUPATEN MAJALENGKA REGENCY GOVERNMENT • PT KERTAJATI INTERNATIONAL TOWN',
     'hero.brand_title1': 'KERTAJATI INTERNATIONAL',
     'hero.brand_title2': 'INDUSTRIAL TOWN',
-    'hero.concept_sub': 'World-Class Integrated Industrial Town at the Heart of West Java',
+    'hero.concept_sub': 'World-Class Integrated Industrial Town at the Heart of Kabupaten Majalengka',
     'hero.narrative': 'A 1,000-hectare integrated economic zone strategically designed to become a hub for advanced manufacturing, smart logistics, aerospace & aviation, future electric vehicles (EV), modern agro-industry, and premium business districts.',
     'hero.btn_explore': 'Explore Investments',
     'hero.btn_masterplan': 'View Masterplan',
@@ -320,7 +320,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Tentang Section
     'about.caption': 'INTRODUCING KIIT • INVESTOR SUMMARY',
     'about.title': 'Integrated Sectoral Investment Hub in Rebana Triangle',
-    'about.description': 'Kertajati International Industrial Town (KIIT) is custom-designed by world-class consortiums in collaboration with the West Java Province Government to answer the surging demand for eco-friendly, circular manufacturing bases in Indonesia\'s active Pacific corridor.',
+    'about.description': 'Kertajati International Industrial Town (KIIT) is custom-designed by world-class consortiums in collaboration with the Kabupaten Majalengka Regency Government to answer the surging demand for eco-friendly, circular manufacturing bases in Indonesia\'s active Pacific corridor.',
     'about.aero_title': 'Aero-City Synergy',
     'about.aero_desc': 'Modular logistics zoning connected physically to BIJB Kertajati International aviation, guaranteeing frictionless precision spare parts and heavy cargo transfer without complex exterior port dwell times.',
     'about.clean_title': 'Clean Energy Mandates',
@@ -336,7 +336,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'about.matrix_toll_label': 'Main Kertajati Toll Gate',
     'about.matrix_toll_val': '3 Mins (1.5 KM)',
     'about.matrix_toll_tag': 'Cipali Access',
-    'about.matrix_port_label': 'West Java Patimban Seaport',
+    'about.matrix_port_label': 'Kabupaten Majalengka Patimban Seaport',
     'about.matrix_port_val': '45 Mins (40 KM)',
     'about.matrix_port_tag': 'Cargo Shipping',
     'about.matrix_bandung_label': 'Bandung Metropolitan City',
@@ -346,7 +346,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     // KPIDash Section
     'kpi.caption': 'INVESTMENT METRICS • REALTIME KPI',
     'kpi.title': 'KIIT Performance Metrics & Market Projections',
-    'kpi.description': 'Analytical dashboard of economic value add, spatial capacity, and financial potential of a global-scale integrated industrial city. Data officially verified by Bappeda, West Java DPMPTSP, and independent appraisal entities.',
+    'kpi.description': 'Analytical dashboard of economic value add, spatial capacity, and financial potential of a global-scale integrated industrial city. Data officially verified by Bappeda, Kabupaten Majalengka DPMPTSP, and independent appraisal entities.',
     'kpi.system_title': 'GOVERNANCE SYSTEM',
     'kpi.system_value': 'Kertajati SEZ Approved',
     'kpi.label_area': 'Estate Land Capacity',
@@ -382,7 +382,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Investment Projections Section
     'ip.caption': 'ROI SIMULATOR & FINANCIAL FEASIBILITY • DIGITAL TWIN',
     'ip.title': 'Projected CapEx & Land Lease ROI Calculator',
-    'ip.description': 'Adjust the parameters of the industrial lot size and lease duration to calculate indicative estate investment value, West Java SEZ fiscal incentive discounts, and payback period (BEP).',
+    'ip.description': 'Adjust the parameters of the industrial lot size and lease duration to calculate indicative estate investment value, Kabupaten Majalengka SEZ fiscal incentive discounts, and payback period (BEP).',
     'ip.param_title': 'Planned Investment Parameters',
     'ip.field_cluster': 'Preferred Industrial Cluster',
     'ip.field_area': 'Required Lot Size (Hectares)',
@@ -407,7 +407,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'la.area_label': 'Land Area',
     'la.pct_label': 'Percentage',
     'la.desc_label': 'Legal Status & Mitigation',
-    'la.meta_title': 'West Java Agrarian Consolidation',
+    'la.meta_title': 'Kabupaten Majalengka Agrarian Consolidation',
     'la.meta_sub': 'BPN & District Court Authentication',
     'la.legend_title': 'Detailed Progress Chart of 1,000 Ha Liveland',
 
@@ -433,7 +433,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'gis.controller_title': 'GIS Layer Controller',
     'gis.controller_desc': 'Toggle layers below to visualize exact spatial, infrastructural, and regulatory boundaries.',
     'gis.source_label': 'Data Authority',
-    'gis.source_val': 'BPN West Java & BIG RI',
+    'gis.source_val': 'BPN Kabupaten Majalengka & BIG RI',
     'gis.verify_status': 'Verified Satellite Feed',
 
     // ESG Section
@@ -458,7 +458,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'inv.not_logged_desc': 'Under strict regulatory audit covenants and local investment commission pacts, access to draft FS, full geological reports, and block-plan specs requires authorized credentials.',
     'inv.not_logged_btn': 'Unlock Data Room Compartments',
     'inv.logged_welcome': 'Welcome to KIIT SECURE DATA ROOM',
-    'inv.logged_sub': 'West Java Primary Authorized Portal',
+    'inv.logged_sub': 'Kabupaten Majalengka Primary Authorized Portal',
     'inv.logged_alert': 'Acess Granted as Investment Delegate. All document actions and downloads are safely logged with Majalengka Bappeda Security Agency.',
     'inv.field_search': 'Search files...',
     'inv.col_doc': 'Artifact',
@@ -466,7 +466,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'inv.col_size': 'Storage Size',
     'inv.col_security': 'Access Clearance',
     'inv.active_tenant_mgr': 'Leasing Officer Desk',
-    'inv.active_tenant_desc': 'Schedule an online consultation with West Java investment evaluators to discuss joint ventures, bespoke warehouse customizations, pure lot pricing, or tax exemption filings.',
+    'inv.active_tenant_desc': 'Schedule an online consultation with Kabupaten Majalengka investment evaluators to discuss joint ventures, bespoke warehouse customizations, pure lot pricing, or tax exemption filings.',
     'inv.schedule_consult': 'Schedule Consultation Now',
     'inv.no_docs_found': 'No matching artifacts located.',
 
@@ -475,7 +475,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'contact.title': 'Partner with KIIT Today',
     'contact.description': 'Ready to establish industrial presence or request a physically escorted site visit? Get in touch with our investment directorates in Bandung or Majalengka.',
     'contact.form_title': 'Medium Scale Corporate Inquiry Desk',
-    'contact.form_subtitle': 'All formal assessments and site tour inquiries will be responded to by the Jabar PMTSP board within 24 hours.',
+    'contact.form_subtitle': 'All formal assessments and site tour inquiries will be responded to by the Kabupaten Majalengka PMTSP board within 24 hours.',
     'contact.field_name': 'Your Full Name',
     'contact.field_email': 'Corporate Email Address',
     'contact.field_corp': 'Corporate / Institution Name',
@@ -483,13 +483,13 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'contact.field_message': 'Bespoke Infrastructure Needs',
     'contact.btn_send': 'SUBMIT OFFICIAL INQUIRY FORM',
     'contact.info_title': 'PT Kertajati International Town',
-    'contact.office_hq': 'HQ: Gedung Menara Sate 3rd Fl, Bandung, West Java, Indonesia',
-    'contact.office_site': 'Site Off: Jl. Kertajati Raya KM 1.5, Majalengka, West Java, Indonesia',
+    'contact.office_hq': 'HQ: Gedung Menara Sate 3rd Fl, Bandung, Kabupaten Majalengka, Indonesia',
+    'contact.office_site': 'Site Off: Jl. Kertajati Raya KM 1.5, Majalengka, Kabupaten Majalengka, Indonesia',
     'contact.badge_release': 'BKPM RI Accredited Release Agency',
 
     // Modals
     'modal.login_title': 'Kertajati SEZ Access Portal',
-    'modal.login_desc': 'Provide the authorization accounts approved by KIIT Relations and Jabar DPMPTSP to unlock the Secure Data Room.',
+    'modal.login_desc': 'Provide the authorization accounts approved by KIIT Relations and Kabupaten Majalengka DPMPTSP to unlock the Secure Data Room.',
     'modal.login_err_empty': 'Authorized credentials are required.',
     'modal.login_err_wrong': 'Invalid credentials value. Use "kertajati" or "admin" for simulation login.',
     'modal.field_user': 'DIRECTORATE USERNAME *',
@@ -500,7 +500,7 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'modal.btn_authorize': 'OAUTH DIRECT DATA ROOM GATEWAY',
     
     'modal.prop_title': 'Download Core Executive Prospectus (EN/ID)',
-    'modal.prop_desc': 'Direct ROI projections, West Java BKPM financial tax holiday details, and structural 1,000 Ha zoning maps packaged in a professional kit.',
+    'modal.prop_desc': 'Direct ROI projections, Kabupaten Majalengka BKPM financial tax holiday details, and structural 1,000 Ha zoning maps packaged in a professional kit.',
     'modal.prop_err': 'Full Name and Corporate Email Address are mandatory.',
     'modal.field_prop_name': 'Your Full Name *',
     'modal.field_prop_name_placeholder': 'Raditya Widjaya',
@@ -514,9 +514,9 @@ const UI_TRANSLATIONS: Record<Language, Record<string, string>> = {
 
     // Economic Impact
     'eco.caption': 'SOCIAL & MACRO ECONOMIC GROWTH • REGIONAL IMPACT',
-    'eco.title': 'West Java Macroeconomic Structural Contribution',
+    'eco.title': 'Kabupaten Majalengka Macroeconomic Structural Contribution',
     'eco.description': 'KIIT is modeled as the primary regional GRDP booster, accelerating the skill transition of regional agrarian workforces into higher-grade industrial careers.',
-    'eco.gdp_title': 'Projected West Java GRDP Contribution (2028-2035)',
+    'eco.gdp_title': 'Projected Kabupaten Majalengka GRDP Contribution (2028-2035)',
     'eco.jobs_title': 'Projected Local Civil Career Absorption (Personnel)',
     'eco.timeline_title': 'Infrastructure Service Mileposts',
     'eco.timeline_step1': 'Agrarian Access Clearing & Priming',
@@ -763,7 +763,7 @@ const getIndustrialClusters = (lang: Language): IndustrialCluster[] => [
     tagline: lang === 'id' ? 'Hub Jaringan Rantai Pasok Global' : 'Global Supply Chain Connection',
     description: lang === 'id'
       ? 'Hub multimoda yang mengintegrasikan transit udara Bandara Kertajati, Tol Trans-Jawa, Pelabuhan Patimban, dan Jalur Kereta Api.'
-      : 'Multimodal transfer yards linking BIJB Kertajati Air Cargo, Trans-Java Highways, Patimban Seaports, and Jabar Freight Rail Tracks.',
+      : 'Multimodal transfer yards linking BIJB Kertajati Air Cargo, Trans-Java Highways, Patimban Seaports, and Kabupaten Majalengka Freight Rail Tracks.',
     image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800',
     area: lang === 'id' ? '200 Hektare' : '200 Hectares',
     investmentPotential: lang === 'id' ? 'Rp 8.2 Triliun' : 'IDR 8.2 Trillion',
@@ -778,7 +778,7 @@ const getIndustrialClusters = (lang: Language): IndustrialCluster[] => [
     title: lang === 'id' ? 'Kertajati Aerospace & MRO Town' : 'Kertajati Aerospace & MRO Town',
     tagline: lang === 'id' ? 'Pusat Pemeliharaan Aviasi Terkemuka' : 'Leading Aviation Maintenance and Manufacturing',
     description: lang === 'id'
-      ? 'Satu-satunya klaster aviasi terintegret yang berada di samping runway Bandara Internasional Jawa Barat (BIJB) Kertajati.'
+      ? 'Satu-satunya klaster aviasi terintegret yang berada di samping runway Bandara Internasional Kabupaten Majalengka (BIJB) Kertajati.'
       : 'The sole dedicated aviation engineering district built contiguous with BIJB Kertajati international commercial runways.',
     image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&q=80&w=800',
     area: lang === 'id' ? '100 Hektare' : '100 Hectares',
@@ -787,7 +787,7 @@ const getIndustrialClusters = (lang: Language): IndustrialCluster[] => [
     economicValue: lang === 'id' ? 'Rp 4.1 Triliun / Tahun' : 'IDR 4.1 Trillion / Annum',
     highlights: lang === 'id'
       ? ['Akses Apron Bandara Langsung', 'Fasilitas Pemeliharaan Badan Pesawat (MRO)', 'Manufaktur Suku Cadang Dirgantara', 'Sekolah Tinggi Aviasi']
-      : ['Direct Access Apron Connecting Gates', 'Boeing & Airbus Certified Overhaul Bays', 'Precision Avionics Aero-Manufacture', 'Jabar Flight & Technical Academy'],
+      : ['Direct Access Apron Connecting Gates', 'Boeing & Airbus Certified Overhaul Bays', 'Precision Avionics Aero-Manufacture', 'Kabupaten Majalengka Flight & Technical Academy'],
   },
   {
     id: 'cluster-ev',
@@ -824,7 +824,7 @@ const getIndustrialClusters = (lang: Language): IndustrialCluster[] => [
   {
     id: 'cluster-com',
     title: lang === 'id' ? 'Kertajati CBD & Business District' : 'Kertajati CBD & Business District',
-    tagline: lang === 'id' ? 'Pusat Finansial dan Otak Bisnis Aero City' : 'The Financial Pulse of West Java’s Aero City',
+    tagline: lang === 'id' ? 'Pusat Finansial dan Otak Bisnis Aero City' : 'The Financial Pulse of Kabupaten Majalengka’s Aero City',
     description: lang === 'id'
       ? 'Kawasan perkantoran modern, perbankan, pelayanan satu pintu, akomodasi premium, ruang pameran, serta hunian pekerja.'
       : 'Modern premium offices, regional bank corridors, centralized customs boards, luxury lodgings, and corporate centers.',
@@ -882,7 +882,7 @@ const getInvestorDocs = (lang: Language): InvestorDoc[] => [
   },
   {
     id: 'doc-law',
-    title: lang === 'id' ? 'Surat Keputusan Gubernur Jabar & Pergub KEK Kertajati' : 'West Java Governor Decree & Kertajati Special Zone Laws',
+    title: lang === 'id' ? 'Surat Keputusan Bupati Kabupaten Majalengka & Perda KEK Kertajati' : 'Kabupaten Majalengka Regent Decree & Kertajati Special Zone Laws',
     type: 'PDF',
     size: '15.4 MB',
     confidentiality: 'Public',
@@ -902,8 +902,8 @@ const getNewsArticles = (lang: Language): NewsArticle[] => [
       ? 'Delegasi membahas rencana pembangunan giga-factory kendaraan listrik seluas 100 hektar di area Kertajati International Industrial Town.'
       : 'Delegates discuss blueprints for a 100-hectare advanced electric vehicular Giga-facility in KIIT Special SEZ Zone.',
     content: lang === 'id'
-      ? 'MAJALENGKA — Dewan Direksi KIIT menyambut kunjungan delegasi tingkat tinggi dari Shanghai Electric Group Corporation dan BYD Auto Co., Ltd. Kunjungan lapangan ini didampingi oleh Pejabat Pemprov Jabar untuk meninjau secara langsung gardu induk listrik 150 KV, jalur pipa transmisi gas bumi, serta infrastruktur relai jalan yang terhubung ke pintu Tol Kertajati Utama.\n\nDalam keterangannya, pimpinan rombongan menyatakan kepuasan atas kesiapan lahan KIIT yang bebas dari hambatan geografis dan hukum, serta memuji regulasi insentif fiskal dari pemerintah pusat untuk Kawasan Ekonomi Khusus (KEK). Rencana pendirian pabrik perakitan baterai lithium dijadwalkan akan masuk dalam fase detail engineering design (DED) pada kuartal ketiga tahun ini.'
-      : 'MAJALENGKA — The Executive Board of KIIT welcomed high-ranking partners from Shanghai Electric Group Corporation and BYD Auto Co., Ltd. This active field assessment was accompanied by key West Java provincial authorities to physically map out the 150 KV substation grid, industrial transmission natural gas pipe, and roads connected directly with the Kertajati main highway gate.\n\nDuring the statement, the delegation leader expressed extreme satisfaction with the site readiness of KIIT, which is uniquely free of legal or physical encumbrances, and praised special corporate tax regulations promulgated by the central administration for SEZ investors. Pre-stages of EV cells assemblers setup are penciled to hit Detailed Engineering Design (DED) processes towards Q3 of this fiscal year.',
+      ? 'MAJALENGKA — Dewan Direksi KIIT menyambut kunjungan delegasi tingkat tinggi dari Shanghai Electric Group Corporation dan BYD Auto Co., Ltd. Kunjungan lapangan ini didampingi oleh Pejabat Pemkab Kabupaten Majalengka untuk meninjau secara langsung gardu induk listrik 150 KV, jalur pipa transmisi gas bumi, serta infrastruktur relai jalan yang terhubung ke pintu Tol Kertajati Utama.\n\nDalam keterangannya, pimpinan rombongan menyatakan kepuasan atas kesiapan lahan KIIT yang bebas dari hambatan geografis dan hukum, serta memuji regulasi insentif fiskal dari pemerintah pusat untuk Kawasan Ekonomi Khusus (KEK). Rencana pendirian pabrik perakitan baterai lithium dijadwalkan akan masuk dalam fase detail engineering design (DED) pada kuartal ketiga tahun ini.'
+      : 'MAJALENGKA — The Executive Board of KIIT welcomed high-ranking partners from Shanghai Electric Group Corporation and BYD Auto Co., Ltd. This active field assessment was accompanied by key Kabupaten Majalengka regional authorities to physically map out the 150 KV substation grid, industrial transmission natural gas pipe, and roads connected directly with the Kertajati main highway gate.\n\nDuring the statement, the delegation leader expressed extreme satisfaction with the site readiness of KIIT, which is uniquely free of legal or physical encumbrances, and praised special corporate tax regulations promulgated by the central administration for SEZ investors. Pre-stages of EV cells assemblers setup are penciled to hit Detailed Engineering Design (DED) processes towards Q3 of this fiscal year.',
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800',
     readTime: '4 min read',
   },
@@ -935,23 +935,23 @@ const getNewsArticles = (lang: Language): NewsArticle[] => [
       : 'Direct airside connectivity to KIIT cargo arteries is ready to crash standard flight cargo dwell times by up to 40%.',
     content: lang === 'id'
       ? 'KERTAJATI — Bandara Kertajati (BIJB) secara resmi menguji coba terminal kargo canggih berbasis cloud terintegrasi untuk rantai pasok berkecepatan tinggi. Fasilitas ini terkoneksi secara fisik dengan Klaster Aerospace & Logistik KIIT melaui "Aviation Smart Corridor" sepanjang 1.2 KM.\n\nDengan adanya koridor steril ini, peti kemas dari pesawat dapat langsung dipindahkan ke kawasan pergudangan KIIT dalam waktu kurang dari 20 menit tanpa melewati gerbang pemeriksaan umum luar bandara. Hal ini memberikan keunggulan kompetitif yang mutlak bagi produsen komponen bernilai tinggi, mikroelektronik, vaksin farmasi, dan produk perishables lainnya.'
-      : 'KERTAJATI — West Java International Airport (BIJB) officially flight-tested an intelligent cloud-based logistics cargo center tailored for rapid supply chain hubs. The facility links physically to the KIIT Aerospace & Logistics Sectors via an "Aviation Smart Corridor" stretched for 1.2 KM.\n\nThanks to this secure sterile corridor, aircraft freight operations can direct cargo into KIIT warehouses within 20 minutes, completely bypassing traditional public highway inspection gates. This offers an unparalleled competitive hedge for exporters handling high-value chips, medical supplies, vaccines, and high-frequency perishables.',
+      : 'KERTAJATI — Kabupaten Majalengka International Airport (BIJB) officially flight-tested an intelligent cloud-based logistics cargo center tailored for rapid supply chain hubs. The facility links physically to the KIIT Aerospace & Logistics Sectors via an "Aviation Smart Corridor" stretched for 1.2 KM.\n\nThanks to this secure sterile corridor, aircraft freight operations can direct cargo into KIIT warehouses within 20 minutes, completely bypassing traditional public highway inspection gates. This offers an unparalleled competitive hedge for exporters handling high-value chips, medical supplies, vaccines, and high-frequency perishables.',
     image: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&q=80&w=800',
     readTime: '5 min read',
   },
   {
     id: 'news-4',
     title: lang === 'id'
-      ? 'Pemerintah Provinsi Jabar Sahkan Aturan Tax Holiday Khusus Kertajati'
-      : 'West Java Provincial Executive ratifies 100% Tax Holiday Code for Kertajati SEZ',
+      ? 'Pemerintah Kabupaten Kabupaten Majalengka Sahkan Aturan Tax Holiday Khusus Kertajati'
+      : 'Kabupaten Majalengka Regency Executive ratifies 100% Tax Holiday Code for Kertajati SEZ',
     category: 'Kerja Sama',
     date: '28 March 2026',
     excerpt: lang === 'id'
-      ? 'Gubernur Jawa Barat menandatangani peraturan daerah mengenai pembebasan pajak dan insentif bea masuk bagi tenant manufaktur strategis di KIIT.'
+      ? 'Bupati Kabupaten Majalengka menandatangani peraturan daerah mengenai pembebasan pajak dan insentif bea masuk bagi tenant manufaktur strategis di KIIT.'
       : 'State governor signs sweeping regulatory waivers of corporate incomes and import levies for strategic KIIT pioneers.',
     content: lang === 'id'
-      ? 'BANDUNG — Pemerintah Provinsi Jawa Barat menyambut hangat komitmen investasi nasional dan asing yang masuk ke Kertajati International Industrial Town. Gubernur Jawa Barat mengesahkan skema "Super Tax Holiday" 100% bebas pajak badan bagi korporasi yang menaruh kapital minimal Rp500 miliar di kawasan KIIT.\n\nSelain bebas pajak badan hingga 20 tahun, peraturan baru ini juga membebaskan retribusi daerah, memberikan diskon PBB selama tahap konstruksi, serta mempercepat pengurusan KITAS bagi pekerja asing ahli hingga maksimal 48 jam pengerjaan. Ini merupakan wujud dukungan penuh pemerintah demi menyejajarkan KIIT dengan kawasan industri tercanggih di Singapura, Vietnam, dan China.'
-      : 'BANDUNG — Open commitments of premium corporate developers and manufacturing brands in KIIT receive strong validation. The Governor of West Java ratified a 100% "Super Tax Holiday" corporate fiscal exemption scheme for entities injecting over IDR 500 billion within KIIT gates.\n\nBeyond 20-year corporate income tax holidays, these parameters eliminate regional retributions, deliver deep property tax discounts during development phases, and accelerate specialized expat permits (KITAS) to under 48 hours. This structural support aligns Kertajati with premier competing regions across Singapore, Vietnam, and Southern China.',
+      ? 'BANDUNG — Pemerintah Kabupaten Kabupaten Majalengka menyambut hangat komitmen investasi nasional dan asing yang masuk ke Kertajati International Industrial Town. Bupati Kabupaten Majalengka mengesahkan skema "Super Tax Holiday" 100% bebas pajak badan bagi korporasi yang menaruh kapital minimal Rp500 miliar di kawasan KIIT.\n\nSelain bebas pajak badan hingga 20 tahun, peraturan baru ini juga membebaskan retribusi daerah, memberikan diskon PBB selama tahap konstruksi, serta mempercepat pengurusan KITAS bagi pekerja asing ahli hingga maksimal 48 jam pengerjaan. Ini merupakan wujud dukungan penuh pemerintah demi menyejajarkan KIIT dengan kawasan industri tercanggih di Singapura, Vietnam, dan China.'
+      : 'BANDUNG — Open commitments of premium corporate developers and manufacturing brands in KIIT receive strong validation. The Regent of Kabupaten Majalengka ratified a 100% "Super Tax Holiday" corporate fiscal exemption scheme for entities injecting over IDR 500 billion within KIIT gates.\n\nBeyond 20-year corporate income tax holidays, these parameters eliminate regional retributions, deliver deep property tax discounts during development phases, and accelerate specialized expat permits (KITAS) to under 48 hours. This structural support aligns Kertajati with premier competing regions across Singapore, Vietnam, and Southern China.',
     image: 'https://images.unsplash.com/photo-1521791136368-1a46827d52bc?auto=format&fit=crop&q=80&w=800',
     readTime: '4 min read',
   },

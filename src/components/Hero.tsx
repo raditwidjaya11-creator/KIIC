@@ -42,7 +42,7 @@ export default function Hero({ onExplore, onOpenProspectus, onOpenScheduler }: H
           <circle cx="1200" cy="300" r="4" fill="#60A5FA" />
           {/* coordinates indicator */}
           <text x="50" y="120" className="fill-slate-500 font-mono text-[9px] uppercase tracking-widest">
-            {language === 'id' ? 'KAB: MAJALENGKA | KORIDOR REBANA JABAR' : 'MAJALENGKA REGENCY | WEST JAVA REBANA CORRIDOR'}
+            {language === 'id' ? 'KAB: MAJALENGKA | KORIDOR REBANA KABUPATEN MAJALENGKA' : 'MAJALENGKA REGENCY | KABUPATEN MAJALENGKA REBANA CORRIDOR'}
           </text>
           <text x="50" y="140" className="fill-slate-500 font-mono text-[9px] uppercase tracking-widest">
             LAT: -6.6508 | LON: 108.1729

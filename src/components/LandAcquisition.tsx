@@ -101,7 +101,7 @@ export default function LandAcquisition() {
       clearingProgress: 0,
       points: '480,190 710,180 660,280 420,280',
       description: isIndo
-        ? 'Dana ganti untung senilai Rp135 Miliar telah ditempatkan di rekening escrow Bank Jabar Banten (BJB) Majalengka, menunggu penandatanganan akta pelepasan hak (APH) di hadapan Pejabat PPAT.'
+        ? 'Dana ganti untung senilai Rp135 Miliar telah ditempatkan di rekening escrow Bank Kabupaten Majalengka (BJB) Majalengka, menunggu penandatanganan akta pelepasan hak (APH) di hadapan Pejabat PPAT.'
         : 'Compensation fund of IDR 135 Billion placed in BJB escrow account, awaiting signing of deed transfer (APH) in front of public PPAT.',
     },
     {
@@ -237,7 +237,7 @@ export default function LandAcquisition() {
                 {isIndo ? 'PETA DESA DAN BLOK AKUISISI KIIT' : 'KIIT VILLAGES AND ACQUISITION SECTOR MAP'}
               </span>
               <span className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">
-                {isIndo ? 'Koordinat Satgas Daerah Jabar' : 'West Java Land Taskforce Coordinates'}
+                {isIndo ? 'Koordinat Satgas Daerah Kabupaten Majalengka' : 'Kabupaten Majalengka Land Taskforce Coordinates'}
               </span>
             </div>
 

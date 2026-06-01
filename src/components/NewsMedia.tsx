@@ -32,7 +32,7 @@ export default function NewsMedia() {
           ...art,
           title: isIndo ? art.title : 'Shanghai Electric & BYD Investor Delegation Visited KIIT Core Site',
           excerpt: isIndo ? art.excerpt : 'Delegations discussed plans to construct a 100-hectare electric vehicle mega-factory at Kertajati International Industrial Town.',
-          content: isIndo ? art.content : `MAJALENGKA — The Board of Directors of KIIT welcomed a high-level delegate group from Shanghai Electric Group Corporation and BYD Auto Co., Ltd. This field visits, accompanied by West Java Provincial Executives, was to directly inspect the 150 KV electrical substation, natural gas pipelines, and toll-way interchange assets connecting to the Kertajati Toll Highway.\n\nDuring their statement, delegation leaders expressed great confidence in KIIT's land readiness, highlighting the lack of geographical and legal impediments. They praised the central government's fiscal incentives for Special Economic Zones (SEZ). Detailed engineering design (DED) phases for the battery cell assembly factory are scheduled to commence in Q3 of this year.`,
+          content: isIndo ? art.content : `MAJALENGKA — The Board of Directors of KIIT welcomed a high-level delegate group from Shanghai Electric Group Corporation and BYD Auto Co., Ltd. This field visits, accompanied by Kabupaten Majalengka Regional Executives, was to directly inspect the 150 KV electrical substation, natural gas pipelines, and toll-way interchange assets connecting to the Kertajati Toll Highway.\n\nDuring their statement, delegation leaders expressed great confidence in KIIT's land readiness, highlighting the lack of geographical and legal impediments. They praised the central government's fiscal incentives for Special Economic Zones (SEZ). Detailed engineering design (DED) phases for the battery cell assembly factory are scheduled to commence in Q3 of this year.`,
           readTime: isIndo ? art.readTime : '4 min read'
         };
       case 'news-2':
@@ -54,9 +54,9 @@ export default function NewsMedia() {
       case 'news-4':
         return {
           ...art,
-          title: isIndo ? art.title : 'West Java Provincial Government Enacts Super Tax Holiday for Kertajati Tenants',
+          title: isIndo ? art.title : 'Kabupaten Majalengka Regency Government Enacts Super Tax Holiday for Kertajati Tenants',
           excerpt: isIndo ? art.excerpt : 'Governor signs regional decree granting comprehensive tax holidays and import duty exemptions for pioneering manufacturing investments at KIIT.',
-          content: isIndo ? art.content : `BANDUNG — The Provincial Government of West Java warmly welcomed recent FDI commitments into Kertajati International Industrial Town. The Governor of West Java ratified a 100% "Super Tax Holiday" corporate income tax exemption for anchor companies injecting a minimum of IDR 500 billion within the KIIT area.\n\nBeyond corporate tax exemptions for up to 20 years, the decree suspends local municipal levies, offers property tax discounts during construction phases, and accelerates expat expert visa (KITAS) processing to less than 48 hours. This milestone represents full municipal support to elevate KIIT alongside premier industrial zones in Singapore, Vietnam, and China.`,
+          content: isIndo ? art.content : `BANDUNG — The Regency Government of Kabupaten Majalengka warmly welcomed recent FDI commitments into Kertajati International Industrial Town. The Regent of Kabupaten Majalengka ratified a 100% "Super Tax Holiday" corporate income tax exemption for anchor companies injecting a minimum of IDR 500 billion within the KIIT area.\n\nBeyond corporate tax exemptions for up to 20 years, the decree suspends local municipal levies, offers property tax discounts during construction phases, and accelerates expat expert visa (KITAS) processing to less than 48 hours. This milestone represents full municipal support to elevate KIIT alongside premier industrial zones in Singapore, Vietnam, and China.`,
           readTime: isIndo ? art.readTime : '4 min read'
         };
       default:

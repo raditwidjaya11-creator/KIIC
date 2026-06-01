@@ -57,8 +57,8 @@ export default function ContactFooter() {
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans max-w-sm font-semibold">
                 {isIndo
-                  ? 'Hubungi Desk Investasi PT Kertajati International Town hari ini untuk menjadwalkan kunjungan lapangan langsung ke area KEK Kertajati, Jawa Barat.'
-                  : 'Contact PT Kertajati International Town Investment Desk today to arrange a physical or virtual site visit to Kertajati SEZ, West Java.'}
+                  ? 'Hubungi Desk Investasi PT Kertajati International Town hari ini untuk menjadwalkan kunjungan lapangan langsung ke area KEK Kertajati, Kabupaten Majalengka.'
+                  : 'Contact PT Kertajati International Town Investment Desk today to arrange a physical or virtual site visit to Kertajati SEZ, Kabupaten Majalengka.'}
               </p>
 
               {/* Social Media Connections */}
@@ -67,7 +67,7 @@ export default function ContactFooter() {
                   href="https://linkedin.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 bg-[#001F3F]/60 border border-slate-800 hover:border-brand-gold text-slate-400 hover:text-brand-gold hover:bg-[#002d5a]/40 transition-all duration-300 rounded-none shadow-sm flex items-center justify-center cursor-pointer"
+                  className="p-2.5 bg-[#001F3F]/60 border border-slate-800 hover:border-brand-gold text-slate-400 hover:text-brand-gold hover:bg-[#002d5a]/40 hover:shadow-[0_0_12px_rgba(212,175,55,0.45)] hover:scale-105 transition-all duration-300 rounded-none shadow-sm flex items-center justify-center cursor-pointer"
                   aria-label="LinkedIn"
                   id="footer-social-linkedin"
                 >
@@ -77,7 +77,7 @@ export default function ContactFooter() {
                   href="https://twitter.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 bg-[#001F3F]/60 border border-slate-800 hover:border-brand-gold text-slate-400 hover:text-brand-gold hover:bg-[#002d5a]/40 transition-all duration-300 rounded-none shadow-sm flex items-center justify-center cursor-pointer"
+                  className="p-2.5 bg-[#001F3F]/60 border border-slate-800 hover:border-brand-gold text-slate-400 hover:text-brand-gold hover:bg-[#002d5a]/40 hover:shadow-[0_0_12px_rgba(212,175,55,0.45)] hover:scale-105 transition-all duration-300 rounded-none shadow-sm flex items-center justify-center cursor-pointer"
                   aria-label="Twitter"
                   id="footer-social-twitter"
                 >
@@ -87,7 +87,7 @@ export default function ContactFooter() {
                   href="https://youtube.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 bg-[#001F3F]/60 border border-slate-800 hover:border-brand-gold text-slate-400 hover:text-brand-gold hover:bg-[#002d5a]/40 transition-all duration-300 rounded-none shadow-sm flex items-center justify-center cursor-pointer"
+                  className="p-2.5 bg-[#001F3F]/60 border border-slate-800 hover:border-brand-gold text-slate-400 hover:text-brand-gold hover:bg-[#002d5a]/40 hover:shadow-[0_0_12px_rgba(212,175,55,0.45)] hover:scale-105 transition-all duration-300 rounded-none shadow-sm flex items-center justify-center cursor-pointer"
                   aria-label="YouTube"
                   id="footer-social-youtube"
                 >
@@ -107,8 +107,8 @@ export default function ContactFooter() {
                     <strong className="block text-slate-100 uppercase tracking-widest text-[9px] font-mono font-bold">{isIndo ? 'Kantor Pengelola Kertajati' : 'Kertajati Management Office'}</strong>
                     <span className="block text-slate-400 mt-1 font-medium">
                       {isIndo 
-                        ? 'Gedung Wisma BIJB Lt. 3, Jl. Bandar Udara Internasional Jawa Barat, Kec. Kertajati, Kab. Majalengka 45457' 
-                        : 'Wisma BIJB Building 3rd Floor, West Java International Airport St, Kertajati, Majalengka 45457'}
+                        ? 'Gedung Wisma BIJB Lt. 3, Jl. Bandar Udara Internasional Kabupaten Majalengka, Kec. Kertajati, Kab. Majalengka 45457' 
+                        : 'Wisma BIJB Building 3rd Floor, Kabupaten Majalengka International Airport St, Kertajati, Majalengka 45457'}
                     </span>
                   </div>
                 </div>
@@ -143,7 +143,7 @@ export default function ContactFooter() {
             <div className="bg-slate-950/60 border border-slate-900 p-4 rounded-none font-sans text-xs flex justify-between items-center sm:max-w-xs md:max-w-md font-semibold">
               <div className="text-left">
                 <span className="block text-[8px] font-mono text-slate-500 uppercase leading-none font-bold">Government Partner</span>
-                <strong className="text-slate-300 block mt-1 font-extrabold">DPMTSP Prov. Jawa Barat</strong>
+                <strong className="text-slate-300 block mt-1 font-extrabold">DPMTSP Kab. Kabupaten Majalengka</strong>
               </div>
               <span className="text-[10px] font-bold text-brand-gold flex items-center space-x-1 font-mono uppercase">
                 <span>KEK Kertajati</span>
@@ -291,7 +291,7 @@ export default function ContactFooter() {
             </span>
             <p className="mt-1 text-[11px] text-slate-600 font-sans font-semibold">
               {isIndo
-                ? 'Segala proyeksi NPV, IRR, dan visual arsitektur merupakan pemodelan akademis dan finansial guna presentasi Bupati / Pemprov Jabar.'
+                ? 'Segala proyeksi NPV, IRR, dan visual arsitektur merupakan pemodelan akademis dan finansial guna presentasi Bupati / Pemkab Kabupaten Majalengka.'
                 : 'All financial charts, NPV, IRR models, and masterplan visuals are for academic and modeling presentations for government officials.'}
             </p>
           </div>

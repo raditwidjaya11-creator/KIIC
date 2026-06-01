@@ -24,23 +24,23 @@ export default function EconomicImpact() {
   const metrics: ImpactMetric[] = [
     {
       id: 'impact-pdrb',
-      title: isIndo ? 'Akselerasi PDRB Jabar' : 'West Java GRDP Acceleration',
+      title: isIndo ? 'Akselerasi PDRB Kabupaten Majalengka' : 'Kabupaten Majalengka GRDP Acceleration',
       stat: '+14.2%',
       multiplier: isIndo ? 'Sumbangsih Pertumbuhan' : 'Growth Contribution',
       icon: TrendingUp,
       color: 'text-brand-navy border-brand-navy/20',
       bgGlow: 'from-brand-gold/5 to-transparent',
       shortDesc: isIndo 
-        ? 'Kontribusi langsung KIIT terhadap peningkatan Produk Domestik Regional Bruto Jawa Barat pada tahun ke-10 operasional penuh.'
-        : 'KIIT\'s direct contribution to increasing West Java\'s Gross Regional Domestic Product by year 10 of full operation.',
+        ? 'Kontribusi langsung KIIT terhadap peningkatan Produk Domestik Regional Bruto Kabupaten Majalengka pada tahun ke-10 operasional penuh.'
+        : 'KIIT\'s direct contribution to increasing Kabupaten Majalengka\'s Gross Regional Domestic Product by year 10 of full operation.',
       details: isIndo ? [
         'Mendorong laju pertumbuhan ekonomi Majalengka di atas rata-rata nasional (mencapai 7.8% per tahun).',
-        'Menyeimbangkan kesenjangan ekonomi koridor Utara-Selatan Jawa Barat melalui akselesari industri.',
-        'Mengukuhkan Jawa Barat sebagai destinasi utama investasi industri manufaktur berteknologi tinggi se-ASEAN.'
+        'Menyeimbangkan kesenjangan ekonomi koridor Utara-Selatan Kabupaten Majalengka melalui akselesari industri.',
+        'Mengukuhkan Kabupaten Majalengka sebagai destinasi utama investasi industri manufaktur berteknologi tinggi se-ASEAN.'
       ] : [
         'Boosting Majalengka\'s economic growth rate above the national average (reaching 7.8% annually).',
-        'Balancing the economic gap of the North-South corridor of West Java through industrial acceleration.',
-        'Solidifying West Java as ASEAN\'s premier investment destination for high-tech manufacturing industries.'
+        'Balancing the economic gap of the North-South corridor of Kabupaten Majalengka through industrial acceleration.',
+        'Solidifying Kabupaten Majalengka as ASEAN\'s premier investment destination for high-tech manufacturing industries.'
       ],
       projectionYear: isIndo ? 'Proyeksi Realisasi: 2035' : 'Realization Projection: 2035'
     },
@@ -165,14 +165,14 @@ export default function EconomicImpact() {
         {/* Title Presentation */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-brand-gold font-mono text-xs font-bold tracking-widest uppercase block mb-3">
-            {isIndo ? 'MULTIPLIER EFFECT • EKONOMI MAKRO JAWA BARAT' : 'MULTIPLIER EFFECT • WEST JAVA MACROECONOMY'}
+            {isIndo ? 'MULTIPLIER EFFECT • EKONOMI MAKRO KABUPATEN MAJALENGKA' : 'MULTIPLIER EFFECT • KABUPATEN MAJALENGKA MACROECONOMY'}
           </span>
           <h2 className="font-sans font-extrabold text-3xl sm:text-4xl text-brand-navy tracking-tight leading-none">
             {isIndo ? 'Dampak & Kontribusi Ekonomi Makro KIIT' : 'Macroeconomic Impacts & Multiplier Contribution of KIIT'}
           </h2>
           <p className="mt-4 font-sans text-sm text-slate-600 leading-relaxed font-semibold">
             {isIndo
-              ? 'Investasi infrastruktur bernilai puluhan triliun rupiah di Kertajati dirancang untuk memberikan kemaslahatan langsung bagi kesejahteraan warga daerah dan pertumbuhan ekonomi nasional Jawa Barat.'
+              ? 'Investasi infrastruktur bernilai puluhan triliun rupiah di Kertajati dirancang untuk memberikan kemaslahatan langsung bagi kesejahteraan warga daerah dan pertumbuhan ekonomi nasional Kabupaten Majalengka.'
               : 'Multi-trillion IDR infrastructure investments at Kertajati are designed to inject sustainable municipal welfare and accelerate national economic growth.'}
           </p>
         </div>

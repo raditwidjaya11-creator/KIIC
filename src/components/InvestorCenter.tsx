@@ -30,7 +30,7 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
   // Scheduler States
   const [scheduledDate, setScheduledDate] = useState('2026-06-05');
   const [scheduledTime, setScheduledTime] = useState('10:00 WIB');
-  const [meetingType, setMeetingType] = useState(isIndo ? 'Dinas PMTSP Jawa Barat (Bandung Office)' : 'West Java PMTSP Office (Bandung HQ)');
+  const [meetingType, setMeetingType] = useState(isIndo ? 'Dinas PMTSP Kabupaten Majalengka (Majalengka Office)' : 'Kabupaten Majalengka PMTSP Office (Majalengka HQ)');
   const [appointmentBooked, setAppointmentBooked] = useState(false);
 
   // File download notification
@@ -386,8 +386,8 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
                     </h3>
                     <p className="max-w-md mx-auto text-xs text-slate-600 leading-relaxed font-sans font-medium">
                       {isIndo 
-                        ? <>Terima kasih <strong className="text-slate-900 font-bold">{formData.fullname}</strong> dari <strong className="text-slate-900 font-bold">{formData.company}</strong>. Tim dewan penasihat penanaman modal KIIT bersama perwakilan Bappeda / Dinas PMTSP Jawa Barat akan meninjau kualifikasi registrasi anda dalam kurun waktu 48 jam pengerjaan. Nomor ID Tiket Pengajuan anda: <strong className="font-mono text-brand-navy font-bold">KIIT-EOI-2026-X83C (SECURE)</strong>.</>
-                        : <>Thank you <strong className="text-slate-900 font-bold">{formData.fullname}</strong> from <strong className="text-slate-900 font-bold">{formData.company}</strong>. The KIIT Board along with BKPM Jabar verifiers will evaluate your sector parameters inside 48 business hours. Reference ID: <strong className="font-mono text-brand-navy font-bold">KIIT-EOI-2026-X83C (SECURE)</strong>.</>
+                        ? <>Terima kasih <strong className="text-slate-900 font-bold">{formData.fullname}</strong> dari <strong className="text-slate-900 font-bold">{formData.company}</strong>. Tim dewan penasihat penanaman modal KIIT bersama perwakilan Bappeda / Dinas PMTSP Kabupaten Majalengka akan meninjau kualifikasi registrasi anda dalam kurun waktu 48 jam pengerjaan. Nomor ID Tiket Pengajuan anda: <strong className="font-mono text-brand-navy font-bold">KIIT-EOI-2026-X83C (SECURE)</strong>.</>
+                        : <>Thank you <strong className="text-slate-900 font-bold">{formData.fullname}</strong> from <strong className="text-slate-900 font-bold">{formData.company}</strong>. The KIIT Board along with BKPM Kabupaten Majalengka verifiers will evaluate your sector parameters inside 48 business hours. Reference ID: <strong className="font-mono text-brand-navy font-bold">KIIT-EOI-2026-X83C (SECURE)</strong>.</>
                       }
                     </p>
                   </div>
@@ -420,7 +420,7 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
               </h3>
             </div>
             <span className="mt-2 sm:mt-0 px-2.5 py-1 bg-[#001F3F] border border-brand-gold/20 rounded-none font-mono text-[10px] text-slate-300 font-bold block">
-              {isIndo ? 'Sinkronisasi Jadwal Bupati Majalengka & Pemprov' : 'Synchronized with Majalengka Regent & West Java Board Schedule'}
+              {isIndo ? 'Sinkronisasi Jadwal Bupati & Bappeda Kabupaten Majalengka' : 'Synchronized with Majalengka Regent & Kabupaten Majalengka Board Schedule'}
             </span>
           </div>
 
@@ -444,7 +444,7 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
                     className="w-full bg-[#001F3F]/45 border border-slate-800 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none cursor-pointer text-white font-bold"
                   >
                     <option>{isIndo ? 'Tim Teknis Proyek KIIT (On-Site Office)' : 'KIIT Engineering Team (On-Site Office)'}</option>
-                    <option>{isIndo ? 'Dinas PMTSP Jawa Barat (Bandung Office)' : 'West Java PMTSP Office (Bandung HQ)'}</option>
+                    <option>{isIndo ? 'Dinas PMTSP Kabupaten Majalengka (Majalengka Office)' : 'Kabupaten Majalengka PMTSP Office (Majalengka HQ)'}</option>
                     <option>{isIndo ? 'Auditor Bappeda Kab. Majalengka' : 'Bappeda Auditor Majalengka Region'}</option>
                     <option>{isIndo ? 'Sesi Konsultasi Khusus Bupati Majalengka (VIP Room)' : 'VIP Advisory with Majalengka Regent'}</option>
                   </select>
