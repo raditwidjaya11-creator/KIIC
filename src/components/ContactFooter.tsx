@@ -83,36 +83,45 @@ export default function ContactFooter() {
 
               {/* Social Media Connections */}
               <div className="flex items-center space-x-3 pt-2" id="footer-social-links">
-                <a
+                <motion.a
+                  whileHover={{ scale: 1.12, y: -2 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                   href="https://linkedin.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 bg-[#001F3F]/60 border border-slate-800 hover:border-brand-gold text-slate-400 hover:text-brand-gold hover:bg-[#002d5a]/40 hover:shadow-[0_0_12px_rgba(212,175,55,0.45)] hover:scale-105 transition-all duration-300 rounded-none shadow-sm flex items-center justify-center cursor-pointer"
+                  className="p-2.5 bg-[#001F3F]/60 border border-slate-800 hover:border-brand-gold text-slate-400 hover:text-brand-gold hover:bg-[#002d5a]/40 hover:shadow-[0_0_12px_rgba(212,175,55,0.45)] transition-all duration-300 rounded-none shadow-sm flex items-center justify-center cursor-pointer"
                   aria-label="LinkedIn"
                   id="footer-social-linkedin"
                 >
                   <Linkedin className="w-4 h-4 shadow-sm" />
-                </a>
-                <a
+                </motion.a>
+                <motion.a
+                  whileHover={{ scale: 1.12, y: -2 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                   href="https://twitter.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 bg-[#001F3F]/60 border border-slate-800 hover:border-brand-gold text-slate-400 hover:text-brand-gold hover:bg-[#002d5a]/40 hover:shadow-[0_0_12px_rgba(212,175,55,0.45)] hover:scale-105 transition-all duration-300 rounded-none shadow-sm flex items-center justify-center cursor-pointer"
+                  className="p-2.5 bg-[#001F3F]/60 border border-slate-800 hover:border-brand-gold text-slate-400 hover:text-brand-gold hover:bg-[#002d5a]/40 hover:shadow-[0_0_12px_rgba(212,175,55,0.45)] transition-all duration-300 rounded-none shadow-sm flex items-center justify-center cursor-pointer"
                   aria-label="Twitter"
                   id="footer-social-twitter"
                 >
                   <Twitter className="w-4 h-4 shadow-sm" />
-                </a>
-                <a
+                </motion.a>
+                <motion.a
+                  whileHover={{ scale: 1.12, y: -2 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                   href="https://youtube.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 bg-[#001F3F]/60 border border-slate-800 hover:border-brand-gold text-slate-400 hover:text-brand-gold hover:bg-[#002d5a]/40 hover:shadow-[0_0_12px_rgba(212,175,55,0.45)] hover:scale-105 transition-all duration-300 rounded-none shadow-sm flex items-center justify-center cursor-pointer"
+                  className="p-2.5 bg-[#001F3F]/60 border border-slate-800 hover:border-brand-gold text-slate-400 hover:text-brand-gold hover:bg-[#002d5a]/40 hover:shadow-[0_0_12px_rgba(212,175,55,0.45)] transition-all duration-300 rounded-none shadow-sm flex items-center justify-center cursor-pointer"
                   aria-label="YouTube"
                   id="footer-social-youtube"
                 >
                   <Youtube className="w-4 h-4 shadow-sm" />
-                </a>
+                </motion.a>
               </div>
 
               {/* Specific lists */}
