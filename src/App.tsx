@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Plane, Lock, Download, Check, X, FileBarChart, HardHat } from 'lucide-react';
 import { useLanguage } from './context/LanguageContext';
 import { auth, db, handleFirestoreError, OperationType } from './firebase';
-import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, signInAnonymously } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 // Custom Sektoral components imports
@@ -19,6 +19,7 @@ import EconomicImpact from './components/EconomicImpact';
 import GisMap from './components/GisMap';
 import EsgSustainability from './components/EsgSustainability';
 import NewsMedia from './components/NewsMedia';
+import FAQ from './components/FAQ';
 import ContactFooter from './components/ContactFooter';
 
 export default function App() {
@@ -92,6 +93,7 @@ export default function App() {
         { id: 'gis', el: document.getElementById('gis') },
         { id: 'esg', el: document.getElementById('esg') },
         { id: 'berita', el: document.getElementById('berita') },
+        { id: 'faq', el: document.getElementById('faq') },
         { id: 'kontak', el: document.getElementById('kontak') },
       ];
 
@@ -125,7 +127,7 @@ export default function App() {
     }
   };
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username || !password) {
       setLoginError(language === 'id' ? 'Kredensial wajib diisi.' : 'Credentials are required.');
@@ -133,11 +135,16 @@ export default function App() {
     }
     // Simple demo password verification for Bupati presentation: accepts 'admin' / 'kertajati'
     if (username.toLowerCase() === 'admin' || username.toLowerCase() === 'kertajati') {
-      setIsLoggedIn(true);
-      setLoginError('');
-      setLoginModalOpen(false);
-      setUsername('');
-      setPassword('');
+      try {
+        await signInAnonymously(auth);
+        setIsLoggedIn(true);
+        setLoginError('');
+        setLoginModalOpen(false);
+        setUsername('');
+        setPassword('');
+      } catch (err: any) {
+        setLoginError(language === 'id' ? `Masuk simulasi gagal: ${err.message}` : `Simulation login failed: ${err.message}`);
+      }
     } else {
       setLoginError(language === 'id' ? 'Username atau sandi salah - Gunakan "kertajati" atau "admin" untuk simulasi.' : 'Invalid credentials - Use "kertajati" or "admin" for simulation.');
     }
@@ -369,6 +376,8 @@ export default function App() {
       <EconomicImpact />
 
       <NewsMedia />
+
+      <FAQ />
 
       <ContactFooter />
 

@@ -432,3 +432,77 @@ export const ESG_THEMES: ESGTheme[] = [
     ],
   },
 ];
+
+export interface FAQItem {
+  id: string;
+  categoryID: string;
+  categoryEN: string;
+  questionID: string;
+  questionEN: string;
+  answerID: string;
+  answerEN: string;
+  iconType: 'land' | 'percent' | 'clock';
+}
+
+export const FAQ_ITEMS: FAQItem[] = [
+  {
+    id: 'faq-1',
+    categoryID: 'Akuisisi Lahan',
+    categoryEN: 'Land Acquisition',
+    questionID: 'Bagaimana proses akuisisi lahan di KIIT Kabupaten Majalengka?',
+    questionEN: 'What is the status and legal framework of land acquisition at KIIT?',
+    answerID: 'Proses akuisisi lahan di Kertajati International Industrial Town (KIIT) berjalan sangat kondusif dan aman hukum. Hingga saat ini, pembebasan lahan utama telah mencapai 68,5% dari target 1.000 hektar dengan sertifikat Hak Guna Bangunan (HGB) induk atas nama PT Kertajati International Town. Kami menerapkan pendekatan humanis melalui kemitraan dengan BPN dan Pemkab Majalengka, kompensasi yang adil, penyediaan hunian transisi, serta program pelatihan vokasional untuk masyarakat lokal guna menghindari sengketa lahan.',
+    answerEN: 'Land acquisition at Kertajati International Industrial Town (KIIT) is highly secure and fully compliant with national frameworks. To date, 68.5% of the main 1,000-hectare masterplan has been fully acquired and registered under clean \'Hak Guna Bangunan\' (HGB) certificates owned by PT Kertajati International Town. Backed by the Majalengka Regency and BPN Land Offices, we use a humanistic compensation approach—including transition housing and vocational training plans—ensuring smooth and dispute-free acquisitions.',
+    iconType: 'land'
+  },
+  {
+    id: 'faq-2',
+    categoryID: 'Insentif Pajak',
+    categoryEN: 'Tax Incentives',
+    questionID: 'Insentif pajak dan fiskal apa saja yang ditawarkan oleh Pemerintah Kabupaten Majalengka?',
+    questionEN: 'What tax holiday and fiscal programs are granted by the government for KIIT?',
+    answerID: 'Sebagai wilayah yang diusulkan dan disetujui sebagai Kawasan Ekonomi Khusus (KEK), investor di KIIT berhak mendapatkan fasilitas \'Super Tax Holiday\' berupa pembebasan Pajak Penghasilan (PPh) Badan sebesar 100% hingga 20 tahun untuk investasi bernilai minimal Rp 500 miliar. Selain itu, terdapat pembebasan bea masuk impor barang modal/bahan baku, penangguhan PPN, serta pengurangan Pajak Bumi dan Bangunan (PBB) selama masa konstruksi yang didukung penuh melalui keputusan formal bupati.',
+    answerEN: 'As an designated Special Economic Zone (SEZ), investors at KIIT benefit from a 100% \'Super Tax Holiday\' on Corporate Income Tax (CIT) for up to 20 years for anchor investments of at least IDR 500 billion. Furthermore, tenants enjoy blanket exemptions on import duties for capital goods and raw materials, VAT suspension, and property tax discounts during development, supported fully by local Majalengka Regency regulatory decrees.',
+    iconType: 'percent'
+  },
+  {
+    id: 'faq-3',
+    categoryID: 'Garis Waktu Perizinan',
+    categoryEN: 'Form Licensing Timeline',
+    questionID: 'Berapa lama waktu yang dibutuhkan untuk pengurusan izin bangunan (PBG) dan AMDAL?',
+    questionEN: 'How long does it take to obtain building permits (PBG) and AMDAL clearances?',
+    answerID: 'Di bawah tata kelola sistem Administrator KEK Kertajati dan Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu (DPMPTSP) Kabupaten Majalengka, proses perizinan telah dipersingkat melalui layanan prioritas satu pintu (One-Stop-Service). Persetujuan Bangunan Gedung (PBG) dan AMDAL lingkungan yang biasanya memakan waktu berbulan-bulan, kini selesai dalam waktu 14 hingga 30 hari kerja setelah dokumen teknis dinyatakan lengkap.',
+    answerEN: 'Through the dedicated SEZ Administrator and Majalengka Regency\'s DPMPTSP One-Stop Licensing Portal, local bureaucracy is fully bypassed. Standard structural approvals (PBG) and detailed AMDAL environmental clearances are fast-tracked, completing in 14 to 30 business days from complete technical submittal, down from the typical multi-month timelines.',
+    iconType: 'clock'
+  },
+  {
+    id: 'faq-4',
+    categoryID: 'Akuisisi Lahan',
+    categoryEN: 'Land Acquisition',
+    questionID: 'Apakah lahan KIIT bebas banjir dan siap bangun untuk konstruksi industri berat?',
+    questionEN: 'Is the estate land flood-free and ready for heavy industrial load?',
+    answerID: 'Ya, seluruh area 1.000 hektar berada di dataran stabil dengan kontur tanah padat bebas banjir tahunan. KIIT telah menyelesaikan proses cut-and-fill serta pemadatan tanah sesuai standar teknik internasional untuk daya dukung beban industri berat. Setiap kavling lahan yang diserahterimakan kepada tenant dilengkapi dengan akses utilitas matang (air bersih, listrik tegangan tinggi, pipa gas alam, dan koneksi serat optik).',
+    answerEN: 'Yes, the entire KIIT industrial town sits on stable, high-bearing soils completely outside any historic 100-year floodplains. Dynamic cut-and-fill grading and standard soils consolidation engineering are pre-completed. Every plot handed over to a tenant has dry ready-to-build status and is fully connected to our mature utilities network (broadband fiber optics, high-voltage substations, and natural gas lines).',
+    iconType: 'land'
+  },
+  {
+    id: 'faq-5',
+    categoryID: 'Insentif Pajak',
+    categoryEN: 'Tax Incentives',
+    questionID: 'Apakah ada insentif khusus untuk perusahaan joint-venture lokal dan asing?',
+    questionEN: 'Are there unique FDI or Joint-Venture tax mitigation models?',
+    answerID: 'Tentu. Pemerintah Indonesia dan Pemkab Majalengka memberikan kemudahan kepemilikan modal asing hingga 100% untuk sektor-sektor manufaktur pionir di dalam wilayah KEK. Sinergi joint-venture dengan mitra lokal juga mendapatkan kemudahan khusus dalam pembebasan retribusi daerah tertentu, percepatan izin tinggal terbatas (KITAS) tenaga ahli asing dalam waktu kurang dari 48 jam, serta skema logistik berikat khusus.',
+    answerEN: 'Yes, 100% Foreign Direct Investment (FDI) ownership is fully permitted for pioneer manufacturing operations under SEZ status. Joint ventures partnering with reputable domestic enterprises receive specialized waivers on municipal levies, extremely streamlined expert expat visa (KITAS) processing within 48 hours, and custom customs channel clearances to maximize manufacturing efficiency.',
+    iconType: 'percent'
+  },
+  {
+    id: 'faq-6',
+    categoryID: 'Garis Waktu Perizinan',
+    categoryEN: 'Licensing Support',
+    questionID: 'Bagaimana KIIT membantu investor dalam memitigasi risiko regulasi lokal?',
+    questionEN: 'How does KIIT help mitigate local regulatory risks for foreign corporations?',
+    answerID: 'KIIT menyediakan tim Relationship Officer (RO) khusus yang mendampingi setiap investor sejak fase perencanaan, pengisian LOI, arsitektur sipil, pendaftaran Nomor Induk Berusaha (NIB) melalui OSS RBA, hingga pabrik beroperasi penuh. Kami bertindak sebagai jembatan langsung ke jajaran birokrasi Pemkab Majalengka untuk memastikan seluruh kepatuhan regulasi lokal terpenuhi dengan transparansi penuh tanpa biaya tersembunyi.',
+    answerEN: 'KIIT provides dedicated Relationship Officers (RO) who assist investors from the pre-investment phase up to factory commissioning. We coordinate directly with OSS RBA, manage communication with Majalengka municipal departments, and handle complex environmental filings on your behalf, guaranteeing absolute transparency, predictability, and compliance.',
+    iconType: 'clock'
+  }
+];

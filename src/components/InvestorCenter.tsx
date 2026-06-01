@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
-import { FileDown, Lock, Unlock, Check, Send, Calendar, Clock, MapPin, Building, ChevronRight, Download, Users, Mail, Phone, Globe } from 'lucide-react';
+import { FileDown, Lock, Unlock, Check, Send, Calendar, Clock, MapPin, Building, ChevronRight, Download, Users, Mail, Phone, Globe, Trash2 } from 'lucide-react';
 import { InvestorDoc } from '../types';
 import { db, handleFirestoreError, OperationType } from '../firebase';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp, collection, onSnapshot, deleteDoc } from 'firebase/firestore';
 
 interface InvestorCenterProps {
   isLoggedIn: boolean;
@@ -14,6 +14,12 @@ interface InvestorCenterProps {
 export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCenterProps) {
   const { language, t, investorDocs } = useLanguage();
   const isIndo = language === 'id';
+
+  // Submission History and Active Tabs
+  const [activeTab, setActiveTab] = useState<'files' | 'history'>('files');
+  const [eoiRecords, setEoiRecords] = useState<any[]>([]);
+  const [apptRecords, setApptRecords] = useState<any[]>([]);
+  const [inquiryRecords, setInquiryRecords] = useState<any[]>([]);
 
   // EOI Form States
   const [formData, setFormData] = useState({
@@ -39,6 +45,53 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
 
   // File download notification
   const [toastMsg, setToastMsg] = useState<string | null>(null);
+
+  // Hook to fetch records dynamically if logged in
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setEoiRecords([]);
+      setApptRecords([]);
+      setInquiryRecords([]);
+      setActiveTab('files');
+      return;
+    }
+
+    const unsubEoi = onSnapshot(collection(db, 'expressionOfInterests'), (snapshot) => {
+      const records = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setEoiRecords(records);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.LIST, 'expressionOfInterests');
+    });
+
+    const unsubAppt = onSnapshot(collection(db, 'appointments'), (snapshot) => {
+      const records = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setApptRecords(records);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.LIST, 'appointments');
+    });
+
+    const unsubInq = onSnapshot(collection(db, 'inquiries'), (snapshot) => {
+      const records = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setInquiryRecords(records);
+    }, (error) => {
+      // Safe fallback if some rules deny
+      console.warn("Unable to fetch inquiries: ", error);
+    });
+
+    return () => {
+      unsubEoi();
+      unsubAppt();
+      unsubInq();
+    };
+  }, [isLoggedIn]);
+
+  const handleDeleteRecord = async (collectionPath: string, recordId: string) => {
+    try {
+      await deleteDoc(doc(db, collectionPath, recordId));
+    } catch (error) {
+      handleFirestoreError(error, OperationType.DELETE, `${collectionPath}/${recordId}`);
+    }
+  };
 
   const handleDownload = (doc: InvestorDoc) => {
     if (!isLoggedIn && (doc.confidentiality === 'Confidential' || doc.confidentiality === 'Restricted')) {
@@ -202,57 +255,203 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
                 )}
               </div>
 
-              <p className="text-xs text-slate-400 font-sans leading-relaxed font-semibold">
-                {isIndo
-                  ? 'Akses dokumen uji kelayakan (Feasibility Study), proyeksi arus kas, rancangan zonasi, rincian perizinan Amdal, serta prospektus formal Kertajati International Industrial Town.'
-                  : 'Get formal Feasibility Studies, financial cashflows, master planning blueprints, detailed AMAL environmental compliance filings, and investor briefing folders.'}
-              </p>
+              {isLoggedIn && (
+                <div className="flex bg-[#00142a] p-1 rounded-none gap-1 mb-4 border border-slate-900/40">
+                  <button
+                    onClick={() => setActiveTab('files')}
+                    className={`flex-1 py-1.5 px-3 font-sans font-bold uppercase tracking-wider text-[9px] transition duration-150 rounded-none cursor-pointer ${
+                      activeTab === 'files'
+                        ? 'bg-brand-gold text-brand-navy font-extrabold'
+                        : 'text-slate-400 hover:text-white hover:bg-[#001f3f]/50'
+                    }`}
+                  >
+                    {isIndo ? 'DOKUMEN' : 'DOCUMENTS'}
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('history')}
+                    className={`flex-1 py-1.5 px-3 font-sans font-bold uppercase tracking-wider text-[9px] transition duration-150 flex items-center justify-center space-x-1.5 rounded-none cursor-pointer ${
+                      activeTab === 'history'
+                        ? 'bg-brand-gold text-brand-navy font-extrabold'
+                        : 'text-slate-400 hover:text-white hover:bg-[#001f3f]/50'
+                    }`}
+                  >
+                    <span>{isIndo ? 'RESPONS LIVE' : 'LIVE ACTIVITY'}</span>
+                    <span className="font-mono bg-[#001026] text-brand-gold font-extrabold px-1.5 rounded-none text-[8px]">
+                      {eoiRecords.length + apptRecords.length + inquiryRecords.length}
+                    </span>
+                  </button>
+                </div>
+              )}
 
-              {/* Document List ledger */}
-              <div className="space-y-3">
-                {investorDocs.map((doc) => {
-                  const isConf = doc.confidentiality === 'Confidential' || doc.confidentiality === 'Restricted';
-                  const isLocked = isConf && !isLoggedIn;
+              {activeTab === 'files' ? (
+                <>
+                  <p className="text-xs text-slate-400 font-sans leading-relaxed font-semibold">
+                    {isIndo
+                      ? 'Akses dokumen uji kelayakan (Feasibility Study), proyeksi arus kas, rancangan zonasi, rincian perizinan Amdal, serta prospektus formal Kertajati International Industrial Town.'
+                      : 'Get formal Feasibility Studies, financial cashflows, master planning blueprints, detailed AMAL environmental compliance filings, and investor briefing folders.'}
+                  </p>
 
-                  return (
-                    <div
-                      key={doc.id}
-                      className="p-3.5 rounded-none bg-[#001f3f]/40 border border-slate-900/65 hover:border-slate-800 transition duration-150 flex items-center justify-between text-xs"
-                    >
-                      <div className="flex items-start space-x-3 max-w-[70%]">
-                        <div className="p-1 px-1.5 bg-[#001F3F] border border-slate-800 rounded-none text-brand-gold text-[9px] font-mono font-bold shrink-0 mt-0.5">
-                          {doc.type}
+                  {/* Document List ledger */}
+                  <div className="space-y-3">
+                    {investorDocs.map((doc) => {
+                      const isConf = doc.confidentiality === 'Confidential' || doc.confidentiality === 'Restricted';
+                      const isLocked = isConf && !isLoggedIn;
+
+                      return (
+                        <div
+                          key={doc.id}
+                          className="p-3.5 rounded-none bg-[#001f3f]/40 border border-slate-900/65 hover:border-slate-800 transition duration-150 flex items-center justify-between text-xs"
+                        >
+                          <div className="flex items-start space-x-3 max-w-[70%]">
+                            <div className="p-1 px-1.5 bg-[#001F3F] border border-slate-800 rounded-none text-brand-gold text-[9px] font-mono font-bold shrink-0 mt-0.5">
+                              {doc.type}
+                            </div>
+                            <div>
+                              <span className="block font-sans font-extrabold text-slate-150 truncate leading-tight">
+                                {doc.title}
+                              </span>
+                              <span className="block text-[9.5px] font-mono text-slate-500 mt-1">
+                                {doc.category} &bull; SIZ: {doc.size}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Download actions */}
+                          <button
+                            onClick={() => handleDownload(doc)}
+                            className={`p-2 rounded-none transition-colors shrink-0 cursor-pointer ${
+                              isLocked
+                                ? 'bg-[#001F3F] text-brand-gold hover:bg-slate-800'
+                                : 'bg-brand-gold hover:bg-[#c5a030] text-brand-navy'
+                            }`}
+                          >
+                            {isLocked ? (
+                              <Lock className="w-3.5 h-3.5 text-brand-gold" />
+                            ) : (
+                              <FileDown className="w-3.5 h-3.5 text-brand-navy font-bold" />
+                            )}
+                          </button>
+
                         </div>
-                        <div>
-                          <span className="block font-sans font-extrabold text-slate-150 truncate leading-tight">
-                            {doc.title}
-                          </span>
-                          <span className="block text-[9.5px] font-mono text-slate-500 mt-1">
-                            {doc.category} &bull; SIZ: {doc.size}
-                          </span>
-                        </div>
-                      </div>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : (
+                <div className="space-y-4 max-h-[360px] overflow-y-auto pr-1">
+                  <div className="flex items-center justify-between pb-1 border-b border-slate-900/50">
+                    <span className="font-mono text-[8px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/20 uppercase tracking-wider block">
+                      &bull; REALTIME SYNC ACTIVE (FIREBASE)
+                    </span>
+                  </div>
 
-                      {/* Download actions */}
-                      <button
-                        onClick={() => handleDownload(doc)}
-                        className={`p-2 rounded-none transition-colors shrink-0 cursor-pointer ${
-                          isLocked
-                            ? 'bg-[#001F3F] text-brand-gold hover:bg-slate-800'
-                            : 'bg-brand-gold hover:bg-[#c5a030] text-brand-navy'
-                        }`}
-                      >
-                        {isLocked ? (
-                          <Lock className="w-3.5 h-3.5 text-brand-gold" />
-                        ) : (
-                          <FileDown className="w-3.5 h-3.5 text-brand-navy font-bold" />
-                        )}
-                      </button>
+                  {eoiRecords.length === 0 && apptRecords.length === 0 && inquiryRecords.length === 0 ? (
+                    <div className="text-center py-10 border border-dashed border-slate-900 bg-[#001F3F]/15">
+                      <p className="text-xs text-slate-500 font-sans font-semibold">
+                        {isIndo ? 'Tidak ada data pengajuan dalam database.' : 'No dynamic transaction history recorded.'}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      
+                      {/* EOI Records */}
+                      {eoiRecords.map((rec) => (
+                        <div key={rec.id} className="p-3 bg-[#001F3F]/20 border border-brand-gold/15 relative group">
+                          <button
+                            onClick={() => handleDeleteRecord('expressionOfInterests', rec.id)}
+                            className="absolute top-2 right-2 p-1 bg-red-950/45 hover:bg-red-900 text-red-400 hover:text-white transition rounded-none cursor-pointer"
+                            title="Delete record from firestore"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                          
+                          <div className="flex items-center space-x-1.5 mb-1.5">
+                            <span className="px-1 bg-amber-500/10 border border-amber-500/25 rounded-none text-[8px] font-mono font-bold text-amber-400 uppercase">
+                              LOI/EOI Request
+                            </span>
+                            <span className="text-[8.5px] font-mono text-slate-500">
+                              ID: {rec.id}
+                            </span>
+                          </div>
+                          
+                          <h4 className="font-sans font-extrabold text-xs text-slate-100 truncate pr-6">{rec.company}</h4>
+                          <p className="text-[10px] text-slate-350 mt-1 font-semibold leading-relaxed">
+                            {rec.fullname} &bull; {rec.industry} &bull; <span className="text-brand-gold font-bold">{rec.capital}</span>
+                          </p>
+                          <p className="text-[9px] text-slate-500 mt-1.5 font-mono truncate">
+                            {rec.email} {rec.phone && `• ${rec.phone}`}
+                          </p>
+                        </div>
+                      ))}
+
+                      {/* Appointment Records */}
+                      {apptRecords.map((rec) => (
+                        <div key={rec.id} className="p-3 bg-[#001F3F]/20 border border-sky-400/15 relative group">
+                          <button
+                            onClick={() => handleDeleteRecord('appointments', rec.id)}
+                            className="absolute top-2 right-2 p-1 bg-red-950/45 hover:bg-red-900 text-red-400 hover:text-white transition rounded-none cursor-pointer"
+                            title="Delete record from firestore"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+
+                          <div className="flex items-center space-x-1.5 mb-1.5">
+                            <span className="px-1 bg-sky-500/10 border border-sky-500/25 rounded-none text-[8px] font-mono font-bold text-sky-400 uppercase">
+                              Meeting Schedule
+                            </span>
+                            <span className="text-[8.5px] font-mono text-slate-500">
+                              ID: {rec.id}
+                            </span>
+                          </div>
+
+                          <h4 className="font-sans font-extrabold text-xs text-slate-100 pr-6 truncate">{rec.meetingType}</h4>
+                          <div className="flex items-center space-x-3 mt-1.5 text-[9px] text-slate-400 font-semibold font-mono">
+                            <span className="flex items-center space-x-1">
+                              <Calendar className="w-3 h-3 text-brand-gold" />
+                              <span>{rec.scheduledDate}</span>
+                            </span>
+                            <span className="flex items-center space-x-1">
+                              <Clock className="w-3 h-3 text-brand-gold" />
+                              <span>{rec.scheduledTime}</span>
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+
+                      {/* Inquiry/Prospectus Records */}
+                      {inquiryRecords.map((rec) => (
+                        <div key={rec.id} className="p-3 bg-[#001F3F]/20 border border-emerald-400/15 relative group">
+                          <button
+                            onClick={() => handleDeleteRecord('inquiries', rec.id)}
+                            className="absolute top-2 right-2 p-1 bg-red-950/45 hover:bg-red-900 text-red-400 hover:text-white transition rounded-none cursor-pointer"
+                            title="Delete record from firestore"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+
+                          <div className="flex items-center space-x-1.5 mb-1.5">
+                            <span className="px-1 bg-emerald-500/10 border border-emerald-500/25 rounded-none text-[8px] font-mono font-bold text-emerald-400 uppercase">
+                              Contact/Prospectus
+                            </span>
+                            <span className="text-[8.5px] font-mono text-slate-500">
+                              ID: {rec.id}
+                            </span>
+                          </div>
+
+                          <h4 className="font-sans font-extrabold text-xs text-slate-100 pr-6 truncate">{rec.subject}</h4>
+                          <p className="text-[10px] text-slate-350 mt-1 font-semibold leading-relaxed">
+                            {rec.name} &bull; <span className="font-mono text-slate-400 text-[9px]">{rec.email}</span>
+                          </p>
+                          <p className="text-[9.5px] text-slate-450 mt-1 px-1.5 py-1 bg-[#001026]/40 border border-slate-900 leading-normal italic line-clamp-2">
+                            "{rec.message}"
+                          </p>
+                        </div>
+                      ))}
 
                     </div>
-                  );
-                })}
-              </div>
+                  )}
+                </div>
+              )}
 
             </div>
 
