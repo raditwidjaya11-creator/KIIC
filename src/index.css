@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@355;400;500;650;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Inter", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --color-brand-navy: #001F3F;
+  --color-brand-gold: #D4AF37;
+  
+  --shadow-lux: 0 20px 40px -15px rgba(0, 16, 38, 0.12), 0 0 0 1px rgba(212, 175, 55, 0.08);
+  --shadow-lux-hover: 0 30px 60px -20px rgba(0, 16, 38, 0.2), 0 0 0 1px rgba(212, 175, 55, 0.25);
+}
+
+/* Beautiful customized scrollbar for modern browsers */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #001026;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #002d5a;
+  border-radius: 3px;
+  border: 1px solid #001026;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+/* Hide scrollbar classes */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Selection Highlight Accent */
+::selection {
+  background-color: #D4AF37;
+  color: #001F3F;
+}
+
+/* Smooth customized slide transitions & animations */
+@keyframes shine {
+  100% {
+    left: 125%;
+  }
+}
+
+.animate-shine {
+  animation: shine 1.6s ease-in-out infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+.animate-dash {
+  stroke-dasharray: 8, 6;
+  animation: dash 12s linear infinite;
+}
+
+/* Dynamic subtle zoom animations */
+.hover-lux {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hover-lux:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lux-hover);
+}
+

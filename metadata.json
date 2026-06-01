@@ -1,0 +1,10 @@
+{
+  "name": "KIIT Investment Portal",
+  "description": "The official world-class investment portal for Kertajati International Industrial Town (KIIT). Gateway to West Java's Future Industry.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
