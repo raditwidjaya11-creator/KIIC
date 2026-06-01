@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Plane, Lock, Download, Check, X, FileBarChart, HardHat } from 'lucide-react';
 import { useLanguage } from './context/LanguageContext';
+import { auth, db, handleFirestoreError, OperationType } from './firebase';
+import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 // Custom Sektoral components imports
 import Header from './components/Header';
@@ -34,10 +37,44 @@ export default function App() {
 
   // Prospektus modal submission states
   const [prospName, setProspName] = useState('');
+  const [prospCompany, setProspCompany] = useState('');
+  const [prospPhone, setProspPhone] = useState('');
   const [prospEmail, setProspEmail] = useState('');
   const [prospInterest, setProspInterest] = useState('Direct Investment (Tenant)');
   const [prospDownloaded, setProspDownloaded] = useState(false);
   const [prospError, setProspError] = useState('');
+  const [isSubmittingProsp, setIsSubmittingProsp] = useState(false);
+
+  // Tracks Firebase Authentication State
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setIsLoggedIn(false);
+    } catch (err) {
+      console.error(err);
+      setIsLoggedIn(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      setLoginModalOpen(false);
+      setLoginError('');
+    } catch (err: any) {
+      setLoginError(language === 'id' ? `Masuk Google gagal: ${err.message}` : `Google log in failed: ${err.message}`);
+    }
+  };
 
   // Monitor active scroll positions to update sticky navbar indicators
   useEffect(() => {
@@ -111,14 +148,33 @@ export default function App() {
     setLoginError('');
   };
 
-  const handleProspectusSubmit = (e: React.FormEvent) => {
+  const handleProspectusSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!prospName || !prospEmail) {
-      setProspError(language === 'id' ? 'Nama Lengkap dan Alamat Email Korporasi wajib diisi.' : 'Full Name and Corporate Email Address are required.');
+    if (!prospName || !prospCompany || !prospPhone || !prospEmail) {
+      setProspError(language === 'id' 
+        ? 'Nama Lengkap, Perusahaan, Kontak, dan Alamat Email Korporasi wajib diisi.' 
+        : 'Full Name, Company Name, Contact Phone, and Corporate Email Address are required.');
       return;
     }
     setProspError('');
-    setProspDownloaded(true);
+    setIsSubmittingProsp(true);
+
+    const inquiryId = "prosp-" + Math.random().toString(36).substring(2, 11);
+    try {
+      await setDoc(doc(db, 'inquiries', inquiryId), {
+        name: prospName,
+        email: prospEmail,
+        subject: `Prospectus Request: ${prospInterest}`,
+        message: `Requested KIIT Investment Prospectus. Category of Interest: ${prospInterest}. Company: ${prospCompany}. Phone: ${prospPhone}.`,
+        createdAt: serverTimestamp()
+      });
+      setProspDownloaded(true);
+    } catch (err) {
+      setProspError(language === 'id' ? 'Gagal mengirimkan permohonan prospektus ke server.' : 'Failed to register prospectus request.');
+      handleFirestoreError(err, OperationType.CREATE, `inquiries/${inquiryId}`);
+    } finally {
+      setIsSubmittingProsp(false);
+    }
   };
 
   return (
@@ -130,7 +186,7 @@ export default function App() {
         activeSection={activeSection}
         onOpenLogin={() => setLoginModalOpen(true)}
         isLoggedIn={isLoggedIn}
-        onLogout={() => setIsLoggedIn(false)}
+        onLogout={handleLogout}
       />
 
       {/* Main Screen Hero */}
@@ -397,6 +453,23 @@ export default function App() {
                   {t('modal.btn_authorize')}
                 </button>
 
+                <div className="flex items-center my-4">
+                  <div className="flex-grow border-t border-slate-900"></div>
+                  <span className="mx-3 text-[10px] font-mono text-slate-500 uppercase tracking-widest font-bold">OR</span>
+                  <div className="flex-grow border-t border-slate-900"></div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleGoogleLogin}
+                  className="w-full py-3 border border-brand-gold/30 hover:border-brand-gold bg-[#001F3F]/60 text-slate-300 hover:text-brand-gold font-sans font-extrabold uppercase tracking-widest text-[10px] transition-all rounded-none flex items-center justify-center space-x-2 cursor-pointer shadow-sm"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current text-brand-gold" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.111 4.114-3.555 0-6.44-2.885-6.44-6.44s2.885-6.44 6.44-6.44c1.633 0 3.126.604 4.276 1.62l3.187-3.187C19.167 2.138 15.93 1 12.24 1 6.033 1 1 6.033 1 12.24s5.033 11.24 11.24 11.24c5.898 0 10.237-4.141 10.237-10.237 0-.693-.083-1.362-.222-1.958H12.24z"/>
+                  </svg>
+                  <span>{language === 'id' ? 'MASUK DENGAN GOOGLE' : 'SIGN IN WITH GOOGLE'}</span>
+                </button>
+
               </form>
 
             </motion.div>
@@ -424,6 +497,8 @@ export default function App() {
                   setProspectusModalOpen(false);
                   setProspDownloaded(false);
                   setProspName('');
+                  setProspCompany('');
+                  setProspPhone('');
                   setProspEmail('');
                   setProspError('');
                 }}
@@ -467,7 +542,31 @@ export default function App() {
                            placeholder={t('modal.field_prop_name_placeholder')}
                            value={prospName}
                            onChange={(e) => setProspName(e.target.value)}
-                           className="w-full bg-[#001F3F]/45 border border-slate-900 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none placeholder:text-slate-550 font-semibold"
+                           className="w-full bg-[#001F3F]/45 border border-slate-900 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none placeholder:text-slate-550 font-semibold text-white"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="block text-slate-350 font-bold uppercase tracking-widest text-[9px]">{t('modal.field_prop_company')}</label>
+                        <input
+                           type="text"
+                           required
+                           placeholder={t('modal.field_prop_company_placeholder')}
+                           value={prospCompany}
+                           onChange={(e) => setProspCompany(e.target.value)}
+                           className="w-full bg-[#001F3F]/45 border border-slate-900 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none placeholder:text-slate-550 font-semibold text-white"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="block text-slate-350 font-bold uppercase tracking-widest text-[9px]">{t('modal.field_prop_phone')}</label>
+                        <input
+                           type="text"
+                           required
+                           placeholder={t('modal.field_prop_phone_placeholder')}
+                           value={prospPhone}
+                           onChange={(e) => setProspPhone(e.target.value)}
+                           className="w-full bg-[#001F3F]/45 border border-slate-900 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none placeholder:text-slate-550 font-semibold text-white"
                         />
                       </div>
 
@@ -479,7 +578,7 @@ export default function App() {
                            placeholder={t('modal.field_prop_email_placeholder')}
                            value={prospEmail}
                            onChange={(e) => setProspEmail(e.target.value)}
-                           className="w-full bg-[#001F3F]/45 border border-slate-900 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none placeholder:text-slate-550 font-semibold"
+                           className="w-full bg-[#001F3F]/45 border border-slate-900 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none placeholder:text-slate-550 font-semibold text-white"
                         />
                       </div>
 
@@ -507,9 +606,12 @@ export default function App() {
 
                       <button
                         type="submit"
-                        className="w-full py-3 rounded-none bg-brand-gold hover:bg-brand-gold/90 text-brand-navy font-bold uppercase tracking-wider transition-all cursor-pointer font-sans"
+                        disabled={isSubmittingProsp}
+                        className="w-full py-3 rounded-none bg-brand-gold hover:bg-[#c5a030] disabled:bg-slate-800 disabled:text-slate-500 text-brand-navy font-bold uppercase tracking-wider transition-all cursor-pointer font-sans disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                       >
-                        {language === 'id' ? 'Kirim & Buka Unduh Dokumen' : 'Submit & Open Download Asset'}
+                        {isSubmittingProsp 
+                          ? (language === 'id' ? 'MENGIRIM FORMULIR...' : 'SUBMITTING REQUEST...') 
+                          : (language === 'id' ? 'Kirim & Buka Unduh Dokumen' : 'Submit & Open Download Asset')}
                       </button>
                     </form>
                   </motion.div>
@@ -535,7 +637,7 @@ export default function App() {
 
                     <div className="space-y-2 max-w-xs mx-auto pt-4 font-sans">
                       <a
-                        href="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format"
+                        href="https://www.customs.go.id/assets/file/faq/kek.pdf"
                         target="_blank"
                         rel="noreferrer"
                         onClick={() => {

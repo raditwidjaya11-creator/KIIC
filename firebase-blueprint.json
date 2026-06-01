@@ -1,0 +1,121 @@
+{
+  "entities": {
+    "Inquiry": {
+      "title": "Inquiry",
+      "description": "General spatial land or administrative inquiry from ContactFooter",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "email",
+        "subject",
+        "message",
+        "createdAt"
+      ]
+    },
+    "ExpressionOfInterest": {
+      "title": "Expression of Interest",
+      "description": "Detailed investor expression of interest for industrial lots in KIIT",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "fullname": {
+          "type": "string"
+        },
+        "company": {
+          "type": "string"
+        },
+        "industry": {
+          "type": "string"
+        },
+        "capital": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "intentNote": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "fullname",
+        "company",
+        "email",
+        "createdAt"
+      ]
+    },
+    "Appointment": {
+      "title": "Appointment",
+      "description": "Meeting consultation appointment for investment assessment",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "meetingType": {
+          "type": "string"
+        },
+        "scheduledDate": {
+          "type": "string"
+        },
+        "scheduledTime": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "meetingType",
+        "scheduledDate",
+        "scheduledTime",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/inquiries/{inquiryId}": {
+      "schema": "Inquiry",
+      "description": "User inquiries matching ContactFooter form submission"
+    },
+    "/expressionOfInterests/{eoiId}": {
+      "schema": "ExpressionOfInterest",
+      "description": "Official expression of interest forms submitted in InvestorCenter"
+    },
+    "/appointments/{apptId}": {
+      "schema": "Appointment",
+      "description": "Consultation sessions booked in InvestorCenter scheduler"
+    }
+  }
+}

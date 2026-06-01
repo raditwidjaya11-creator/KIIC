@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { Mail, Phone, MapPin, Landmark, ExternalLink, Send, ShieldCheck, Check, Sparkles, Linkedin, Twitter, Youtube } from 'lucide-react';
+import { db, handleFirestoreError, OperationType } from '../firebase';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 export default function ContactFooter() {
   const { language } = useLanguage();
@@ -15,15 +17,33 @@ export default function ContactFooter() {
   });
   const [submittedInquiry, setSubmittedInquiry] = useState(false);
   const [formError, setFormError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInquirySubmit = (e: React.FormEvent) => {
+  const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inquiryData.name || !inquiryData.email || !inquiryData.message) {
       setFormError(isIndo ? 'Silahkan lengkapi seluruh field formulir pesan.' : 'Please fill in all the required query form fields.');
       return;
     }
     setFormError('');
-    setSubmittedInquiry(true);
+    setIsSubmitting(true);
+
+    const inquiryId = "inq-" + Math.random().toString(36).substring(2, 11);
+    try {
+      await setDoc(doc(db, 'inquiries', inquiryId), {
+        name: inquiryData.name,
+        email: inquiryData.email,
+        subject: inquiryData.subject,
+        message: inquiryData.message,
+        createdAt: serverTimestamp()
+      });
+      setSubmittedInquiry(true);
+    } catch (err) {
+      setFormError(isIndo ? 'Gagal mengirim pesan ke server. Silakan coba lagi.' : 'Failed to send message to server. Please try again.');
+      handleFirestoreError(err, OperationType.CREATE, `inquiries/${inquiryId}`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -235,9 +255,12 @@ export default function ContactFooter() {
 
                     <button
                       type="submit"
-                      className="w-full py-3.5 bg-brand-gold hover:bg-[#c5a030] text-brand-navy font-extrabold tracking-widest text-[11px] uppercase transition-colors cursor-pointer rounded-none"
+                      disabled={isSubmitting}
+                      className="w-full py-3.5 bg-brand-gold hover:bg-[#c5a030] disabled:bg-slate-800 disabled:text-slate-500 text-brand-navy font-extrabold tracking-widest text-[11px] uppercase transition-colors cursor-pointer rounded-none disabled:cursor-not-allowed"
                     >
-                      {isIndo ? 'KIRIM PERTANYAAN INVESTASI' : 'SUBMIT INVESTMENT INQUIRY'}
+                      {isSubmitting 
+                        ? (isIndo ? 'MENGIRIMKAN PESAN...' : 'SENDING INQUIRY...') 
+                        : (isIndo ? 'KIRIM PERTANYAAN INVESTASI' : 'SUBMIT INVESTMENT INQUIRY')}
                     </button>
 
                   </form>

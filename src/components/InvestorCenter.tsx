@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { FileDown, Lock, Unlock, Check, Send, Calendar, Clock, MapPin, Building, ChevronRight, Download, Users, Mail, Phone, Globe } from 'lucide-react';
 import { InvestorDoc } from '../types';
+import { db, handleFirestoreError, OperationType } from '../firebase';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 interface InvestorCenterProps {
   isLoggedIn: boolean;
@@ -26,12 +28,14 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [loiError, setLoiError] = useState('');
+  const [isSubmittingForm, setIsSubmittingForm] = useState(false);
 
   // Scheduler States
   const [scheduledDate, setScheduledDate] = useState('2026-06-05');
   const [scheduledTime, setScheduledTime] = useState('10:00 WIB');
   const [meetingType, setMeetingType] = useState(isIndo ? 'Dinas PMTSP Kabupaten Majalengka (Majalengka Office)' : 'Kabupaten Majalengka PMTSP Office (Majalengka HQ)');
   const [appointmentBooked, setAppointmentBooked] = useState(false);
+  const [isSubmittingAppointment, setIsSubmittingAppointment] = useState(false);
 
   // File download notification
   const [toastMsg, setToastMsg] = useState<string | null>(null);
@@ -54,7 +58,7 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
     setTimeout(() => setToastMsg(null), 4000);
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.fullname || !formData.company || !formData.email) {
       setLoiError(isIndo 
@@ -64,12 +68,52 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
       return;
     }
     setLoiError('');
-    setFormSubmitted(true);
+    setIsSubmittingForm(true);
+
+    const eoiId = "eoi-" + Math.random().toString(36).substring(2, 11);
+    try {
+      await setDoc(doc(db, 'expressionOfInterests', eoiId), {
+        fullname: formData.fullname,
+        company: formData.company,
+        industry: formData.industry || '',
+        capital: formData.capital || '',
+        email: formData.email,
+        phone: formData.phone || '',
+        website: formData.website || '',
+        intentNote: formData.intentNote || '',
+        createdAt: serverTimestamp()
+      });
+      setFormSubmitted(true);
+    } catch (err) {
+      setLoiError(isIndo 
+        ? 'Gagal menyimpan data EOI. Silakan coba kembali.' 
+        : 'Failed to record Expression of Interest. Please try again.'
+      );
+      handleFirestoreError(err, OperationType.CREATE, `expressionOfInterests/${eoiId}`);
+    } finally {
+      setIsSubmittingForm(false);
+    }
   };
 
-  const handleScheduleSubmit = (e: React.FormEvent) => {
+  const handleScheduleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setAppointmentBooked(true);
+    setIsSubmittingAppointment(true);
+
+    const apptId = "apt-" + Math.random().toString(36).substring(2, 11);
+    try {
+      await setDoc(doc(db, 'appointments', apptId), {
+        meetingType: meetingType,
+        scheduledDate: scheduledDate,
+        scheduledTime: scheduledTime,
+        createdAt: serverTimestamp()
+      });
+      setAppointmentBooked(true);
+    } catch (err) {
+      alert(isIndo ? 'Gagal melakukan pemesanan jadwal pertemuan.' : 'Failed to register appointment.');
+      handleFirestoreError(err, OperationType.CREATE, `appointments/${apptId}`);
+    } finally {
+      setIsSubmittingAppointment(false);
+    }
   };
 
   return (
@@ -359,10 +403,15 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
 
                     <button
                       type="submit"
-                      className="w-full py-3.5 bg-brand-navy hover:bg-[#001026] text-white font-sans font-extrabold uppercase tracking-widest text-xs transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg rounded-none cursor-pointer"
+                      disabled={isSubmittingForm}
+                      className="w-full py-3.5 bg-brand-navy hover:bg-[#001026] disabled:bg-slate-300 disabled:text-slate-500 text-white font-sans font-extrabold uppercase tracking-widest text-xs transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg rounded-none disabled:cursor-not-allowed cursor-pointer"
                     >
                       <Send className="w-4 h-4 text-brand-gold font-bold" />
-                      <span>{isIndo ? 'KIRIM PERNYATAAN MINAT FORMAL (LOI)' : 'SUBMIT EXPRESSION OF INTEREST (EOI)'}</span>
+                      <span>
+                        {isSubmittingForm 
+                          ? (isIndo ? 'MENGIRIMKAN..."' : 'SUBMITTING...') 
+                          : (isIndo ? 'KIRIM PERNYATAAN MINAT FORMAL (LOI)' : 'SUBMIT EXPRESSION OF INTEREST (EOI)')}
+                      </span>
                     </button>
 
                   </form>
@@ -482,9 +531,12 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
                 <div>
                   <button
                     type="submit"
-                    className="w-full py-3 bg-brand-gold hover:bg-[#c5a030] text-brand-navy font-extrabold tracking-widest text-xs uppercase cursor-pointer rounded-none transition-colors"
+                    disabled={isSubmittingAppointment}
+                    className="w-full py-3 bg-brand-gold hover:bg-[#c5a030] disabled:bg-slate-800 disabled:text-slate-500 text-brand-navy font-extrabold tracking-widest text-xs uppercase cursor-pointer rounded-none transition-colors disabled:cursor-not-allowed"
                   >
-                    {isIndo ? 'Booking Jadwal' : 'Book Appointment'}
+                    {isSubmittingAppointment 
+                      ? (isIndo ? 'MEMESAN JADWAL...' : 'BOOKING SESSI...') 
+                      : (isIndo ? 'Booking Jadwal' : 'Book Appointment')}
                   </button>
                 </div>
               </motion.form>

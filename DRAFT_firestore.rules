@@ -1,0 +1,83 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net default catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Reusable, hardened global helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Validation blueprint for Inquiries (ContactFooter submission)
+    function isValidInquiry(data) {
+      return data.keys().hasAll(['name', 'email', 'subject', 'message', 'createdAt'])
+        && data.keys().size() == 5
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 100
+        && data.email is string && data.email.size() > 0 && data.email.size() <= 100
+        && data.subject is string && data.subject.size() > 0 && data.subject.size() <= 200
+        && data.message is string && data.message.size() > 0 && data.message.size() <= 5000
+        && data.createdAt == request.time;
+    }
+
+    // Validation blueprint for Expression of Interest (InvestorCenter primary form)
+    function isValidEOI(data) {
+      return data.keys().hasAll(['fullname', 'company', 'industry', 'capital', 'email', 'phone', 'website', 'intentNote', 'createdAt'])
+        && data.keys().size() == 9
+        && data.fullname is string && data.fullname.size() > 0 && data.fullname.size() <= 100
+        && data.company is string && data.company.size() > 0 && data.company.size() <= 100
+        && data.industry is string && data.industry.size() <= 100
+        && data.capital is string && data.capital.size() <= 100
+        && data.email is string && data.email.size() > 0 && data.email.size() <= 100
+        && data.phone is string && data.phone.size() <= 30
+        && data.website is string && data.website.size() <= 200
+        && data.intentNote is string && data.intentNote.size() <= 5000
+        && data.createdAt == request.time;
+    }
+
+    // Validation blueprint for Appointments (InvestorCenter Scheduler)
+    function isValidAppointment(data) {
+      return data.keys().hasAll(['meetingType', 'scheduledDate', 'scheduledTime', 'createdAt'])
+        && data.keys().size() == 4
+        && data.meetingType is string && data.meetingType.size() > 0 && data.meetingType.size() <= 150
+        && data.scheduledDate is string && data.scheduledDate.size() == 10
+        && data.scheduledTime is string && data.scheduledTime.size() <= 50
+        && data.createdAt == request.time;
+    }
+
+    // --- COLLECTION GATEWAYS ---
+
+    // Inquiries Gateway rules
+    match /inquiries/{inquiryId} {
+      allow create: if isValidId(inquiryId) && isValidInquiry(incoming());
+      allow read, delete: if isSignedIn();
+    }
+
+    // Expression of Interests Gateway rules
+    match /expressionOfInterests/{eoiId} {
+      allow create: if isValidId(eoiId) && isValidEOI(incoming());
+      allow read, delete: if isSignedIn();
+    }
+
+    // Appointments Gateway rules
+    match /appointments/{apptId} {
+      allow create: if isValidId(apptId) && isValidAppointment(incoming());
+      allow read, delete: if isSignedIn();
+    }
+  }
+}
