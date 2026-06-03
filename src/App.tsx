@@ -429,10 +429,14 @@ export default function App() {
                 className="absolute top-4 right-4 p-1.5 bg-brand-navy hover:bg-brand-navy/80 rounded-none text-slate-400 hover:text-white cursor-pointer"
               >
                 <X className="w-4 h-4" />
-              </button>              <div className="space-y-4 mb-3 text-center">
-                <div className="w-12 h-12 rounded-none bg-brand-gold/10 border border-brand-gold/25 flex items-center justify-center mx-auto text-brand-gold">
-                  <Lock className="w-5 h-5" />
-                </div>
+              </button>              <div className="space-y-4 mb-3 text-center flex flex-col items-center">
+                <img
+                  src="/logo-kiit.png"
+                  alt="KIIT Logo"
+                  className="w-[120px] h-auto object-contain mx-auto mb-2 select-none"
+                  referrerPolicy="no-referrer"
+                  id="login-logo-kiit"
+                />
                 <h3 className="font-sans font-extrabold text-xl leading-none">
                   {t('modal.login_title')}
                 </h3>

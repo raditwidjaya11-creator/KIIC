@@ -69,7 +69,28 @@ service cloud.firestore {
         && data.createdAt == request.time;
     }
 
+    // Validation blueprint for Masterplan Zones
+    function isValidMasterplanZone(data) {
+      return data.keys().hasAll(['id', 'nama_zona', 'kategori', 'status', 'luas_ha'])
+        && data.id is string && data.id.size() > 0
+        && data.nama_zona is string && data.nama_zona.size() > 0
+        && data.kategori is string && data.kategori.size() > 0
+        && data.status is string && data.status.size() > 0;
+    }
+
     // --- COLLECTION GATEWAYS ---
+
+    // Connection test path for startup status check
+    match /test/{docId} {
+      allow read: if true;
+    }
+
+    // Masterplan Zones Gateway
+    match /masterplan_zones/{zoneId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(zoneId) && isValidMasterplanZone(incoming());
+      allow delete: if isSignedIn();
+    }
 
     // Inquiries Gateway rules
     match /inquiries/{inquiryId} {

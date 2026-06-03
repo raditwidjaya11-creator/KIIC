@@ -637,6 +637,9 @@ function generateStyledHTMLReport(doc: InvestorDoc, isIndo: boolean): string {
       <div class="container">
         
         <div class="header">
+          <div style="margin-bottom: 18px; text-align: center;">
+            <img src="/logo-kiit.png" alt="KIIT Logo" style="height: 60px; max-width: 150px; object-fit: contain;" referrerPolicy="no-referrer" />
+          </div>
           <div class="coat-of-arms">REPUBLIK INDONESIA</div>
           <div class="regency">PEMERINTAH KABUPATEN MAJALENGKA</div>
           <div class="company">PT KERTAJATI INTERNATIONAL TOWN</div>

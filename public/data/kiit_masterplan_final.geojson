@@ -1,0 +1,344 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "kec-poly-1",
+      "properties": {
+        "id": "kertajati-toll-interchange",
+        "nama_zona": "Kertajati Toll Interchange",
+        "kategori": "Interchange Tol",
+        "status": "Terjual",
+        "luas_ha": 45.2,
+        "investor": "PT Jasa Marga (Persero)",
+        "nilai_investasi": "Rp 350 Miliar",
+        "progress_pembangunan": "100% Operasional",
+        "utilitas": "Sistem Tol Elektronik Multi-Lane, CCTV 24 Jam, Solar Lighting Corridor"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [108.242, -6.648],
+            [108.248, -6.646],
+            [108.246, -6.641],
+            [108.240, -6.643],
+            [108.242, -6.648]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "logistics-1",
+      "properties": {
+        "id": "logistics-hub",
+        "nama_zona": "Logistics Hub Alpha",
+        "kategori": "Logistics Hub",
+        "status": "Terjual",
+        "luas_ha": 125.4,
+        "investor": "DHL Supply Chain Indonesia",
+        "nilai_investasi": "Rp 1.2 Triliun",
+        "progress_pembangunan": "90% Konstruksi Tahap II",
+        "utilitas": "Koneksi Fiber Optik 10 Gbps, Power Substation 15 MVA, Depot Kargo Terintegrasi, Akses Karantina Mandiri"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [108.248, -6.638],
+            [108.258, -6.635],
+            [108.255, -6.628],
+            [108.245, -6.631],
+            [108.248, -6.638]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "logistics-2",
+      "properties": {
+        "id": "logistics-hub-beta",
+        "nama_zona": "Logistics Hub Beta",
+        "kategori": "Logistics Hub",
+        "status": "Tersedia",
+        "luas_ha": 65.8,
+        "investor": "None",
+        "nilai_investasi": "Plot Tersedia",
+        "progress_pembangunan": "Persiapan Lahan (Cut & Fill)",
+        "utilitas": "Akses langsung Jalan Boulevard 60m ROW, Jaringan Air Bersih Industri, Saluran IPAL Terpadu"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [108.258, -6.635],
+            [108.265, -6.633],
+            [108.262, -6.626],
+            [108.255, -6.628],
+            [108.258, -6.635]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "agro-1",
+      "properties": {
+        "id": "agro-industrial-park",
+        "nama_zona": "Agro Industrial Park",
+        "kategori": "Agro Industrial Park",
+        "status": "Terjual",
+        "luas_ha": 150.0,
+        "investor": "PT Charoen Pokphand Indonesia",
+        "nilai_investasi": "Rp 850 Miliar",
+        "progress_pembangunan": "75% Operasional",
+        "utilitas": "Water Treatment Plant Dedikasi 20L/s, Cold Storage Listrik Stabil Backup Genset 10MW, Sertifikat ISO 22000"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [108.245, -6.631],
+            [108.255, -6.628],
+            [108.252, -6.621],
+            [108.242, -6.624],
+            [108.245, -6.631]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "light-ind-1",
+      "properties": {
+        "id": "industri-ringan",
+        "nama_zona": "Cluster Industri Ringan",
+        "kategori": "Industri Ringan",
+        "status": "Terjual",
+        "luas_ha": 95.5,
+        "investor": "Pegatron Aero Technology",
+        "nilai_investasi": "Rp 2.1 Triliun",
+        "progress_pembangunan": "60% Konstruksi Fabrikasi",
+        "utilitas": "Gas Bumi PGN 3 MMSCFD, Trafo Listrik 25 MVA, Anti-Vibration Floor Layout, Zero Dust Cleanroom Access"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [108.252, -6.621],
+            [108.260, -6.619],
+            [108.257, -6.612],
+            [108.249, -6.614],
+            [108.252, -6.621]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "med-ind-1",
+      "properties": {
+        "id": "industri-menengah",
+        "nama_zona": "Cluster Industri Menengah",
+        "kategori": "Industri Menengah",
+        "status": "Dalam Pembangunan",
+        "luas_ha": 180.2,
+        "investor": "BYD Auto Parts Indonesia",
+        "nilai_investasi": "Rp 3.5 Triliun",
+        "progress_pembangunan": "40% Struktur Utama",
+        "utilitas": "Pasokan Gas Industri, Sistem Penanganan Limbah Cair Terpadu, Jaringan Listrik Ganda Backup PLN"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [108.260, -6.619],
+            [108.270, -6.616],
+            [108.267, -6.609],
+            [108.257, -6.612],
+            [108.260, -6.619]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "heavy-ind-1",
+      "properties": {
+        "id": "industri-berat",
+        "nama_zona": "Cluster Industri Berat",
+        "kategori": "Industri Berat",
+        "status": "Tersedia",
+        "luas_ha": 210.0,
+        "investor": "None",
+        "nilai_investasi": "Plot Tersedia",
+        "progress_pembangunan": "Perataan Lahan & Infrastruktur Dasar",
+        "utilitas": "Koneksi Kereta Kargo Langsung, Daya Listrik 100MVA Direct Substation, Amdal Kategori A Terbuka"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [108.270, -6.616],
+            [108.282, -6.613],
+            [108.279, -6.605],
+            [108.267, -6.609],
+            [108.270, -6.616]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "utilitas-1",
+      "properties": {
+        "id": "utilitas-kawasan",
+        "nama_zona": "Pusat Utilitas Kawasan Terpadu",
+        "kategori": "Utilitas Kawasan",
+        "status": "Terjual",
+        "luas_ha": 35.0,
+        "investor": "Kertajati Utility & Power JV",
+        "nilai_investasi": "Rp 750 Miliar",
+        "progress_pembangunan": "95% Operasional",
+        "utilitas": "Main Substation PLN 150 KV, Water Treatment Plant 120 L/s, Central IPAL Biologis, Pusat Pemadam Kebakaran"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [108.246, -6.641],
+            [108.254, -6.639],
+            [108.252, -6.634],
+            [108.244, -6.636],
+            [108.246, -6.641]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "green-1",
+      "properties": {
+        "id": "green-belt-embung",
+        "nama_zona": "Ecology Green Belt & Embung Raya",
+        "kategori": "Green Belt & Embung",
+        "status": "Terjual",
+        "luas_ha": 110.5,
+        "investor": "Balai Besar Wilayah Sungai (Cimanuk)",
+        "nilai_investasi": "Dana Alokasi Khusus Rp 120 Miliar",
+        "progress_pembangunan": "100% Selesai & Penghijauan",
+        "utilitas": "Embung Retensi Air Hujan 250,000 m3, Urban Ecoforest, Jalur Sepeda & Walking Track, Sensor Kualitas Air IoT"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [108.254, -6.639],
+            [108.266, -6.636],
+            [108.264, -6.630],
+            [108.252, -6.634],
+            [108.254, -6.639]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "cbd-1",
+      "properties": {
+        "id": "cbd-kantor-pengelola",
+        "nama_zona": "CBD & Kantor Pengelola KIIT",
+        "kategori": "CBD & Kantor Pengelola",
+        "status": "Terjual",
+        "luas_ha": 40.0,
+        "investor": "PT KIIT Development Corp",
+        "nilai_investasi": "Rp 980 Miliar",
+        "progress_pembangunan": "100% Operasional (Wisma Manajemen)",
+        "utilitas": "Gis Integrated Command Center, Convention Center, Layanan Satu Atap Bea Cukai & Keimigrasian (Sistem OSS)"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [108.264, -6.630],
+            [108.272, -6.628],
+            [108.269, -6.621],
+            [108.261, -6.623],
+            [108.264, -6.630]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "road-access",
+      "properties": {
+        "id": "kiit-toll-access-road",
+        "nama_zona": "KIIT Toll Access Expressway",
+        "kategori": "Jalan",
+        "status": "Terjual",
+        "luas_ha": 18.0,
+        "investor": "PT KIIT Infrastruktur Utama",
+        "nilai_investasi": "Rp 150 Miliar",
+        "progress_pembangunan": "100% Operasional",
+        "utilitas": "Jalur Eksklusif Kargo Berat (ROW 60m), Penerangan Pintar LED, Drainase Beton Precast Pratekan"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [108.244, -6.644],
+          [108.250, -6.637],
+          [108.258, -6.630],
+          [108.265, -6.623],
+          [108.268, -6.619]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "road-blvd",
+      "properties": {
+        "id": "kiit-industrial-boulevard",
+        "nama_zona": "KIIT Grand Industrial Boulevard",
+        "kategori": "Jalan",
+        "status": "Terjual",
+        "luas_ha": 25.5,
+        "investor": "PT KIIT Infrastruktur Utama",
+        "nilai_investasi": "Rp 210 Miliar",
+        "progress_pembangunan": "95% Operasional",
+        "utilitas": "Akses 4-Lajur Kelas Jalan I MST 10 Ton, Jembatan Utilitas Bawah Tanah Terintegrasi (Ducting Fiber & Power)"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [108.240, -6.625],
+          [108.250, -6.622],
+          [108.261, -6.619],
+          [108.272, -6.616],
+          [108.282, -6.613]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "gate-landmark",
+      "properties": {
+        "id": "kiit-grand-gate",
+        "nama_zona": "KIIT Grand Gate & Landmark",
+        "kategori": "Utilitas",
+        "status": "Terjual",
+        "luas_ha": 2.1,
+        "investor": "PT KIIT Development Corp",
+        "nilai_investasi": "Rp 45 Miliar",
+        "progress_pembangunan": "100% Selesai",
+        "utilitas": "Main Security Control Post, Tugu Ikonik Kertajati, ANPR Camera (Automatic Number Plate Recognition) untuk truk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [108.250, -6.637]
+      }
+    }
+  ]
+}

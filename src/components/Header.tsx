@@ -58,9 +58,13 @@ export default function Header({ onNavigate, activeSection, onOpenLogin, isLogge
               className="flex items-center space-x-3 cursor-pointer group"
               onClick={() => handleItemClick('hero')}
             >
-              <div className="w-10 h-10 bg-brand-navy flex items-center justify-center rounded-sm transition-transform duration-300 group-hover:scale-105 shadow-sm">
-                <div className="w-5 h-5 border-2 border-brand-gold rotate-45"></div>
-              </div>
+              <img
+                src="/logo-kiit.png"
+                alt="KIIT Logo"
+                className="w-10 h-10 object-contain rounded-sm transition-transform duration-300 group-hover:scale-105 shadow-sm"
+                referrerPolicy="no-referrer"
+                id="navbar-logo-kiit"
+              />
               <div className="flex flex-col">
                 <span className="font-sans font-extrabold text-xl tracking-tighter text-brand-navy leading-none">
                   KIIT

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
-import { FileDown, Lock, Unlock, Check, Send, Calendar, Clock, MapPin, Building, ChevronRight, Download, Users, Mail, Phone, Globe, Trash2 } from 'lucide-react';
+import { FileDown, Lock, Unlock, Check, Send, Calendar, Clock, MapPin, Building, ChevronRight, ChevronLeft, Download, Users, Mail, Phone, Globe, Trash2, FileText } from 'lucide-react';
 import { InvestorDoc } from '../types';
 import { db, handleFirestoreError, OperationType } from '../firebase';
 import { doc, setDoc, serverTimestamp, collection, onSnapshot, deleteDoc } from 'firebase/firestore';
@@ -17,7 +17,8 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
   const isIndo = language === 'id';
 
   // Submission History and Active Tabs
-  const [activeTab, setActiveTab] = useState<'files' | 'history' | 'users'>('files');
+  const [activeTab, setActiveTab] = useState<'files' | 'eoi' | 'history' | 'users'>('files');
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [eoiRecords, setEoiRecords] = useState<any[]>([]);
   const [apptRecords, setApptRecords] = useState<any[]>([]);
   const [inquiryRecords, setInquiryRecords] = useState<any[]>([]);
@@ -244,91 +245,604 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
         </AnimatePresence>
 
         {/* Triple Panel layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-16">
-          
-          {/* Panel 1: Document Secure Data Room - spans 5 columns */}
-          <div className="lg:col-span-12 xl:col-span-5 bg-[#001026] rounded-none border border-slate-900 p-6 sm:p-8 flex flex-col justify-between shadow-2xl">
-            <div className="space-y-6">
-              
-              <div className="flex items-center justify-between border-b border-slate-900 pb-3">
-                <div className="flex items-center space-x-2">
-                  {isLoggedIn ? (
-                    <Unlock className="w-4 h-4 text-emerald-400" />
-                  ) : (
-                    <Lock className="w-4 h-4 text-brand-gold animate-pulse" />
+        {isLoggedIn ? (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-16">
+            
+            {/* Sidebar Dashboard Column - spans 3 cols (expanded) or 2 (collapsed) */}
+            <div 
+              className={`bg-[#001026] border border-slate-900 p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 shadow-2xl ${
+                isSidebarCollapsed 
+                  ? 'col-span-12 lg:col-span-2 xl:col-span-1 items-center' 
+                  : 'col-span-12 lg:col-span-4 xl:col-span-3'
+              }`}
+              id="dashboard-sidebar"
+            >
+              <div className="space-y-6 w-full">
+                {/* Sidebar Header with Logo */}
+                <div className={`flex items-center pb-4 border-b border-slate-900/50 ${isSidebarCollapsed ? 'justify-center' : 'space-x-3'}`}>
+                  <img
+                    src="/logo-kiit.png"
+                    alt="KIIT Logo"
+                    className="w-10 h-10 object-contain shrink-0"
+                    referrerPolicy="no-referrer"
+                  />
+                  {!isSidebarCollapsed && (
+                    <div className="flex flex-col">
+                      <span className="font-sans font-black text-lg text-white leading-none tracking-tight">
+                        KIIT
+                      </span>
+                      <span className="text-[9px] font-mono font-bold text-brand-gold uppercase tracking-widest mt-1">
+                        INVESTOR PORTAL
+                      </span>
+                    </div>
                   )}
-                  <span className="font-mono text-xs text-slate-350 tracking-wider uppercase font-bold">
-                    Secure Data Room ({isIndo ? 'Dokumen Terbatas' : 'Confidential Files'})
-                  </span>
                 </div>
-                {isLoggedIn ? (
-                  <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-none uppercase">
-                    Connected
-                  </span>
-                ) : (
-                  <button
-                    onClick={onOpenLogin}
-                    className="text-[9px] text-brand-gold font-bold hover:underline"
-                  >
-                    LOGIN &gt;
-                  </button>
-                )}
-              </div>
 
-              {isLoggedIn && (
-                <div className="flex bg-[#00142a] p-1 rounded-none gap-1 mb-4 border border-slate-900/40">
+                {/* Sidebar Navigation */}
+                <div className="flex flex-col space-y-1.5 font-sans font-bold uppercase tracking-wider text-[10px]">
+                  {/* Tab 1: Documents */}
                   <button
                     onClick={() => setActiveTab('files')}
-                    className={`flex-1 py-1.5 px-3 font-sans font-bold uppercase tracking-wider text-[9px] transition duration-150 rounded-none cursor-pointer ${
+                    className={`flex items-center py-2.5 px-3 rounded-none transition duration-150 cursor-pointer w-full text-left ${
+                      isSidebarCollapsed ? 'justify-center' : 'space-x-3'
+                    } ${
                       activeTab === 'files'
                         ? 'bg-brand-gold text-brand-navy font-extrabold'
-                        : 'text-slate-400 hover:text-white hover:bg-[#001f3f]/50'
+                        : 'text-slate-300 hover:text-white hover:bg-[#001f3f]/50'
                     }`}
+                    title={isIndo ? 'DOKUMEN' : 'DOCUMENTS'}
                   >
-                    {isIndo ? 'DOKUMEN' : 'DOCUMENTS'}
+                    <FileDown className="w-4 h-4 shrink-0 font-bold" />
+                    {!isSidebarCollapsed && <span className="truncate">{isIndo ? 'DOKUMEN' : 'DOCUMENTS'}</span>}
                   </button>
+
+                  {/* Tab 2: Proposal Generator / EOI */}
+                  <button
+                    onClick={() => setActiveTab('eoi')}
+                    className={`flex items-center py-2.5 px-3 rounded-none transition duration-150 cursor-pointer w-full text-left ${
+                      isSidebarCollapsed ? 'justify-center' : 'space-x-3'
+                    } ${
+                      activeTab === 'eoi'
+                        ? 'bg-brand-gold text-brand-navy font-extrabold'
+                        : 'text-slate-300 hover:text-white hover:bg-[#001f3f]/50'
+                    }`}
+                    title={isIndo ? 'PROPOSAL GENERATOR' : 'PROPOSAL GENERATOR'}
+                  >
+                    <FileText className="w-4 h-4 shrink-0 font-bold" />
+                    {!isSidebarCollapsed && <span className="truncate">{isIndo ? 'PROPOSAL GENERATOR' : 'PROPOSAL GENERATOR'}</span>}
+                  </button>
+
+                  {/* Tab 3: Live Responses Audit */}
                   <button
                     onClick={() => setActiveTab('history')}
-                    className={`flex-1 py-1.5 px-3 font-sans font-bold uppercase tracking-wider text-[9px] transition duration-150 flex items-center justify-center space-x-1.5 rounded-none cursor-pointer ${
+                    className={`flex items-center py-2.5 px-3 rounded-none transition duration-150 cursor-pointer w-full justify-between text-left ${
                       activeTab === 'history'
                         ? 'bg-brand-gold text-brand-navy font-extrabold'
-                        : 'text-slate-400 hover:text-white hover:bg-[#001f3f]/50'
+                        : 'text-slate-300 hover:text-white hover:bg-[#001f3f]/50'
                     }`}
+                    title={isIndo ? 'RESPONS LIVE' : 'LIVE RESPONSES'}
                   >
-                    <span>{isIndo ? 'RESPONS LIVE' : 'LIVE'}</span>
-                    <span className="font-mono bg-[#001026] text-brand-gold font-extrabold px-1.5 rounded-none text-[8px]">
-                      {eoiRecords.length + apptRecords.length + inquiryRecords.length}
-                    </span>
+                    <div className={`flex items-center ${isSidebarCollapsed ? 'justify-center w-full' : 'space-x-3'}`}>
+                      <Clock className="w-4 h-4 shrink-0 font-bold" />
+                      {!isSidebarCollapsed && <span className="truncate">{isIndo ? 'RESPONS LIVE' : 'LIVE RESPONSES'}</span>}
+                    </div>
+                    {!isSidebarCollapsed && (
+                      <span className="font-mono bg-[#001026] text-brand-gold font-extrabold px-1.5 rounded-none text-[8.5px]">
+                        {eoiRecords.length + apptRecords.length + inquiryRecords.length}
+                      </span>
+                    )}
                   </button>
+
+                  {/* Tab 4: New Registered Users */}
                   <button
                     onClick={() => setActiveTab('users')}
-                    className={`flex-1 py-1.5 px-3 font-sans font-bold uppercase tracking-wider text-[9px] transition duration-150 flex items-center justify-center space-x-1.5 rounded-none cursor-pointer ${
+                    className={`flex items-center py-2.5 px-3 rounded-none transition duration-150 cursor-pointer w-full justify-between text-left ${
                       activeTab === 'users'
                         ? 'bg-brand-gold text-brand-navy font-extrabold'
-                        : 'text-slate-400 hover:text-white hover:bg-[#001f3f]/50'
+                        : 'text-slate-300 hover:text-white hover:bg-[#001f3f]/50'
                     }`}
+                    title={isIndo ? 'USER BARU' : 'NEW USERS'}
                   >
-                    <span>{isIndo ? 'USER BARU' : 'NEW USERS'}</span>
-                    <span className="font-mono bg-[#001026] text-brand-gold font-extrabold px-1.5 rounded-none text-[8px]">
-                      {userRecords.length}
-                    </span>
+                    <div className={`flex items-center ${isSidebarCollapsed ? 'justify-center w-full' : 'space-x-3'}`}>
+                      <Users className="w-4 h-4 shrink-0 font-bold" />
+                      {!isSidebarCollapsed && <span className="truncate">{isIndo ? 'USER BARU' : 'NEW USERS'}</span>}
+                    </div>
+                    {!isSidebarCollapsed && (
+                      <span className="font-mono bg-[#001026] text-brand-gold font-extrabold px-1.5 rounded-none text-[8.5px]">
+                        {userRecords.length}
+                      </span>
+                    )}
                   </button>
                 </div>
-              )}
+              </div>
 
-              {activeTab === 'files' && (
-                <>
+              {/* Sidebar Collapse Toggle at Bottom */}
+              <button
+                onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                className={`flex items-center py-2 px-3 mt-8 border border-slate-900 hover:border-slate-800 hover:bg-[#001f3f]/30 rounded-none text-slate-400 hover:text-white transition cursor-pointer w-full justify-center space-x-2`}
+                aria-label={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+              >
+                {isSidebarCollapsed ? (
+                  <ChevronRight className="w-4 h-4" />
+                ) : (
+                  <>
+                    <ChevronLeft className="w-4 h-4" />
+                    <span className="font-mono text-[9px] font-bold uppercase tracking-widest">{isIndo ? 'KOLAPS' : 'COLLAPSE'}</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Main Content Pane - spans remaining columns */}
+            <div 
+              className={`bg-[#001026] border border-slate-900 p-6 sm:p-8 flex flex-col justify-between shadow-2xl ${
+                isSidebarCollapsed 
+                  ? 'col-span-12 lg:col-span-10 xl:col-span-11' 
+                  : 'col-span-12 lg:col-span-8 xl:col-span-9'
+              }`}
+            >
+              <div className="space-y-6">
+                
+                {/* Dynamic Tab Area */}
+                {activeTab === 'files' && (
+                  <div>
+                    <div className="flex items-center space-x-2 border-b border-slate-900 pb-3 mb-4">
+                      <Unlock className="w-4 h-4 text-emerald-400" />
+                      <span className="font-mono text-xs text-slate-350 tracking-wider uppercase font-bold">
+                        Secure Data Room ({isIndo ? 'Dokumen Terbatas' : 'Confidential Files'})
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-slate-400 font-sans leading-relaxed mb-6 font-semibold">
+                      {isIndo
+                        ? 'Akses dokumen uji kelayakan (Feasibility Study), proyeksi arus kas, rancangan zonasi, rincian perizinan Amdal, serta prospektus formal Kertajati International Industrial Town.'
+                        : 'Get formal Feasibility Studies, financial cashflows, master planning blueprints, detailed AMDAL environmental compliance filings, and investor briefing folders.'}
+                    </p>
+
+                    {/* Document List ledger */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {investorDocs.map((doc) => {
+                        return (
+                          <div
+                            key={doc.id}
+                            className="p-3.5 rounded-none bg-[#001f3f]/40 border border-slate-900/65 hover:border-slate-800 transition duration-150 flex items-center justify-between text-xs"
+                          >
+                            <div className="flex items-start space-x-3 max-w-[80%]">
+                              <div className="p-1 px-1.5 bg-[#001F3F] border border-slate-800 rounded-none text-brand-gold text-[9px] font-mono font-bold shrink-0 mt-0.5">
+                                {doc.type}
+                              </div>
+                              <div>
+                                <span className="block font-sans font-extrabold text-slate-150 truncate leading-tight">
+                                  {doc.title}
+                                </span>
+                                <span className="block text-[9.5px] font-mono text-slate-500 mt-1">
+                                  {doc.category} &bull; SIZ: {doc.size}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Download action icon */}
+                            <button
+                              onClick={() => handleDownload(doc)}
+                              className="p-2 bg-brand-gold hover:bg-[#c5a030] text-brand-navy rounded-none transition-colors shrink-0 cursor-pointer"
+                              title={isIndo ? 'Unduh PDF Export' : 'Download PDF Export'}
+                            >
+                              <FileDown className="w-3.5 h-3.5 text-brand-navy font-bold" />
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'eoi' && (
+                  <div className="bg-white p-6 sm:p-8 text-slate-950 border border-slate-200">
+                    {/* Render EOI Form for logged-in user - acts as Proposal Generator! */}
+                    <AnimatePresence mode="wait">
+                      {!formSubmitted ? (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="space-y-6 font-sans text-xs"
+                        >
+                          <div className="border-b border-slate-100 pb-3 flex justify-between items-center">
+                            <span className="text-brand-navy font-sans text-sm font-black tracking-wider uppercase flex items-center space-x-2">
+                              <img
+                                src="/logo-kiit.png"
+                                alt="KIIT Logo"
+                                className="w-6 h-6 object-contain"
+                                referrerPolicy="no-referrer"
+                              />
+                              <span>{isIndo ? 'PROPOSAL GENERATOR & ESPRESSION (LOI)' : 'PROPOSAL GENERATOR & EOI'}</span>
+                            </span>
+                            <span className="text-[10px] text-slate-400 font-mono font-bold">OSS Integrated</span>
+                          </div>
+
+                          <p className="text-xs text-slate-605 leading-relaxed font-sans font-semibold">
+                            {isIndo
+                              ? 'Konfigurasikan parameter korporasi Anda untuk generate alokasi kavling klaster, negosiasi tax holiday, serta proposal minat resmi secara live.'
+                              : 'Configure your liaison parameters to live generate cluster lot maps, tax holiday schedules, and official investment proposals.'}
+                          </p>
+
+                          <form onSubmit={handleFormSubmit} className="space-y-4 text-xs font-sans">
+                            {loiError && (
+                              <div className="p-3 bg-red-100 border border-red-200 text-red-700 text-xs font-bold leading-normal">
+                                {loiError}
+                              </div>
+                            )}
+                            
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              <div>
+                                <label className="block font-bold text-slate-700 uppercase tracking-widest text-[9.5px] mb-1.5">
+                                  {isIndo ? 'Nama Lengkap Narahubung *' : 'Contact Liaison Fullname *'}
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  placeholder={isIndo ? 'Contoh: Raditya Widjaya' : 'e.g. Raditya Widjaya'}
+                                  value={formData.fullname}
+                                  onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
+                                  className="w-full bg-slate-50 border border-slate-200 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none text-brand-navy font-semibold"
+                                />
+                              </div>
+                              <div>
+                                <label className="block font-bold text-slate-700 uppercase tracking-widest text-[9.5px] mb-1.5">
+                                  {isIndo ? 'Nama Perusahaan / Konsorsium *' : 'Company Name / Consortium *'}
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  placeholder={isIndo ? 'Contoh: Shanghai Aero-Tech Ltd' : 'e.g. Shanghai Aero-Tech Ltd'}
+                                  value={formData.company}
+                                  onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                                  className="w-full bg-slate-50 border border-slate-200 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none text-brand-navy font-semibold"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              <div>
+                                <label className="block font-bold text-slate-700 uppercase tracking-widest text-[9.5px] mb-1.5">
+                                  {isIndo ? 'Bidang Sektoral Industri *' : 'Industrial Sector Field *'}
+                                </label>
+                                <select
+                                  value={formData.industry}
+                                  onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
+                                  className="w-full bg-slate-50 border border-slate-200 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none cursor-pointer text-brand-navy font-bold"
+                                >
+                                  <option>High-Tech Manufacturing</option>
+                                  <option>Smart Logistics & Warehousing</option>
+                                  <option>Aero Dirgantara & MRO</option>
+                                  <option>Electric Vehicles Ecosystem</option>
+                                  <option>Modern Food Processing</option>
+                                  <option>Komersil & Finansial CBD</option>
+                                </select>
+                              </div>
+                              <div>
+                                <label className="block font-bold text-slate-700 uppercase tracking-widest text-[9.5px] mb-1.5">
+                                  {isIndo ? 'Rencana Kapasitas Modal (Capex) *' : 'Planned Capital Capacity (CapEx) *'}
+                                </label>
+                                <select
+                                  value={formData.capital}
+                                  onChange={(e) => setFormData({ ...formData, capital: e.target.value })}
+                                  className="w-full bg-slate-50 border border-slate-200 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none cursor-pointer text-brand-navy font-bold"
+                                >
+                                  <option>{isIndo ? 'Rp 10 - Rp 100 Miliar' : 'IDR 10B - IDR 100B'}</option>
+                                  <option>{isIndo ? 'Rp 100 - Rp 500 Miliar' : 'IDR 100B - IDR 500B'}</option>
+                                  <option>{isIndo ? 'Rp 500 Miliar - Rp 1 Triliun' : 'IDR 500B - IDR 1T'}</option>
+                                  <option>{isIndo ? 'Di atas Rp 1 Triliun' : 'Over IDR 1 Trillion'}</option>
+                                </select>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                              <div className="sm:col-span-2">
+                                <label className="block font-bold text-slate-700 uppercase tracking-widest text-[9.5px] mb-1.5">
+                                  {isIndo ? 'Alamat Surat Elektronik (Email) *' : 'Corporate Email Address *'}
+                                </label>
+                                <input
+                                  type="email"
+                                  required
+                                  placeholder="contoh@sperotech.com"
+                                  value={formData.email}
+                                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                  className="w-full bg-slate-50 border border-slate-200 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none text-brand-navy font-semibold"
+                                />
+                              </div>
+                              <div>
+                                <label className="block font-bold text-slate-700 uppercase tracking-widest text-[9.5px] mb-1.5">
+                                  {isIndo ? 'Nomor Telepon M-Bile *' : 'Mobile Phone Number *'}
+                                </label>
+                                <input
+                                  type="tel"
+                                  placeholder="+62 811..."
+                                  value={formData.phone}
+                                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                  className="w-full bg-slate-50 border border-slate-200 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none text-brand-navy font-semibold"
+                                />
+                              </div>
+                            </div>
+
+                            <div>
+                              <label className="block font-bold text-slate-700 uppercase tracking-widest text-[9.5px] mb-1.5">
+                                {isIndo ? 'Catatan Khusus / Keperluan Spasial (Opsional)' : 'Special Request / Spatial Requirements (Optional)'}
+                              </label>
+                              <textarea
+                                rows={3}
+                                placeholder={isIndo 
+                                  ? 'Contoh: Kami menginginkan akses steril langsung runway kargo (bias untuk sektor MRO Aerospace)...'
+                                  : 'e.g. We require direct aircraft taxiway access for MRO operations adjacent to the runway...'
+                                }
+                                value={formData.intentNote}
+                                onChange={(e) => setFormData({ ...formData, intentNote: e.target.value })}
+                                className="w-full bg-slate-50 border border-slate-200 focus:border-brand-gold rounded-none py-2.5 px-3 focus:outline-none resize-none text-brand-navy font-medium"
+                              />
+                            </div>
+
+                            <button
+                              type="submit"
+                              disabled={isSubmittingForm}
+                              className="w-full py-3.5 bg-brand-navy hover:bg-[#001026] disabled:bg-slate-300 disabled:text-slate-500 text-white font-sans font-extrabold uppercase tracking-widest text-xs transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg rounded-none disabled:cursor-not-allowed cursor-pointer"
+                            >
+                              <Send className="w-4 h-4 text-brand-gold font-bold" />
+                              <span>
+                                {isSubmittingForm 
+                                  ? (isIndo ? 'MENGIRIMKAN..."' : 'SUBMITTING...') 
+                                  : (isIndo ? 'GENERATE PROPOSAL MINAT RESMI (LOI)' : 'GENERATE INVESTMENT PROPOSAL (EOI)')}
+                              </span>
+                            </button>
+
+                          </form>
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="space-y-6 text-center py-10"
+                        >
+                          <div className="w-16 h-16 bg-emerald-50 border border-emerald-200 text-emerald-600 rounded-none flex items-center justify-center mx-auto shadow-md">
+                            <Check className="w-7 h-7 text-emerald-600 font-bold" />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <span className="text-[10px] font-mono text-emerald-600 uppercase font-bold tracking-widest">
+                              PROPOSAL GENERATED &bull; ACTIVE
+                            </span>
+                            <h3 className="font-sans font-extrabold text-2xl text-slate-900 leading-none">
+                              {isIndo ? 'Proposal Investasi Berhasil Dihasilkan!' : 'Investment Proposal Successfully Generated!'}
+                            </h3>
+                            <p className="max-w-md mx-auto text-xs text-slate-600 leading-relaxed font-sans font-semibold">
+                              {isIndo 
+                                ? <>Konfigurasi minat formal <strong className="text-slate-900 font-bold">{formData.fullname}</strong> dari <strong className="text-slate-900 font-bold">{formData.company}</strong> berhasil disimpan ke Firebase. Kami telah mengaktifkan proposal rancangan untuk dikirim langsung ke data administrator.</>
+                                : <>Liaison configurations for <strong className="text-slate-900 font-bold">{formData.fullname}</strong> from <strong className="text-slate-900 font-bold">{formData.company}</strong> have been securely registered. A formal legal proposal has been logged for instant administrative access.</>}
+                            </p>
+                          </div>
+
+                          <div className="pt-4 max-w-sm mx-auto">
+                            <button
+                              onClick={() => setFormSubmitted(false)}
+                              className="w-full py-3 bg-brand-navy hover:bg-slate-800 rounded-none text-white font-mono text-xs font-bold uppercase tracking-widest transition-colors cursor-pointer"
+                            >
+                              {isIndo ? 'Kirim Tiket / Generate Proposal Baru' : 'Generate Another Proposal'}
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
+
+                {activeTab === 'history' && (
+                  <div>
+                    <div className="flex items-center space-x-2 border-b border-slate-900 pb-3 mb-4">
+                      <Clock className="w-4 h-4 text-brand-gold animate-pulse" />
+                      <span className="font-mono text-xs text-slate-350 tracking-wider uppercase font-bold">
+                        Transaction Audit History ({isIndo ? 'Pesan Masuk Secara Live' : 'Active Live Database Sync'})
+                      </span>
+                    </div>
+
+                    <div className="space-y-4 max-h-[460px] overflow-y-auto pr-1">
+                      {eoiRecords.length === 0 && apptRecords.length === 0 && inquiryRecords.length === 0 ? (
+                        <div className="text-center py-10 border border-dashed border-slate-900 bg-[#001F3F]/15">
+                          <p className="text-xs text-slate-500 font-sans font-semibold">
+                            {isIndo ? 'Tidak ada data pengajuan dalam database.' : 'No dynamic transaction history recorded.'}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {/* EOI Records */}
+                          {eoiRecords.map((rec) => (
+                            <div key={rec.id} className="p-3 bg-[#001F3F]/20 border border-brand-gold/15 relative group">
+                              <button
+                                onClick={() => handleDeleteRecord('expressionOfInterests', rec.id)}
+                                className="absolute top-2 right-2 p-1 bg-red-950/45 hover:bg-red-900 text-red-400 hover:text-white transition rounded-none cursor-pointer"
+                                title="Delete record from firestore"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </button>
+                              
+                              <div className="flex items-center space-x-1.5 mb-1.5">
+                                <span className="px-1.5 bg-amber-500/10 border border-amber-500/25 rounded-none text-[8px] font-mono font-bold text-amber-400 uppercase">
+                                  LOI/EOI Request
+                                </span>
+                                <span className="text-[8.5px] font-mono text-slate-500">
+                                  ID: {rec.id}
+                                </span>
+                              </div>
+                              
+                              <h4 className="font-sans font-extrabold text-xs text-slate-100 truncate pr-6">{rec.company}</h4>
+                              <p className="text-[10px] text-slate-350 mt-1 font-semibold leading-relaxed">
+                                {rec.fullname} &bull; {rec.industry} &bull; <span className="text-brand-gold font-bold">{rec.capital}</span>
+                              </p>
+                              <p className="text-[9px] text-slate-500 mt-1.5 font-mono truncate">
+                                {rec.email} {rec.phone && `• ${rec.phone}`}
+                              </p>
+                            </div>
+                          ))}
+
+                          {/* Appointment Records */}
+                          {apptRecords.map((rec) => (
+                            <div key={rec.id} className="p-3 bg-[#001F3F]/20 border border-sky-400/15 relative group">
+                              <button
+                                onClick={() => handleDeleteRecord('appointments', rec.id)}
+                                className="absolute top-2 right-2 p-1 bg-red-950/45 hover:bg-red-900 text-red-400 hover:text-white transition rounded-none cursor-pointer"
+                                title="Delete record from firestore"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </button>
+
+                              <div className="flex items-center space-x-1.5 mb-1.5">
+                                <span className="px-1.5 bg-sky-505/10 border border-sky-550/25 rounded-none text-[8px] font-mono font-bold text-sky-450 uppercase">
+                                  Meeting Schedule
+                                </span>
+                                <span className="text-[8.5px] font-mono text-slate-500">
+                                  ID: {rec.id}
+                                </span>
+                              </div>
+
+                              <h4 className="font-sans font-extrabold text-xs text-slate-100 pr-6 truncate">{rec.meetingType}</h4>
+                              <div className="flex items-center space-x-3 mt-1.5 text-[9px] text-slate-400 font-semibold font-mono">
+                                <span className="flex items-center space-x-1">
+                                  <Calendar className="w-3 h-3 text-brand-gold" />
+                                  <span>{rec.scheduledDate}</span>
+                                </span>
+                                <span className="flex items-center space-x-1">
+                                  <Clock className="w-3 h-3 text-brand-gold" />
+                                  <span>{rec.scheduledTime}</span>
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+
+                          {/* Inquiry/Prospectus Records */}
+                          {inquiryRecords.map((rec) => (
+                            <div key={rec.id} className="p-3 bg-[#001F3F]/20 border border-emerald-400/15 relative group">
+                              <button
+                                onClick={() => handleDeleteRecord('inquiries', rec.id)}
+                                className="absolute top-2 right-2 p-1 bg-red-950/45 hover:bg-red-900 text-red-400 hover:text-white transition rounded-none cursor-pointer"
+                                title="Delete record from firestore"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </button>
+
+                              <div className="flex items-center space-x-1.5 mb-1.5">
+                                <span className="px-1.5 bg-emerald-550/10 border border-emerald-550/25 rounded-none text-[8px] font-mono font-bold text-emerald-400 uppercase">
+                                  Contact/Prospectus
+                                </span>
+                                <span className="text-[8.5px] font-mono text-slate-500">
+                                  ID: {rec.id}
+                                </span>
+                              </div>
+
+                              <h4 className="font-sans font-extrabold text-xs text-slate-100 pr-6 truncate">{rec.subject}</h4>
+                              <p className="text-[10px] text-slate-350 mt-1 font-semibold leading-relaxed">
+                                {rec.name} &bull; <span className="font-mono text-slate-400 text-[9px]">{rec.email}</span>
+                              </p>
+                              <p className="text-[9.5px] text-slate-450 mt-1 px-1.5 py-1 bg-[#001026]/40 border border-slate-900 leading-normal italic line-clamp-2">
+                                "{rec.message}"
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'users' && (
+                  <div>
+                    <div className="flex items-center space-x-2 border-b border-slate-900 pb-3 mb-4">
+                      <Users className="w-4 h-4 text-brand-gold" />
+                      <span className="font-mono text-xs text-slate-350 tracking-wider uppercase font-bold">
+                        User Profile Registry ({isIndo ? 'Daftar Anggota KKE Kertajati' : 'Live Registered Accounts Directory'})
+                      </span>
+                    </div>
+
+                    <div className="space-y-4 max-h-[460px] overflow-y-auto pr-1">
+                      {userRecords.length === 0 ? (
+                        <div className="text-center py-10 border border-dashed border-slate-900 bg-[#001F3F]/15">
+                          <p className="text-xs text-slate-500 font-sans font-semibold">
+                            {isIndo ? 'Tidak ada data user terdaftar.' : 'No registered users available.'}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {userRecords.map((rec) => (
+                            <div key={rec.id} className="p-3 bg-[#001F3F]/20 border border-brand-gold/25 relative group">
+                              <button
+                                onClick={() => handleDeleteRecord('users', rec.id)}
+                                className="absolute top-2 right-2 p-1 bg-red-950/45 hover:bg-red-900 text-red-400 hover:text-white transition rounded-none cursor-pointer"
+                                title="Delete user profile"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </button>
+                              
+                              <div className="flex items-center space-x-1.5 mb-1.5">
+                                <span className="px-1 bg-[#001F3F] border border-slate-800 rounded-none text-[8px] font-mono font-bold text-brand-gold uppercase">
+                                  Official Account
+                                </span>
+                                <span className="text-[8px] font-mono text-slate-500 truncate max-w-[120px]">
+                                  UID: {rec.id}
+                                </span>
+                              </div>
+                              
+                              <h4 className="font-sans font-extrabold text-xs text-slate-100 truncate pr-6">{rec.email}</h4>
+                              <div className="flex justify-between items-center text-[9px] text-slate-450 font-semibold font-mono mt-2">
+                                <span>ROLE: <strong className="text-emerald-400">{rec.role || 'investor'}</strong></span>
+                                <span>{rec.createdAt ? new Date(rec.createdAt.seconds * 1000).toLocaleDateString() : 'Active Member'}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+              </div>
+
+              <div className="border-t border-slate-900 pt-6 mt-6 flex justify-between items-center text-[10px] font-mono text-slate-500 uppercase">
+                <span>Security Level: OJK & BPN standards</span>
+                <span>Updated: 1 June 2026</span>
+              </div>
+            </div>
+
+          </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-16">
+              
+              {/* Panel 1: Document Secure Data Room - spans 5 columns */}
+              <div className="lg:col-span-12 xl:col-span-5 bg-[#001026] rounded-none border border-slate-900 p-6 sm:p-8 flex flex-col justify-between shadow-2xl">
+                <div className="space-y-6">
+                  
+                  <div className="flex items-center justify-between border-b border-slate-900 pb-3">
+                    <div className="flex items-center space-x-2">
+                      <Lock className="w-4 h-4 text-brand-gold animate-pulse" />
+                      <span className="font-mono text-xs text-slate-350 tracking-wider uppercase font-bold">
+                        Secure Data Room ({isIndo ? 'Dokumen Terbatas' : 'Confidential Files'})
+                      </span>
+                    </div>
+                    <button
+                      onClick={onOpenLogin}
+                      className="text-[9px] text-brand-gold font-bold hover:underline cursor-pointer"
+                    >
+                      LOGIN &gt;
+                    </button>
+                  </div>
+
                   <p className="text-xs text-slate-400 font-sans leading-relaxed font-semibold">
                     {isIndo
                       ? 'Akses dokumen uji kelayakan (Feasibility Study), proyeksi arus kas, rancangan zonasi, rincian perizinan Amdal, serta prospektus formal Kertajati International Industrial Town.'
-                      : 'Get formal Feasibility Studies, financial cashflows, master planning blueprints, detailed AMAL environmental compliance filings, and investor briefing folders.'}
+                      : 'Get formal Feasibility Studies, financial cashflows, master planning blueprints, detailed AMDAL environmental compliance filings, and investor briefing folders.'}
                   </p>
 
                   {/* Document List ledger */}
                   <div className="space-y-3">
                     {investorDocs.map((doc) => {
                       const isConf = doc.confidentiality === 'Confidential' || doc.confidentiality === 'Restricted';
-                      const isLocked = isConf && !isLoggedIn;
+                      const isLocked = isConf; // definitely locked since we are NOT logged in
 
                       return (
                         <div
@@ -352,214 +866,45 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
                           {/* Download actions */}
                           <button
                             onClick={() => handleDownload(doc)}
-                            className={`p-2 rounded-none transition-colors shrink-0 cursor-pointer ${
-                              isLocked
-                                ? 'bg-[#001F3F] text-brand-gold hover:bg-slate-800'
-                                : 'bg-brand-gold hover:bg-[#c5a030] text-brand-navy'
-                            }`}
+                            className="p-2 rounded-none transition-colors shrink-0 cursor-pointer bg-[#001F3F] text-brand-gold hover:bg-slate-800"
                           >
-                            {isLocked ? (
-                              <Lock className="w-3.5 h-3.5 text-brand-gold" />
-                            ) : (
-                              <FileDown className="w-3.5 h-3.5 text-brand-navy font-bold" />
-                            )}
+                            <Lock className="w-3.5 h-3.5 text-brand-gold" />
                           </button>
-
                         </div>
                       );
                     })}
                   </div>
-                </>
-              )}
 
-              {activeTab === 'history' && (
-                <div className="space-y-4 max-h-[360px] overflow-y-auto pr-1">
-                  <div className="flex items-center justify-between pb-1 border-b border-slate-900/50">
-                    <span className="font-mono text-[8px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/20 uppercase tracking-wider block">
-                      &bull; REALTIME SYNC ACTIVE (FIREBASE)
-                    </span>
-                  </div>
-
-                  {eoiRecords.length === 0 && apptRecords.length === 0 && inquiryRecords.length === 0 ? (
-                    <div className="text-center py-10 border border-dashed border-slate-900 bg-[#001F3F]/15">
-                      <p className="text-xs text-slate-500 font-sans font-semibold">
-                        {isIndo ? 'Tidak ada data pengajuan dalam database.' : 'No dynamic transaction history recorded.'}
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      
-                      {/* EOI Records */}
-                      {eoiRecords.map((rec) => (
-                        <div key={rec.id} className="p-3 bg-[#001F3F]/20 border border-brand-gold/15 relative group">
-                          <button
-                            onClick={() => handleDeleteRecord('expressionOfInterests', rec.id)}
-                            className="absolute top-2 right-2 p-1 bg-red-950/45 hover:bg-red-900 text-red-400 hover:text-white transition rounded-none cursor-pointer"
-                            title="Delete record from firestore"
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </button>
-                          
-                          <div className="flex items-center space-x-1.5 mb-1.5">
-                            <span className="px-1 bg-amber-500/10 border border-amber-500/25 rounded-none text-[8px] font-mono font-bold text-amber-400 uppercase">
-                              LOI/EOI Request
-                            </span>
-                            <span className="text-[8.5px] font-mono text-slate-500">
-                              ID: {rec.id}
-                            </span>
-                          </div>
-                          
-                          <h4 className="font-sans font-extrabold text-xs text-slate-100 truncate pr-6">{rec.company}</h4>
-                          <p className="text-[10px] text-slate-350 mt-1 font-semibold leading-relaxed">
-                            {rec.fullname} &bull; {rec.industry} &bull; <span className="text-brand-gold font-bold">{rec.capital}</span>
-                          </p>
-                          <p className="text-[9px] text-slate-500 mt-1.5 font-mono truncate">
-                            {rec.email} {rec.phone && `• ${rec.phone}`}
-                          </p>
-                        </div>
-                      ))}
-
-                      {/* Appointment Records */}
-                      {apptRecords.map((rec) => (
-                        <div key={rec.id} className="p-3 bg-[#001F3F]/20 border border-sky-400/15 relative group">
-                          <button
-                            onClick={() => handleDeleteRecord('appointments', rec.id)}
-                            className="absolute top-2 right-2 p-1 bg-red-950/45 hover:bg-red-900 text-red-400 hover:text-white transition rounded-none cursor-pointer"
-                            title="Delete record from firestore"
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </button>
-
-                          <div className="flex items-center space-x-1.5 mb-1.5">
-                            <span className="px-1 bg-sky-500/10 border border-sky-500/25 rounded-none text-[8px] font-mono font-bold text-sky-400 uppercase">
-                              Meeting Schedule
-                            </span>
-                            <span className="text-[8.5px] font-mono text-slate-500">
-                              ID: {rec.id}
-                            </span>
-                          </div>
-
-                          <h4 className="font-sans font-extrabold text-xs text-slate-100 pr-6 truncate">{rec.meetingType}</h4>
-                          <div className="flex items-center space-x-3 mt-1.5 text-[9px] text-slate-400 font-semibold font-mono">
-                            <span className="flex items-center space-x-1">
-                              <Calendar className="w-3 h-3 text-brand-gold" />
-                              <span>{rec.scheduledDate}</span>
-                            </span>
-                            <span className="flex items-center space-x-1">
-                              <Clock className="w-3 h-3 text-brand-gold" />
-                              <span>{rec.scheduledTime}</span>
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-
-                      {/* Inquiry/Prospectus Records */}
-                      {inquiryRecords.map((rec) => (
-                        <div key={rec.id} className="p-3 bg-[#001F3F]/20 border border-emerald-400/15 relative group">
-                          <button
-                            onClick={() => handleDeleteRecord('inquiries', rec.id)}
-                            className="absolute top-2 right-2 p-1 bg-red-950/45 hover:bg-red-900 text-red-400 hover:text-white transition rounded-none cursor-pointer"
-                            title="Delete record from firestore"
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </button>
-
-                          <div className="flex items-center space-x-1.5 mb-1.5">
-                            <span className="px-1 bg-emerald-500/10 border border-emerald-500/25 rounded-none text-[8px] font-mono font-bold text-emerald-400 uppercase">
-                              Contact/Prospectus
-                            </span>
-                            <span className="text-[8.5px] font-mono text-slate-500">
-                              ID: {rec.id}
-                            </span>
-                          </div>
-
-                          <h4 className="font-sans font-extrabold text-xs text-slate-100 pr-6 truncate">{rec.subject}</h4>
-                          <p className="text-[10px] text-slate-350 mt-1 font-semibold leading-relaxed">
-                            {rec.name} &bull; <span className="font-mono text-slate-400 text-[9px]">{rec.email}</span>
-                          </p>
-                          <p className="text-[9.5px] text-slate-450 mt-1 px-1.5 py-1 bg-[#001026]/40 border border-slate-900 leading-normal italic line-clamp-2">
-                            "{rec.message}"
-                          </p>
-                        </div>
-                      ))}
-
-                    </div>
-                  )}
                 </div>
-              )}
 
-              {activeTab === 'users' && (
-                <div className="space-y-4 max-h-[360px] overflow-y-auto pr-1">
-                  <div className="flex items-center justify-between pb-1 border-b border-slate-900/50">
-                    <span className="font-mono text-[8px] text-brand-gold font-bold bg-brand-gold/10 px-2 py-0.5 border border-brand-gold/20 uppercase tracking-wider block">
-                      &bull; {isIndo ? 'DAFTAR USER TERDAFTAR SECARA LIVE' : 'LIVE REGISTERED ACCOUNTS DIRECTORY'}
-                    </span>
-                  </div>
-
-                  {userRecords.length === 0 ? (
-                    <div className="text-center py-10 border border-dashed border-slate-900 bg-[#001F3F]/15">
-                      <p className="text-xs text-slate-500 font-sans font-semibold">
-                        {isIndo ? 'Tidak ada data user terdaftar.' : 'No registered users available.'}
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {userRecords.map((rec) => (
-                        <div key={rec.id} className="p-3 bg-[#001F3F]/20 border border-brand-gold/25 relative group">
-                          <button
-                            onClick={() => handleDeleteRecord('users', rec.id)}
-                            className="absolute top-2 right-2 p-1 bg-red-950/45 hover:bg-red-900 text-red-400 hover:text-white transition rounded-none cursor-pointer"
-                            title="Delete user profile"
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </button>
-                          
-                          <div className="flex items-center space-x-1.5 mb-1.5">
-                            <span className="px-1 bg-[#001F3F] border border-slate-800 rounded-none text-[8px] font-mono font-bold text-brand-gold uppercase">
-                              Official Account
-                            </span>
-                            <span className="text-[8px] font-mono text-slate-500 truncate max-w-[120px]">
-                              UID: {rec.id}
-                            </span>
-                          </div>
-                          
-                          <h4 className="font-sans font-extrabold text-xs text-slate-100 truncate pr-6">{rec.email}</h4>
-                          <div className="flex justify-between items-center text-[9px] text-slate-450 font-semibold font-mono mt-2">
-                            <span>ROLE: <strong className="text-emerald-400">{rec.role || 'investor'}</strong></span>
-                            <span>{rec.createdAt ? new Date(rec.createdAt.seconds * 1000).toLocaleDateString() : 'Active Member'}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                <div className="border-t border-slate-900 pt-6 mt-6 flex justify-between items-center text-[10px] font-mono text-slate-500 uppercase">
+                  <span>Security Level: OJK & BPN standards</span>
+                  <span>Updated: 1 June 2026</span>
                 </div>
-              )}
+              </div>
 
-            </div>
-
-            <div className="border-t border-slate-900 pt-6 mt-6 flex justify-between items-center text-[10px] font-mono text-slate-500 uppercase">
-              <span>Security Level: OJK & BPN standards</span>
-              <span>Updated: 1 June 2026</span>
-            </div>
-          </div>
-
-          {/* Panel 2: Letter of Intent Form (EOI) - spans 7 columns */}
-          <div id="investor-form" className="lg:col-span-12 xl:col-span-7 bg-white rounded-none border border-slate-200 p-6 sm:p-8 text-slate-950 shadow-2xl flex flex-col justify-between">
-            
-            <AnimatePresence mode="wait">
-              {!formSubmitted ? (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="space-y-6 font-sans text-xs"
-                >
-                  <div className="border-b border-slate-100 pb-3 flex justify-between items-center">
-                    <span className="text-brand-gold font-mono text-xs font-bold tracking-widest uppercase">
-                      {isIndo ? 'FORMULIR PERNYATAAN MINAT (LOI) ESPRESSION' : 'EXPRESSION OF INTEREST (EOI) FORM'}
-                    </span>
-                    <span className="text-[10px] text-slate-400 font-mono font-bold">OSS Integrated</span>
-                  </div>
+              {/* Panel 2: Letter of Intent Form (EOI) - spans 7 columns */}
+              <div id="investor-form" className="lg:col-span-12 xl:col-span-7 bg-white rounded-none border border-slate-200 p-6 sm:p-8 text-slate-950 shadow-2xl flex flex-col justify-between">
+                <AnimatePresence mode="wait">
+                  {!formSubmitted ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="space-y-6 font-sans text-xs"
+                    >
+                      <div className="border-b border-slate-100 pb-3 flex justify-between items-center">
+                        <span className="text-brand-navy font-sans text-sm font-black tracking-wider uppercase flex items-center space-x-2">
+                          <img
+                            src="/logo-kiit.png"
+                            alt="KIIT Logo"
+                            className="w-6 h-6 object-contain"
+                            referrerPolicy="no-referrer"
+                          />
+                          <span>{isIndo ? 'FORMULIR PERNYATAAN MINAT (LOI) ESPRESSION' : 'EXPRESSION OF INTEREST (EOI) FORM'}</span>
+                        </span>
+                        <span className="text-[10px] text-slate-400 font-mono font-bold">OSS Integrated</span>
+                      </div>
 
                   <p className="text-xs text-slate-605 leading-relaxed font-sans font-semibold font-semibold">
                     {isIndo
@@ -737,6 +1082,7 @@ export default function InvestorCenter({ isLoggedIn, onOpenLogin }: InvestorCent
           </div>
 
         </div>
+      )}
 
         {/* Third Section Component: On-site Meeting Booking Scheduler */}
         <div className="bg-[#001026] border border-slate-900 rounded-none p-6 sm:p-8 shadow-2xl">

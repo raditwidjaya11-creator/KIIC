@@ -126,9 +126,57 @@
         "role",
         "createdAt"
       ]
+    },
+    "MasterplanZone": {
+      "title": "Masterplan Zone",
+      "description": "Dynamic mapping of KIIT masterplan segments synced with Firestore",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "nama_zona": {
+          "type": "string"
+        },
+        "kategori": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "luas_ha": {
+          "type": "number"
+        },
+        "investor": {
+          "type": "string"
+        },
+        "nilai_investasi": {
+          "type": "string"
+        },
+        "progress_pembangunan": {
+          "type": "string"
+        },
+        "utilitas": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "nama_zona",
+        "kategori",
+        "status",
+        "luas_ha"
+      ]
     }
   },
   "firestore": {
+    "/masterplan_zones/{zoneId}": {
+      "schema": "MasterplanZone",
+      "description": "Sync parameters and statistics for KIIT Interactive Masterplan zones"
+    },
     "/inquiries/{inquiryId}": {
       "schema": "Inquiry",
       "description": "User inquiries matching ContactFooter form submission"
