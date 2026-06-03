@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Compass, FileSpreadsheet, MapIcon, CalendarRange, ArrowRight, Play, Server, PlaneTakeoff, ShieldAlert } from 'lucide-react';
+import { Compass, FileSpreadsheet, MapIcon, CalendarRange, ArrowRight, Play, Server, PlaneTakeoff, ShieldAlert, Eye } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import VrViewer from './VrViewer';
 
 interface HeroProps {
   onExplore: (sectionId: string) => void;
@@ -11,6 +12,7 @@ interface HeroProps {
 
 export default function Hero({ onExplore, onOpenProspectus, onOpenScheduler }: HeroProps) {
   const { language, t } = useLanguage();
+  const [isVrOpen, setIsVrOpen] = useState<boolean>(false);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#001026] via-brand-navy to-[#001026] pt-[80px]">
@@ -160,6 +162,15 @@ export default function Hero({ onExplore, onOpenProspectus, onOpenScheduler }: H
             <CalendarRange className="w-4 h-4 text-brand-gold" />
             <span>{t('hero.btn_schedule')}</span>
           </button>
+
+          {/* Button 5: VR SITE TOUR */}
+          <button
+            onClick={() => setIsVrOpen(true)}
+            className="flex items-center space-x-2 px-6 py-4 bg-teal-950/60 text-teal-400 border border-teal-500/35 hover:border-teal-400 hover:bg-teal-900/60 transition-all duration-300 cursor-pointer rounded-sm shadow-xl shadow-teal-950/15"
+          >
+            <Compass className="w-4 h-4 text-teal-400 animate-pulse" />
+            <span>{language === 'id' ? 'Tur VR 360°' : '360° SITE VR TOUR'}</span>
+          </button>
         </motion.div>
 
         {/* Airport Flight Simulation Floating Tag */}
@@ -195,6 +206,8 @@ export default function Hero({ onExplore, onOpenProspectus, onOpenScheduler }: H
 
       {/* Elegant Fade on Bottom */}
       <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-slate-950 to-transparent"></div>
+
+      {isVrOpen && <VrViewer isOpen={isVrOpen} onClose={() => setIsVrOpen(false)} />}
     </section>
   );
 }

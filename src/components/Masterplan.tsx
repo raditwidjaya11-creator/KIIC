@@ -1,12 +1,32 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
-import { Sparkles, Layers, CheckCircle, Construction, TrendingUp } from 'lucide-react';
+import { Sparkles, Layers, CheckCircle, Construction, TrendingUp, Plus, Minus, Maximize2 } from 'lucide-react';
 
 export default function Masterplan() {
   const [selectedZoneId, setSelectedZoneId] = useState<string>('manufaktur');
   const [hoveredZoneId, setHoveredZoneId] = useState<string | null>(null);
   const { masterplanZones, t, language } = useLanguage();
+
+  const [isZoomed, setIsZoomed] = useState<boolean>(true);
+  const [customScale, setCustomScale] = useState<number>(1.6);
+
+  const zoneCenters: Record<string, { x: number; y: number }> = {
+    manufaktur: { x: 220, y: 205 },
+    logistik: { x: 440, y: 185 },
+    aerospace: { x: 250, y: 85 },
+    ev: { x: 190, y: 345 },
+    agro: { x: 335, y: 345 },
+    komersial: { x: 600, y: 170 },
+    hunian: { x: 650, y: 260 },
+    rth: { x: 670, y: 145 },
+    fasum: { x: 490, y: 325 },
+  };
+
+  const center = zoneCenters[selectedZoneId] || { x: 400, y: 250 };
+  const scale = isZoomed ? customScale : 1;
+  const translateX = isZoomed ? 400 - center.x * scale : 0;
+  const translateY = isZoomed ? 250 - center.y * scale : 0;
 
   const selectedZone = masterplanZones.find((z) => z.id === selectedZoneId) || masterplanZones[0];
 
@@ -58,171 +78,227 @@ export default function Masterplan() {
                 className="w-full h-auto max-h-[400px] drop-shadow-[0_12px_24px_rgba(0,0,0,0.6)]"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                {/* Background Roads / Infrastructure Lines */}
-                <g opacity="0.45" stroke="#FFFFFF" strokeWidth="1" fill="none">
-                   {/* Tol Cipali - Horizontal Bottom Road */}
-                  <path d="M 10 410 C 200 410, 500 430, 790 440" stroke="#D4AF37" strokeWidth="3" strokeDasharray="10,5" />
+                <motion.g
+                  animate={{
+                    x: translateX,
+                    y: translateY,
+                    scale: scale,
+                  }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 90,
+                    damping: 18,
+                  }}
+                  style={{
+                    transformOrigin: '0px 0px',
+                  }}
+                >
+                  {/* Background Roads / Infrastructure Lines */}
+                  <g opacity="0.45" stroke="#FFFFFF" strokeWidth="1" fill="none">
+                     {/* Tol Cipali - Horizontal Bottom Road */}
+                    <path d="M 10 410 C 200 410, 500 430, 790 440" stroke="#D4AF37" strokeWidth="3" strokeDasharray="10,5" />
+                    
+                    {/* Exit Tol Cipali connecting to Industrial Corridor */}
+                    <path d="M 400 422 L 400 250 L 510 180" stroke="#E2E8F0" strokeWidth="2.5" />
+                    
+                    {/* Airport Runway Reference */}
+                    <path d="M 50 40 L 400 40" stroke="#60A5FA" strokeWidth="5" strokeLinecap="round" />
+                    <path d="M 400 40 C 450 40, 550 80, 680 120" stroke="#60A5FA" strokeWidth="1.5" strokeDasharray="5,5" />
+                  </g>
+   
+                  {/* Airport label */}
+                  <g transform="translate(180, 25)" opacity="0.8">
+                    <rect x="-80" y="-12" width="160" height="22" rx="0" fill="#001F3F" stroke="#60A5FA" strokeWidth="0.5" />
+                    <text x="0" y="3" fill="#60A5FA" fontSize="9" fontWeight="bold" fontFamily="monospace" textAnchor="middle">
+                      BIJB KERTAJATI RUNWAY
+                    </text>
+                  </g>
+   
+                  {/* Toll Cipali label */}
+                  <g transform="translate(160, 435)" opacity="0.8">
+                    <text x="0" y="0" fill="#D4AF37" fontSize="10" fontWeight="bold" fontFamily="monospace">
+                      {language === 'id' ? 'JALAN TOL CIPALI >>' : 'CIPALI TOLL EXPRESSWAY >>'}
+                    </text>
+                  </g>
+   
+                  {/* Interactive Polygons / Sectors for KIIT */}
+                  {/* Zone 1: High Tech Manufaktur (350 Ha) */}
+                  <polygon
+                    points="120,120 320,120 320,290 120,290"
+                    fill={selectedZoneId === 'manufaktur' ? '#001E3D' : hoveredZoneId === 'manufaktur' ? '#002852' : '#040d1a'}
+                    stroke={selectedZoneId === 'manufaktur' ? '#D4AF37' : '#1E293B'}
+                    strokeWidth={selectedZoneId === 'manufaktur' ? '2.5' : '1'}
+                    className="cursor-pointer transition-all duration-300"
+                    onMouseEnter={() => setHoveredZoneId('manufaktur')}
+                    onMouseLeave={() => setHoveredZoneId(null)}
+                    onClick={() => { setSelectedZoneId('manufaktur'); setIsZoomed(true); }}
+                  />
                   
-                  {/* Exit Tol Cipali connecting to Industrial Corridor */}
-                  <path d="M 400 422 L 400 250 L 510 180" stroke="#E2E8F0" strokeWidth="2.5" />
-                  
-                  {/* Airport Runway Reference */}
-                  <path d="M 50 40 L 400 40" stroke="#60A5FA" strokeWidth="5" strokeLinecap="round" />
-                  <path d="M 400 40 C 450 40, 550 80, 680 120" stroke="#60A5FA" strokeWidth="1.5" strokeDasharray="5,5" />
-                </g>
- 
-                {/* Airport label */}
-                <g transform="translate(180, 25)" opacity="0.8">
-                  <rect x="-80" y="-12" width="160" height="22" rx="0" fill="#001F3F" stroke="#60A5FA" strokeWidth="0.5" />
-                  <text x="0" y="3" fill="#60A5FA" fontSize="9" fontWeight="bold" fontFamily="monospace" textAnchor="middle">
-                    BIJB KERTAJATI RUNWAY
-                  </text>
-                </g>
- 
-                {/* Toll Cipali label */}
-                <g transform="translate(160, 435)" opacity="0.8">
-                  <text x="0" y="0" fill="#D4AF37" fontSize="10" fontWeight="bold" fontFamily="monospace">
-                    {language === 'id' ? 'JALAN TOL CIPALI >>' : 'CIPALI TOLL EXPRESSWAY >>'}
-                  </text>
-                </g>
- 
-                {/* Interactive Polygons / Sectors for KIIT */}
-                {/* Zone 1: High Tech Manufaktur (350 Ha) */}
-                <polygon
-                  points="120,120 320,120 320,290 120,290"
-                  fill={selectedZoneId === 'manufaktur' ? '#001E3D' : hoveredZoneId === 'manufaktur' ? '#002852' : '#040d1a'}
-                  stroke={selectedZoneId === 'manufaktur' ? '#D4AF37' : '#1E293B'}
-                  strokeWidth={selectedZoneId === 'manufaktur' ? '2.5' : '1'}
-                  className="cursor-pointer transition-all duration-300"
-                  onMouseEnter={() => setHoveredZoneId('manufaktur')}
-                  onMouseLeave={() => setHoveredZoneId(null)}
-                  onClick={() => setSelectedZoneId('manufaktur')}
-                />
-                
-                {/* Zone 2: Logistics Hub (200 Ha) */}
-                <polygon
-                  points="340,120 540,120 500,250 340,250"
-                  fill={selectedZoneId === 'logistik' ? '#3B2F0F' : hoveredZoneId === 'logistik' ? '#544315' : '#140F03'}
-                  stroke={selectedZoneId === 'logistik' ? '#D4AF37' : '#1E293B'}
-                  strokeWidth={selectedZoneId === 'logistik' ? '2.5' : '1'}
-                  className="cursor-pointer transition-all duration-300"
-                  onMouseEnter={() => setHoveredZoneId('logistik')}
-                  onMouseLeave={() => setHoveredZoneId(null)}
-                  onClick={() => setSelectedZoneId('logistik')}
-                />
- 
-                {/* Zone 3: Aerospace & Aviation (100 Ha) */}
-                <polygon
-                  points="120,60 380,60 320,110 120,110"
-                  fill={selectedZoneId === 'aerospace' ? '#0E2E5C' : hoveredZoneId === 'aerospace' ? '#144080' : '#061324'}
-                  stroke={selectedZoneId === 'aerospace' ? '#D4AF37' : '#1E293B'}
-                  strokeWidth={selectedZoneId === 'aerospace' ? '2.5' : '1'}
-                  className="cursor-pointer transition-all duration-300"
-                  onMouseEnter={() => setHoveredZoneId('aerospace')}
-                  onMouseLeave={() => setHoveredZoneId(null)}
-                  onClick={() => setSelectedZoneId('aerospace')}
-                />
- 
-                {/* Zone 4: EV Battery & Electric Vehicles (100 Ha) */}
-                <polygon
-                  points="120,300 260,300 260,390 120,390"
-                  fill={selectedZoneId === 'ev' ? '#053123' : hoveredZoneId === 'ev' ? '#094d37' : '#01140e'}
-                  stroke={selectedZoneId === 'ev' ? '#D4AF37' : '#1E293B'}
-                  strokeWidth={selectedZoneId === 'ev' ? '2.5' : '1'}
-                  className="cursor-pointer transition-all duration-300"
-                  onMouseEnter={() => setHoveredZoneId('ev')}
-                  onMouseLeave={() => setHoveredZoneId(null)}
-                  onClick={() => setSelectedZoneId('ev')}
-                />
- 
-                {/* Zone 5: Agro industri (80 Ha) */}
-                <polygon
-                  points="270,300 400,300 400,360 270,390"
-                  fill={selectedZoneId === 'agro' ? '#203E05' : hoveredZoneId === 'agro' ? '#32610A' : '#0B1402'}
-                  stroke={selectedZoneId === 'agro' ? '#D4AF37' : '#1E293B'}
-                  strokeWidth={selectedZoneId === 'agro' ? '2.5' : '1'}
-                  className="cursor-pointer transition-all duration-300"
-                  onMouseEnter={() => setHoveredZoneId('agro')}
-                  onMouseLeave={() => setHoveredZoneId(null)}
-                  onClick={() => setSelectedZoneId('agro')}
-                />
- 
-                {/* Zone 6: Komersial & Financial Center (70 Ha) */}
-                <polygon
-                  points="510,180 640,120 700,200 550,220"
-                  fill={selectedZoneId === 'komersial' ? '#24143D' : hoveredZoneId === 'komersial' ? '#3C2166' : '#0D0817'}
-                  stroke={selectedZoneId === 'komersial' ? '#D4AF37' : '#1E293B'}
-                  strokeWidth={selectedZoneId === 'komersial' ? '2.5' : '1'}
-                  className="cursor-pointer transition-all duration-300"
-                  onMouseEnter={() => setHoveredZoneId('komersial')}
-                  onMouseLeave={() => setHoveredZoneId(null)}
-                  onClick={() => setSelectedZoneId('komersial')}
-                />
- 
-                {/* Zone 7: Hunian Green Resident (50 Ha) */}
-                <polygon
-                  points="550,230 700,210 740,290 580,310"
-                  fill={selectedZoneId === 'hunian' ? '#4A0B2C' : hoveredZoneId === 'hunian' ? '#7A1249' : '#1A0410'}
-                  stroke={selectedZoneId === 'hunian' ? '#D4AF37' : '#1E293B'}
-                  strokeWidth={selectedZoneId === 'hunian' ? '2.5' : '1'}
-                  className="cursor-pointer transition-all duration-300"
-                  onMouseEnter={() => setHoveredZoneId('hunian')}
-                  onMouseLeave={() => setHoveredZoneId(null)}
-                  onClick={() => setSelectedZoneId('hunian')}
-                />
- 
-                {/* Zone 8: Ruang Terbuka Hijau & Eco-Park (120 Ha) */}
-                <polygon
-                  points="550,110 780,110 740,200 650,120"
-                  fill={selectedZoneId === 'rth' ? '#043532' : hoveredZoneId === 'rth' ? '#08534E' : '#021817'}
-                  stroke={selectedZoneId === 'rth' ? '#D4AF37' : '#1E293B'}
-                  strokeWidth={selectedZoneId === 'rth' ? '2.5' : '1'}
-                  className="cursor-pointer transition-all duration-300"
-                  onMouseEnter={() => setHoveredZoneId('rth')}
-                  onMouseLeave={() => setHoveredZoneId(null)}
-                  onClick={() => setSelectedZoneId('rth')}
-                />
- 
-                {/* Zone 9: Fasilitas Umum & Support (30 Ha) */}
-                <polygon
-                  points="420,300 560,260 580,350 420,395"
-                  fill={selectedZoneId === 'fasum' ? '#4D081B' : hoveredZoneId === 'fasum' ? '#7A0D2A' : '#1B0309'}
-                  stroke={selectedZoneId === 'fasum' ? '#D4AF37' : '#1E293B'}
-                  strokeWidth={selectedZoneId === 'fasum' ? '2.5' : '1'}
-                  className="cursor-pointer transition-all duration-300"
-                  onMouseEnter={() => setHoveredZoneId('fasum')}
-                  onMouseLeave={() => setHoveredZoneId(null)}
-                  onClick={() => setSelectedZoneId('fasum')}
-                />
- 
-                {/* SVGs Labels overlay mapping */}
-                <text x="220" y="200" fill="#E2E8F0" fontSize="12" fontWeight="bold" textAnchor="middle" pointerEvents="none">MANUFAKTUR</text>
-                <text x="220" y="215" fill="#D4AF37" fontSize="9" fontFamily="monospace" textAnchor="middle" pointerEvents="none">350 Ha</text>
- 
-                <text x="440" y="180" fill="#E2E8F0" fontSize="11" fontWeight="bold" textAnchor="middle" pointerEvents="none">LOGISTIK</text>
-                <text x="440" y="195" fill="#D4AF37" fontSize="9" fontFamily="monospace" textAnchor="middle" pointerEvents="none">200 Ha</text>
- 
-                <text x="250" y="90" fill="#E2E8F0" fontSize="11" fontWeight="bold" textAnchor="middle" pointerEvents="none">AEROSPACE</text>
-                <text x="250" y="102" fill="#D4AF37" fontSize="9" fontFamily="monospace" textAnchor="middle" pointerEvents="none">100 Ha</text>
- 
-                <text x="190" y="340" fill="#E2E8F0" fontSize="11" fontWeight="bold" textAnchor="middle" pointerEvents="none">EV INDUSTRY</text>
-                <text x="190" y="352" fill="#D4AF37" fontSize="9" fontFamily="monospace" textAnchor="middle" pointerEvents="none">100 Ha</text>
- 
-                <text x="335" y="340" fill="#E2E8F0" fontSize="10" fontWeight="bold" textAnchor="middle" pointerEvents="none">AGRO</text>
-                <text x="335" y="352" fill="#D4AF37" fontSize="8" fontFamily="monospace" textAnchor="middle" pointerEvents="none">80 Ha</text>
- 
-                <text x="590" y="170" fill="#E2E8F0" fontSize="10" fontWeight="bold" textAnchor="middle" pointerEvents="none">KOMERSIAL</text>
-                <text x="590" y="182" fill="#D4AF37" fontSize="8" fontFamily="monospace" textAnchor="middle" pointerEvents="none">70 Ha</text>
- 
-                <text x="650" y="260" fill="#E2E8F0" fontSize="10" fontWeight="bold" textAnchor="middle" pointerEvents="none">HUNIAN</text>
-                <text x="650" y="272" fill="#D4AF37" fontSize="8" fontFamily="monospace" textAnchor="middle" pointerEvents="none">50 Ha</text>
- 
-                <text x="670" y="130" fill="#E2E8F0" fontSize="10" fontWeight="bold" textAnchor="middle" pointerEvents="none">RTH ECO</text>
-                <text x="670" y="142" fill="#D4AF37" fontSize="8" fontFamily="monospace" textAnchor="middle" pointerEvents="none">120 Ha</text>
- 
-                <text x="490" y="320" fill="#E2E8F0" fontSize="10" fontWeight="bold" textAnchor="middle" pointerEvents="none">FASUM</text>
-                <text x="490" y="332" fill="#D4AF37" fontSize="8" fontFamily="monospace" textAnchor="middle" pointerEvents="none">30 Ha</text>
+                  {/* Zone 2: Logistics Hub (200 Ha) */}
+                  <polygon
+                    points="340,120 540,120 500,250 340,250"
+                    fill={selectedZoneId === 'logistik' ? '#3B2F0F' : hoveredZoneId === 'logistik' ? '#544315' : '#140F03'}
+                    stroke={selectedZoneId === 'logistik' ? '#D4AF37' : '#1E293B'}
+                    strokeWidth={selectedZoneId === 'logistik' ? '2.5' : '1'}
+                    className="cursor-pointer transition-all duration-300"
+                    onMouseEnter={() => setHoveredZoneId('logistik')}
+                    onMouseLeave={() => setHoveredZoneId(null)}
+                    onClick={() => { setSelectedZoneId('logistik'); setIsZoomed(true); }}
+                  />
+   
+                  {/* Zone 3: Aerospace & Aviation (100 Ha) */}
+                  <polygon
+                    points="120,60 380,60 320,110 120,110"
+                    fill={selectedZoneId === 'aerospace' ? '#0E2E5C' : hoveredZoneId === 'aerospace' ? '#144080' : '#061324'}
+                    stroke={selectedZoneId === 'aerospace' ? '#D4AF37' : '#1E293B'}
+                    strokeWidth={selectedZoneId === 'aerospace' ? '2.5' : '1'}
+                    className="cursor-pointer transition-all duration-300"
+                    onMouseEnter={() => setHoveredZoneId('aerospace')}
+                    onMouseLeave={() => setHoveredZoneId(null)}
+                    onClick={() => { setSelectedZoneId('aerospace'); setIsZoomed(true); }}
+                  />
+   
+                  {/* Zone 4: EV Battery & Electric Vehicles (100 Ha) */}
+                  <polygon
+                    points="120,300 260,300 260,390 120,390"
+                    fill={selectedZoneId === 'ev' ? '#053123' : hoveredZoneId === 'ev' ? '#094d37' : '#01140e'}
+                    stroke={selectedZoneId === 'ev' ? '#D4AF37' : '#1E293B'}
+                    strokeWidth={selectedZoneId === 'ev' ? '2.5' : '1'}
+                    className="cursor-pointer transition-all duration-300"
+                    onMouseEnter={() => setHoveredZoneId('ev')}
+                    onMouseLeave={() => setHoveredZoneId(null)}
+                    onClick={() => { setSelectedZoneId('ev'); setIsZoomed(true); }}
+                  />
+   
+                  {/* Zone 5: Agro industri (80 Ha) */}
+                  <polygon
+                    points="270,300 400,300 400,360 270,390"
+                    fill={selectedZoneId === 'agro' ? '#203E05' : hoveredZoneId === 'agro' ? '#32610A' : '#0B1402'}
+                    stroke={selectedZoneId === 'agro' ? '#D4AF37' : '#1E293B'}
+                    strokeWidth={selectedZoneId === 'agro' ? '2.5' : '1'}
+                    className="cursor-pointer transition-all duration-300"
+                    onMouseEnter={() => setHoveredZoneId('agro')}
+                    onMouseLeave={() => setHoveredZoneId(null)}
+                    onClick={() => { setSelectedZoneId('agro'); setIsZoomed(true); }}
+                  />
+   
+                  {/* Zone 6: Komersial & Financial Center (70 Ha) */}
+                  <polygon
+                    points="510,180 640,120 700,200 550,220"
+                    fill={selectedZoneId === 'komersial' ? '#24143D' : hoveredZoneId === 'komersial' ? '#3C2166' : '#0D0817'}
+                    stroke={selectedZoneId === 'komersial' ? '#D4AF37' : '#1E293B'}
+                    strokeWidth={selectedZoneId === 'komersial' ? '2.5' : '1'}
+                    className="cursor-pointer transition-all duration-300"
+                    onMouseEnter={() => setHoveredZoneId('komersial')}
+                    onMouseLeave={() => setHoveredZoneId(null)}
+                    onClick={() => { setSelectedZoneId('komersial'); setIsZoomed(true); }}
+                  />
+   
+                  {/* Zone 7: Hunian Green Resident (50 Ha) */}
+                  <polygon
+                    points="550,230 700,210 740,290 580,310"
+                    fill={selectedZoneId === 'hunian' ? '#4A0B2C' : hoveredZoneId === 'hunian' ? '#7A1249' : '#1A0410'}
+                    stroke={selectedZoneId === 'hunian' ? '#D4AF37' : '#1E293B'}
+                    strokeWidth={selectedZoneId === 'hunian' ? '2.5' : '1'}
+                    className="cursor-pointer transition-all duration-300"
+                    onMouseEnter={() => setHoveredZoneId('hunian')}
+                    onMouseLeave={() => setHoveredZoneId(null)}
+                    onClick={() => { setSelectedZoneId('hunian'); setIsZoomed(true); }}
+                  />
+   
+                  {/* Zone 8: Ruang Terbuka Hijau & Eco-Park (120 Ha) */}
+                  <polygon
+                    points="550,110 780,110 740,200 650,120"
+                    fill={selectedZoneId === 'rth' ? '#043532' : hoveredZoneId === 'rth' ? '#08534E' : '#021817'}
+                    stroke={selectedZoneId === 'rth' ? '#D4AF37' : '#1E293B'}
+                    strokeWidth={selectedZoneId === 'rth' ? '2.5' : '1'}
+                    className="cursor-pointer transition-all duration-300"
+                    onMouseEnter={() => setHoveredZoneId('rth')}
+                    onMouseLeave={() => setHoveredZoneId(null)}
+                    onClick={() => { setSelectedZoneId('rth'); setIsZoomed(true); }}
+                  />
+   
+                  {/* Zone 9: Fasilitas Umum & Support (30 Ha) */}
+                  <polygon
+                    points="420,300 560,260 580,350 420,395"
+                    fill={selectedZoneId === 'fasum' ? '#4D081B' : hoveredZoneId === 'fasum' ? '#7A0D2A' : '#1B0309'}
+                    stroke={selectedZoneId === 'fasum' ? '#D4AF37' : '#1E293B'}
+                    strokeWidth={selectedZoneId === 'fasum' ? '2.5' : '1'}
+                    className="cursor-pointer transition-all duration-300"
+                    onMouseEnter={() => setHoveredZoneId('fasum')}
+                    onMouseLeave={() => setHoveredZoneId(null)}
+                    onClick={() => { setSelectedZoneId('fasum'); setIsZoomed(true); }}
+                  />
+   
+                  {/* SVGs Labels overlay mapping */}
+                  <text x="220" y="200" fill="#E2E8F0" fontSize="12" fontWeight="bold" textAnchor="middle" pointerEvents="none">MANUFAKTUR</text>
+                  <text x="220" y="215" fill="#D4AF37" fontSize="9" fontFamily="monospace" textAnchor="middle" pointerEvents="none">350 Ha</text>
+   
+                  <text x="440" y="180" fill="#E2E8F0" fontSize="11" fontWeight="bold" textAnchor="middle" pointerEvents="none">LOGISTIK</text>
+                  <text x="440" y="195" fill="#D4AF37" fontSize="9" fontFamily="monospace" textAnchor="middle" pointerEvents="none">200 Ha</text>
+   
+                  <text x="250" y="90" fill="#E2E8F0" fontSize="11" fontWeight="bold" textAnchor="middle" pointerEvents="none">AEROSPACE</text>
+                  <text x="250" y="102" fill="#D4AF37" fontSize="9" fontFamily="monospace" textAnchor="middle" pointerEvents="none">100 Ha</text>
+   
+                  <text x="190" y="340" fill="#E2E8F0" fontSize="11" fontWeight="bold" textAnchor="middle" pointerEvents="none">EV INDUSTRY</text>
+                  <text x="190" y="352" fill="#D4AF37" fontSize="9" fontFamily="monospace" textAnchor="middle" pointerEvents="none">100 Ha</text>
+   
+                  <text x="335" y="340" fill="#E2E8F0" fontSize="10" fontWeight="bold" textAnchor="middle" pointerEvents="none">AGRO</text>
+                  <text x="335" y="352" fill="#D4AF37" fontSize="8" fontFamily="monospace" textAnchor="middle" pointerEvents="none">80 Ha</text>
+   
+                  <text x="590" y="170" fill="#E2E8F0" fontSize="10" fontWeight="bold" textAnchor="middle" pointerEvents="none">KOMERSIAL</text>
+                  <text x="590" y="182" fill="#D4AF37" fontSize="8" fontFamily="monospace" textAnchor="middle" pointerEvents="none">70 Ha</text>
+   
+                  <text x="650" y="260" fill="#E2E8F0" fontSize="10" fontWeight="bold" textAnchor="middle" pointerEvents="none">HUNIAN</text>
+                  <text x="650" y="272" fill="#D4AF37" fontSize="8" fontFamily="monospace" textAnchor="middle" pointerEvents="none">50 Ha</text>
+   
+                  <text x="670" y="130" fill="#E2E8F0" fontSize="10" fontWeight="bold" textAnchor="middle" pointerEvents="none">RTH ECO</text>
+                  <text x="670" y="142" fill="#D4AF37" fontSize="8" fontFamily="monospace" textAnchor="middle" pointerEvents="none">120 Ha</text>
+   
+                  <text x="490" y="320" fill="#E2E8F0" fontSize="10" fontWeight="bold" textAnchor="middle" pointerEvents="none">FASUM</text>
+                  <text x="490" y="332" fill="#D4AF37" fontSize="8" fontFamily="monospace" textAnchor="middle" pointerEvents="none">30 Ha</text>
+                </motion.g>
               </svg>
+
+              {/* Floating Zoom / Pan controls HUD overlay */}
+              <div className="absolute right-4 bottom-4 flex flex-col space-y-2 z-20">
+                <button
+                  onClick={() => {
+                    setIsZoomed(true);
+                    setCustomScale((prev) => Math.min(prev + 0.2, 3));
+                  }}
+                  className="p-1.5 sm:p-2 bg-brand-navy/95 border border-slate-700 text-brand-gold hover:bg-brand-gold hover:text-brand-navy transition-all duration-200 cursor-pointer shadow-xl flex items-center justify-center rounded-none"
+                  title={language === 'id' ? 'Perbesar' : 'Zoom In'}
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => {
+                    setCustomScale((prev) => {
+                      const next = Math.max(prev - 0.2, 1.1);
+                      if (next <= 1.1) {
+                        setIsZoomed(false);
+                        return 1.6;
+                      }
+                      return next;
+                    });
+                  }}
+                  className="p-1.5 sm:p-2 bg-brand-navy/95 border border-slate-700 text-brand-gold hover:bg-brand-gold hover:text-brand-navy transition-all duration-200 cursor-pointer shadow-xl flex items-center justify-center rounded-none"
+                  title={language === 'id' ? 'Perkecil' : 'Zoom Out'}
+                >
+                  <Minus className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => {
+                    setIsZoomed(false);
+                    setCustomScale(1.6);
+                  }}
+                  className="p-1.5 sm:p-2 bg-brand-navy/95 border border-slate-700 text-brand-gold hover:bg-brand-gold hover:text-brand-navy transition-all duration-200 cursor-pointer shadow-xl flex items-center justify-center rounded-none"
+                  title={language === 'id' ? 'Reset Tampilan' : 'Reset View'}
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
 
             {/* Instruction tooltip */}

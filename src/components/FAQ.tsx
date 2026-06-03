@@ -87,7 +87,10 @@ export default function FAQ() {
           {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
             return (
-              <button
+              <motion.button
+                whileHover={{ scale: 1.04, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 18 }}
                 key={cat.id}
                 onClick={() => {
                   setSelectedCategory(cat.id);
@@ -95,15 +98,15 @@ export default function FAQ() {
                 }}
                 className={`flex items-center space-x-2 px-4 py-2.5 border font-sans text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all duration-150 cursor-pointer rounded-none ${
                   isActive
-                    ? 'bg-brand-navy border-brand-navy text-white'
-                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-brand-navy'
+                    ? 'bg-brand-navy border-brand-navy text-white shadow-[0_4px_12px_rgba(0,31,63,0.15)]'
+                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-brand-navy hover:shadow-[0_4px_10px_rgba(0,0,0,0.04)]'
                 }`}
               >
                 <span className={isActive ? 'text-brand-gold' : 'text-slate-400'}>
                   {cat.icon}
                 </span>
                 <span>{cat.name}</span>
-              </button>
+              </motion.button>
             );
           })}
         </div>
