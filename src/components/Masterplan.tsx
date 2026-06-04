@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { collection, onSnapshot, doc, setDoc } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
+import { masterplanGeojson } from '../data/masterplanGeojson';
 
 // Types for Masterplan Feature properties
 interface MasterplanProperties {
@@ -149,21 +150,15 @@ export default function Masterplan() {
     return [108.26, -6.62];
   };
 
-  // Fetch GeoJSON on load
+  // Load GeoJSON statically on mount to prevent fetch failures
   useEffect(() => {
-    const loadGeoJson = async () => {
-      try {
-        const res = await fetch('/data/kiit_masterplan_final.geojson');
-        if (!res.ok) throw new Error('Failed to load GeoJSON');
-        const data = await res.json();
-        setGeoData(data);
-      } catch (err) {
-        console.error('Error loading GeoJSON:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadGeoJson();
+    try {
+      setGeoData(masterplanGeojson as GeoJsonCollection);
+    } catch (err) {
+      console.error('Error loading GeoJSON:', err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   // Set up real-time Firebase Firestore observer as requested by SKILL.md rules
